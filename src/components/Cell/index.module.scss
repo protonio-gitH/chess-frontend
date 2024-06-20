@@ -1,0 +1,52 @@
+.black {
+	background-color: #ae5a43;
+}
+
+.white {
+	background-color: #eed4ac;
+}
+
+.cell {
+	width: 64px;
+	height: 64px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: background 0.1s ease;
+
+	img {
+		width: 64px;
+		height: 64px;
+	}
+}
+
+.selected {
+	background: rgba(20, 85, 30, 0.5);
+}
+
+.available {
+	width: 15px;
+	height: 15px;
+	background: rgba(20, 85, 30, 0.5);
+	border-radius: 50%;
+}
+
+.attacked-white {
+	background: radial-gradient(circle, transparent 0%, transparent 79%, rgba(20, 85, 0, 0.3) 80%);
+	background-color: #eed4ac;
+}
+
+.attacked-black {
+	background: radial-gradient(circle, transparent 0%, transparent 79%, rgba(20, 85, 0, 0.3) 80%);
+	background-color: #ae5a43;
+}
+
+.shah-white {
+	background: radial-gradient(circle, transparent 0%, transparent 79%, rgb(255, 0, 0) 80%);
+	background-color: #eed4ac;
+}
+
+.shah-black {
+	background: radial-gradient(circle, transparent 0%, transparent 79%, rgba(255, 0, 0) 80%);
+	background-color: #ae5a43;
+}
