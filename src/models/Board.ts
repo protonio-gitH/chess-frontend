@@ -40,28 +40,56 @@ export class Board {
 	public isCellUnderAttack(cell: Cell, selfCell: Cell): boolean {
 		for (let row of this.cells) {
 			for (let targetCell of row) {
-				if (
-					targetCell.figure &&
-					targetCell.figure.color !== selfCell.figure?.color &&
-					!(targetCell.figure instanceof King)
-				) {
-					if (targetCell.figure.canMove(cell)) {
+				if (this.isEnemyFigure(targetCell, selfCell) && !(targetCell.figure instanceof King)) {
+					if (this.canFigureMoveToCell(targetCell, cell)) {
 						return true;
-					} else if (targetCell.figure.name === FigureNames.BISHOP) {
-						const king = selfCell.figure as King;
-
-						if (king.shahFigures.some(i => i.id === targetCell.figure?.id)) {
-							if (targetCell.x < selfCell.x) {
-								if (cell.x === selfCell.x + 1 && cell.y === selfCell.y + 1) {
-									return true;
-								}
-							}
-						}
+					} else if (
+						targetCell.figure?.name === FigureNames.BISHOP &&
+						this.isBishopShahMove(targetCell, selfCell, cell)
+					) {
+						return true;
 					}
 				}
 			}
 		}
 		return false;
+	}
+
+	private isEnemyFigure(targetCell: Cell, selfCell: Cell): boolean {
+		return targetCell.figure !== undefined && targetCell.figure?.color !== selfCell.figure?.color;
+	}
+
+	private canFigureMoveToCell(targetCell: Cell, cell: Cell): boolean {
+		return targetCell.figure?.canMove(cell) ?? false;
+	}
+
+	private isBishopShahMove(targetCell: Cell, selfCell: Cell, cell: Cell): boolean {
+		const king = selfCell.figure as King;
+		if (!king.shahFigures.some(i => i.id === targetCell.figure?.id)) {
+			return false;
+		}
+
+		const isWhiteKing = king.color === Colors.WHITE;
+		const isTargetCellAbove = targetCell.y > selfCell.y;
+		const isTargetCellBelow = targetCell.y < selfCell.y;
+		const isTargetCellLeft = targetCell.x < selfCell.x;
+		const isTargetCellRight = targetCell.x > selfCell.x;
+
+		if (isWhiteKing) {
+			return (
+				(isTargetCellBelow && isTargetCellLeft && cell.x === selfCell.x + 1 && cell.y === selfCell.y + 1) ||
+				(isTargetCellBelow && isTargetCellRight && cell.x === selfCell.x - 1 && cell.y === selfCell.y + 1) ||
+				(isTargetCellAbove && isTargetCellLeft && cell.x === selfCell.x + 1 && cell.y === selfCell.y - 1) ||
+				(isTargetCellAbove && isTargetCellRight && cell.x === selfCell.x - 1 && cell.y === selfCell.y - 1)
+			);
+		} else {
+			return (
+				(isTargetCellAbove && isTargetCellLeft && cell.x === selfCell.x + 1 && cell.y === selfCell.y - 1) ||
+				(isTargetCellAbove && isTargetCellRight && cell.x === selfCell.x - 1 && cell.y === selfCell.y - 1) ||
+				(isTargetCellBelow && isTargetCellLeft && cell.x === selfCell.x + 1 && cell.y === selfCell.y + 1) ||
+				(isTargetCellBelow && isTargetCellRight && cell.x === selfCell.x - 1 && cell.y === selfCell.y + 1)
+			);
+		}
 	}
 
 	public getCell(x: number, y: number) {
