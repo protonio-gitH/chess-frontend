@@ -45,7 +45,18 @@ export class Board {
 						return true;
 					} else if (
 						targetCell.figure?.name === FigureNames.BISHOP &&
-						this.isBishopShahMove(targetCell, selfCell, cell)
+						this.isBishopOrQueenShahDiagonalMove(targetCell, selfCell, cell)
+					) {
+						return true;
+					} else if (
+						targetCell.figure?.name === FigureNames.QUEEN &&
+						(this.isBishopOrQueenShahDiagonalMove(targetCell, selfCell, cell) ||
+							this.isQueenOrRookShahStraightMove(targetCell, selfCell, cell))
+					) {
+						return true;
+					} else if (
+						targetCell.figure?.name === FigureNames.ROOK &&
+						this.isQueenOrRookShahStraightMove(targetCell, selfCell, cell)
 					) {
 						return true;
 					}
@@ -63,11 +74,15 @@ export class Board {
 		return targetCell.figure?.canMove(cell) ?? false;
 	}
 
-	private isBishopShahMove(targetCell: Cell, selfCell: Cell, cell: Cell): boolean {
+	private isShahFigure(king: King, targetCell: Cell): boolean {
+		return king.shahFigures.some(i => i.id === targetCell.figure?.id);
+	}
+
+	private isBishopOrQueenShahDiagonalMove(targetCell: Cell, selfCell: Cell, cell: Cell): boolean {
 		const king = selfCell.figure as King;
-		if (!king.shahFigures.some(i => i.id === targetCell.figure?.id)) {
-			return false;
-		}
+
+		const isShah = this.isShahFigure(king, targetCell);
+		if (isShah === false) return false;
 
 		const isWhiteKing = king.color === Colors.WHITE;
 		const isTargetCellAbove = targetCell.y > selfCell.y;
@@ -90,6 +105,28 @@ export class Board {
 				(isTargetCellBelow && isTargetCellRight && cell.x === selfCell.x - 1 && cell.y === selfCell.y + 1)
 			);
 		}
+	}
+
+	private isQueenOrRookShahStraightMove(targetCell: Cell, selfCell: Cell, cell: Cell): boolean {
+		const king = selfCell.figure as King;
+
+		const isShah = this.isShahFigure(king, targetCell);
+		if (isShah === false) return false;
+
+		const isWhiteKing = king.color === Colors.WHITE;
+		const isTargetCellBelow = targetCell.y < selfCell.y;
+		const isTargetCellAbove = targetCell.y > selfCell.y;
+		const isTargetCellLeft = targetCell.x < selfCell.x;
+		const isTargetCellRight = targetCell.x > selfCell.x;
+		const isTargetCellParallel = targetCell.y === selfCell.y;
+		const isTargetCellWithoutDeviations = targetCell.x === selfCell.x;
+
+		return (
+			(isTargetCellBelow && isTargetCellWithoutDeviations && cell.x === selfCell.x && cell.y === selfCell.y + 1) ||
+			(isTargetCellAbove && isTargetCellWithoutDeviations && cell.x === selfCell.x && cell.y === selfCell.y - 1) ||
+			(isTargetCellLeft && isTargetCellParallel && cell.x === selfCell.x + 1 && cell.y === selfCell.y) ||
+			(isTargetCellRight && isTargetCellParallel && cell.x === selfCell.x - 1 && cell.y === selfCell.y)
+		);
 	}
 
 	public getCell(x: number, y: number) {
