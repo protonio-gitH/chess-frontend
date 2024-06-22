@@ -71,11 +71,21 @@ export class Board {
 	}
 
 	private canFigureMoveToCell(targetCell: Cell, cell: Cell): boolean {
+		if (targetCell.figure?.name === FigureNames.PAWN) {
+			const pawn = targetCell.figure as Pawn;
+			return pawn.canMove(cell, true);
+		}
 		return targetCell.figure?.canMove(cell) ?? false;
 	}
 
 	private isShahFigure(king: King, targetCell: Cell): boolean {
 		return king.shahFigures.some(i => i.id === targetCell.figure?.id);
+	}
+
+	private isPawnAttack(targetCell: Cell, cell: Cell): boolean {
+		const direction = targetCell.figure?.color === Colors.WHITE ? 1 : -1;
+
+		return (cell.x === targetCell.x + 1 || cell.x === targetCell.x - 1) && cell.y === targetCell.y + direction;
 	}
 
 	private isBishopOrQueenShahDiagonalMove(targetCell: Cell, selfCell: Cell, cell: Cell): boolean {

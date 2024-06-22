@@ -11,7 +11,7 @@ export class Pawn extends Figure {
 		this.name = FigureNames.PAWN;
 	}
 
-	public canMove(target: Cell): boolean {
+	public canMove(target: Cell, forKing?: boolean): boolean {
 		const isWhite = this.cell.figure?.color === Colors.WHITE;
 		const isBlack = this.cell.figure?.color === Colors.BLACK;
 		const direction = isWhite ? -1 : 1;
@@ -23,6 +23,15 @@ export class Pawn extends Figure {
 
 		if (target?.figure?.color === this.color) {
 			return false;
+		}
+
+		if (forKing) {
+			if (absDx === 0) {
+				return false;
+			}
+			if (absDy === 1) {
+				return true;
+			}
 		}
 
 		if (absDy === 1 && dy === direction && absDx === 1 && target.figure && target.figure.color !== this.color) {
