@@ -26,9 +26,10 @@ export class Pawn extends Figure {
 		}
 
 		if (forKing) {
-			if (absDx === 0) {
+			if (absDx === 0 || absDx > 1) {
 				return false;
 			}
+
 			if (absDy === 1) {
 				return true;
 			}
