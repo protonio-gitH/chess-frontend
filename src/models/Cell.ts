@@ -34,7 +34,7 @@ export class Cell {
 
 	public moveFigure(target: Cell, board: Board): void {
 		if (this.figure?.color === board.move) {
-			if (this.figure && this.figure?.canMove(target) && target.figure?.name !== FigureNames.KING) {
+			if (this.figure && this.figure?.validMove(target) && target.figure?.name !== FigureNames.KING) {
 				// this.figure.moveFigure(target);
 				if (this.figure.name === FigureNames.KING) {
 					const king = this.figure as King;

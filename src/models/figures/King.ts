@@ -16,7 +16,7 @@ export class King extends Figure {
 		this.shahFigures = [];
 	}
 
-	canMove(target: Cell): boolean {
+	validMove(target: Cell): boolean {
 		const dy = target.y - this.cell.y;
 		const dx = target.x - this.cell.x;
 		const absDy = Math.abs(dy);
@@ -26,7 +26,26 @@ export class King extends Figure {
 			return false;
 		}
 
-		if (this.cell.board.isCellUnderAttack(target, this.cell)) return false;
+		// if (this.cell.board.isCellUnderAttack(target, this.cell)) return false;
+
+		const originalCell = this.cell;
+		const originalTargetFigure = target.figure;
+
+		// Временно перемещаем короля на целевую клетку
+		this.cell.figure = null;
+		target.figure = this;
+		this.cell = target;
+
+		const targetUnderAttack = target.board.isCellUnderAttack(target, this.cell);
+
+		// Возвращаем короля на исходную клетку
+		this.cell = originalCell;
+		originalCell.figure = this;
+		target.figure = originalTargetFigure;
+
+		if (targetUnderAttack) {
+			return false;
+		}
 
 		if (absDx > 1) return false;
 		else if (absDy > 1) return false;

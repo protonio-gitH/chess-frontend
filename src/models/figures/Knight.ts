@@ -11,7 +11,7 @@ export class Knight extends Figure {
 		this.name = FigureNames.KNIGHT;
 	}
 
-	public canMove(target: Cell): boolean {
+	public validMove(target: Cell): boolean {
 		const dy = this.cell.y - target.y;
 		const dx = this.cell.x - target.x;
 		const absDy = Math.abs(dy);

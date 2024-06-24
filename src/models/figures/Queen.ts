@@ -12,7 +12,7 @@ export class Queen extends Figure {
 		this.name = FigureNames.QUEEN;
 	}
 
-	canMove(target: Cell): boolean {
+	validMove(target: Cell): boolean {
 		const isWhite = this.cell.figure?.color === Colors.WHITE;
 		const isBlack = this.cell.figure?.color === Colors.BLACK;
 

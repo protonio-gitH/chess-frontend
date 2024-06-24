@@ -11,7 +11,7 @@ export class Bishop extends Figure {
 		this.name = FigureNames.BISHOP;
 	}
 
-	public canMove(target: Cell): boolean {
+	public validMove(target: Cell): boolean {
 		const isWhite = this.cell.figure?.color === Colors.WHITE;
 		const isBlack = this.cell.figure?.color === Colors.BLACK;
 

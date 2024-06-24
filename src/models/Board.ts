@@ -82,12 +82,6 @@ export class Board {
 		return king.shahFigures.some(i => i.id === targetCell.figure?.id);
 	}
 
-	private isPawnAttack(targetCell: Cell, cell: Cell): boolean {
-		const direction = targetCell.figure?.color === Colors.WHITE ? 1 : -1;
-
-		return (cell.x === targetCell.x + 1 || cell.x === targetCell.x - 1) && cell.y === targetCell.y + direction;
-	}
-
 	private isBishopOrQueenShahDiagonalMove(targetCell: Cell, selfCell: Cell, cell: Cell): boolean {
 		const king = selfCell.figure as King;
 

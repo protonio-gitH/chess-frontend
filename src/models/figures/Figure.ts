@@ -1,6 +1,7 @@
 import logo from '../../assets/black-bishop.svg';
 import { Cell } from '../Cell';
 import { Colors } from '../Colors';
+import { King } from './King';
 
 export enum FigureNames {
 	FIGURE = 'Фигура',
@@ -48,10 +49,26 @@ export class Figure {
 		}
 	}
 
-	public canMove(target: Cell): boolean {
-		// if (target?.figure?.color === this.color || target?.figure?.name == FigureNames.KING) {
-		// 	return false;
-		// }
+	public canMove(target: Cell, forKing?: boolean): boolean {
+		const allyKing = this.cell.board.getKing(this.color) as King;
+
+		if (allyKing?.shah) {
+			// console.log(allyKing.shahFigures);
+			if (allyKing.shahFigures.length === 1) {
+				if (allyKing.shahFigures[0].name === FigureNames.PAWN) {
+					const shahPawnCell = allyKing.shahFigures[0].cell as Cell;
+					if (this.validMove(shahPawnCell) && target.x === shahPawnCell.x && target.y === shahPawnCell.y) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		return forKing ? this.validMove(target, forKing) : this.validMove(target);
+	}
+
+	public validMove(target: Cell, forKing?: boolean): boolean {
 		return true;
 	}
 }
