@@ -53,19 +53,62 @@ export class Figure {
 		const allyKing = this.cell.board.getKing(this.color) as King;
 
 		if (allyKing?.shah) {
-			// console.log(allyKing.shahFigures);
 			if (allyKing.shahFigures.length === 1) {
-				if (allyKing.shahFigures[0].name === FigureNames.PAWN) {
-					const shahPawnCell = allyKing.shahFigures[0].cell as Cell;
-					if (this.validMove(shahPawnCell) && target.x === shahPawnCell.x && target.y === shahPawnCell.y) {
-						return true;
+				const shahFigure = allyKing.shahFigures[0] as Figure;
+				if (this.validMove(shahFigure.cell) && target.x === shahFigure.cell.x && target.y === shahFigure.cell.y) {
+					return true;
+				} else if (this.name !== FigureNames.KING) {
+					const queenOrRook = shahFigure.name === FigureNames.QUEEN || shahFigure.name === FigureNames.ROOK;
+					const queenOrBishop = shahFigure.name === FigureNames.QUEEN || shahFigure.name === FigureNames.BISHOP;
+					if (queenOrRook && shahFigure.cell.x === allyKing.cell.x) {
+						return this.isQueenOrRookShahStraightMove(shahFigure, this.cell, target, allyKing);
+					} else if (queenOrBishop && shahFigure.cell.x !== allyKing.cell.x && shahFigure.cell.y !== allyKing.cell.y) {
+						return this.isBishopOrQueenShahDiagonalMove(shahFigure, this.cell, target, allyKing);
 					}
+				} else {
+					return forKing ? this.validMove(target, forKing) : this.validMove(target);
 				}
 			}
 			return false;
 		}
 
 		return forKing ? this.validMove(target, forKing) : this.validMove(target);
+	}
+
+	private isQueenOrRookShahStraightMove(shahFigure: Figure, selfCell: Cell, target: Cell, allyKing: King): boolean {
+		const dy = shahFigure.cell.y < allyKing.cell.y ? 1 : -1;
+
+		let y = shahFigure.cell.y;
+
+		while (y !== allyKing.cell.y) {
+			y += dy;
+			const validCell = this.cell.board.getCell(shahFigure.cell.x, y);
+			if (target.x === validCell.x && target.y === validCell.y && this.validMove(validCell)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private isBishopOrQueenShahDiagonalMove(shahFigure: Figure, selfCell: Cell, target: Cell, allyKing: King): boolean {
+		const dx = shahFigure.cell.x < allyKing.cell.x ? 1 : -1;
+		const dy = shahFigure.cell.y < allyKing.cell.y ? 1 : -1;
+
+		let x = shahFigure.cell.x;
+		let y = shahFigure.cell.y;
+
+		while (x !== allyKing.cell.x && y !== allyKing.cell.y) {
+			x += dx;
+			y += dy;
+			const validCell = this.cell.board.getCell(x, y);
+
+			if (target.x === validCell.x && target.y === validCell.y && this.validMove(validCell)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public validMove(target: Cell, forKing?: boolean): boolean {

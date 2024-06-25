@@ -3,6 +3,7 @@ import { Colors } from '../Colors';
 import { Figure, FigureNames } from './Figure';
 import blackLogo from '../../assets/black-knight.svg';
 import whiteLogo from '../../assets/white-knight.svg';
+import { King } from './King';
 
 export class Knight extends Figure {
 	constructor(color: Colors, cell: Cell) {
