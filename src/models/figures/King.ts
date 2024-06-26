@@ -1,9 +1,9 @@
-import { Figure, FigureNames } from './Figure';
+import { Figure } from './Figure';
+import { FigureNames } from '../FigureNames';
 import { Colors } from '../Colors';
 import { Cell } from '../Cell';
 import blackLogo from '../../assets/black-king.svg';
 import whiteLogo from '../../assets/white-king.svg';
-import { Board } from '../Board';
 
 export class King extends Figure {
 	shah: boolean;

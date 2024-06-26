@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Cell } from '../models/Cell';
 import { Board } from '../models/Board';
 import { Colors } from '../models/Colors';
@@ -12,19 +12,18 @@ export const useSelected = (board: Board, setBoard: (board: Board) => void): Use
 		const newBoard = board.getCopyBoard();
 		setBoard(newBoard);
 	}
-
 	function selectHandler(cell: Cell) {
 		// console.log('Clicked cell:', cell);
 
-		if (selectedCell && selectedCell.figure?.canMove(cell)) {
-			selectedCell.moveFigure(cell, board);
-			// board.changeMoveColor();
-			setSelectedCell(null);
+		if (cell.figure && cell.figure.color === board.move) {
+			setSelectedCell(cell);
 		}
 		// else if (cell?.x === selectedCell?.x && cell?.y === selectedCell?.y && cell.figure) {
-		// 	// setSelectedCell(null);
-		else if (cell.figure) {
-			setSelectedCell(cell);
+		// 	setSelectedCell(null);
+		else if (selectedCell && selectedCell.figure?.canMove(cell)) {
+			setSelectedCell(null);
+			selectedCell.moveFigure(cell, board);
+			console.log(selectedCell);
 		} else {
 			setSelectedCell(null);
 		}

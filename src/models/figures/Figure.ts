@@ -2,16 +2,7 @@ import logo from '../../assets/black-bishop.svg';
 import { Cell } from '../Cell';
 import { Colors } from '../Colors';
 import { King } from './King';
-
-export enum FigureNames {
-	FIGURE = 'Фигура',
-	KING = 'Король',
-	KNIGHT = 'Конь',
-	PAWN = 'Пешка',
-	QUEEN = 'Ферзь',
-	BISHOP = 'Слон',
-	ROOK = 'Ладья',
-}
+import { FigureNames } from '../FigureNames';
 
 export class Figure {
 	color: Colors;

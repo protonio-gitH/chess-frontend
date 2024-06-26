@@ -1,6 +1,7 @@
 import { Board } from './Board';
 import { Colors } from './Colors';
-import { Figure, FigureNames } from './figures/Figure';
+import { Figure } from './figures/Figure';
+import { FigureNames } from './FigureNames';
 import { King } from './figures/King';
 
 export class Cell {

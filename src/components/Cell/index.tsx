@@ -4,7 +4,7 @@ import { Cell } from '../../models/Cell';
 import { Board } from '../../models/Board';
 import { useFifgureDrag } from '../../hooks/useFigureDrag';
 import { CellSelectHandler } from '../../types/useFigureDragTypes';
-import { FigureNames } from '../../models/figures/Figure';
+import { FigureNames } from '../../models/FigureNames';
 import { King } from '../../models/figures/King';
 
 interface CellProps {
