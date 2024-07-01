@@ -73,6 +73,7 @@ export class Board {
 	private canFigureMoveToCell(targetCell: Cell, cell: Cell): boolean {
 		if (targetCell.figure?.name === FigureNames.PAWN) {
 			const pawn = targetCell.figure as Pawn;
+			const king = this.getKing(targetCell.figure.color) as King;
 			return pawn.canMove(cell, true);
 		}
 		return targetCell.figure?.canMove(cell) ?? false;

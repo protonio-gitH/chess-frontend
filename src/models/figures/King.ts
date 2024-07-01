@@ -8,12 +8,14 @@ import whiteLogo from '../../assets/white-king.svg';
 export class King extends Figure {
 	shah: boolean;
 	shahFigures: Figure[];
+	stalemate: boolean;
 	constructor(color: Colors, cell: Cell) {
 		super(color, cell);
 		this.logo = color === Colors.BLACK ? blackLogo : whiteLogo;
 		this.name = FigureNames.KING;
 		this.shah = false;
 		this.shahFigures = [];
+		this.stalemate = false;
 	}
 
 	validMove(target: Cell): boolean {
@@ -31,14 +33,12 @@ export class King extends Figure {
 		const originalCell = this.cell;
 		const originalTargetFigure = target.figure;
 
-		// Временно перемещаем короля на целевую клетку
 		this.cell.figure = null;
 		target.figure = this;
 		this.cell = target;
 
 		const targetUnderAttack = target.board.isCellUnderAttack(target, this.cell);
 
-		// Возвращаем короля на исходную клетку
 		this.cell = originalCell;
 		originalCell.figure = this;
 		target.figure = originalTargetFigure;
@@ -51,28 +51,4 @@ export class King extends Figure {
 		else if (absDy > 1) return false;
 		return true;
 	}
-
-	// moveFigure(target: Cell, board: Board): void {
-	// 	// Temporary move to target cell
-	// 	const originalCell = this.cell;
-	// 	const originalFigure = target.figure;
-	// 	this.cell = target;
-	// 	target.figure = this;
-
-	// 	// Check for shah
-	// 	const isInCheck = this.isCellUnderAttack(target);
-
-	// 	// Undo move
-	// 	this.cell = originalCell;
-	// 	target.figure = originalFigure;
-
-	// 	if (!isInCheck) {
-	// 		// Proceed with the move
-	// 		this.cell.figure = null;
-	// 		target.figure = this;
-	// 		this.cell = target;
-	// 	} else {
-	// 		console.log('Move not allowed: king would be in check.');
-	// 	}
-	// }
 }

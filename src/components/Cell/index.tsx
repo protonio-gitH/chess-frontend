@@ -26,7 +26,7 @@ function getClassNames(cell: Cell, selected: boolean): string {
 
 const CellComponent: FC<CellProps> = ({ cell, selectHandler, selected, board }) => {
 	const [mouseDownHandler] = useFifgureDrag(cell, selectHandler, selected, board);
-	const classNames = getClassNames(cell, selected);
+	let classNames = getClassNames(cell, selected);
 
 	return (
 		<div

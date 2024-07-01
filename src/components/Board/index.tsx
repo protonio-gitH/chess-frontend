@@ -11,7 +11,7 @@ interface BoardProps {
 }
 
 const BoardComponent: FC<BoardProps> = ({ board, setBoard }) => {
-	const [selectedCell, selectHandler, updateBoard] = useSelected(board, setBoard);
+	const [selectedCell, setSelectedCell, selectHandler, updateBoard] = useSelected(board, setBoard);
 
 	function hightlightCells() {
 		board.hightlightCells(selectedCell);

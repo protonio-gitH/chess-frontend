@@ -4,6 +4,7 @@ import { Colors } from '../Colors';
 import { Cell } from '../Cell';
 import blackLogo from '../../assets/black-pawn.svg';
 import whiteLogo from '../../assets/white-pawn.svg';
+import { King } from './King';
 
 export class Pawn extends Figure {
 	constructor(color: Colors, cell: Cell) {
@@ -21,10 +22,6 @@ export class Pawn extends Figure {
 		const dx = target.x - this.cell.x;
 		const absDy = Math.abs(dy);
 		const absDx = Math.abs(dx);
-
-		if (target?.figure?.color === this.color) {
-			return false;
-		}
 
 		if (forKing) {
 			if (absDx === 0 || absDx > 1) {

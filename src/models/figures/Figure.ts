@@ -21,7 +21,7 @@ export class Figure {
 	}
 
 	public checkKingShah(): void {
-		const enemyKing = this.cell.board.getKing(this.color === Colors.WHITE ? Colors.BLACK : Colors.WHITE);
+		const enemyKing = this.cell.board.getKing(this.color === Colors.WHITE ? Colors.BLACK : Colors.WHITE) as King;
 
 		if (!enemyKing) return;
 
@@ -37,6 +37,19 @@ export class Figure {
 			enemyKing.shah = true;
 		} else {
 			enemyKing.shah = false;
+		}
+
+		this.checkKingStalemate();
+	}
+
+	public checkKingStalemate(): void {
+		const enemyKing = this.cell.board.getKing(this.color === Colors.WHITE ? Colors.BLACK : Colors.WHITE) as King;
+		const canMoveFigureState = true;
+
+		if (!enemyKing) return;
+
+		if (enemyKing?.shah) {
+			console.log(enemyKing);
 		}
 	}
 
@@ -61,9 +74,63 @@ export class Figure {
 				}
 			}
 			return false;
-		}
+		} else {
+			const dx = this.cell.x < allyKing?.cell.x ? 1 : -1;
+			const dy = this.cell.y < allyKing?.cell.y ? 1 : -1;
 
-		return forKing ? this.validMove(target, forKing) : this.validMove(target);
+			const firstFigureStraight = this.findFirstFigureVertical(this.cell.x, this.cell.y, dy);
+			const secondFigureStraight = this.findFirstFigureVertical(this.cell.x, this.cell.y, -dy);
+
+			const firstFigureDiagonal = this.findFirstFigureDiagonal(this.cell.x, this.cell.y, dx, dy);
+			const secondFigureDiagonal = this.findFirstFigureDiagonal(this.cell.x, this.cell.y, -dx, -dy);
+
+			const queenOrRook =
+				secondFigureStraight?.figure?.name === FigureNames.QUEEN ||
+				secondFigureStraight?.figure?.name === FigureNames.ROOK;
+
+			const queenOrBishop =
+				secondFigureDiagonal?.figure?.name === FigureNames.QUEEN ||
+				secondFigureDiagonal?.figure?.name === FigureNames.BISHOP;
+
+			if (queenOrRook && firstFigureStraight?.figure?.name === FigureNames.KING) {
+				if (target.x !== this.cell.x) {
+					return false;
+				}
+			} else if (queenOrBishop && firstFigureDiagonal?.figure?.name === FigureNames.KING) {
+				if (Math.abs(target.x - this.cell.x) !== Math.abs(target.y - this.cell.y)) {
+					return false;
+				}
+			}
+			return forKing ? this.validMove(target, forKing) : this.validMove(target);
+		}
+	}
+
+	private findFirstFigureVertical(startX: number, startY: number, dy: number): Cell | null {
+		let y = startY;
+		while (y >= 0 && y <= 7) {
+			y += dy;
+			if (y < 0 || y > 7) break;
+			const validCell = this.cell.board.getCell(startX, y) as Cell;
+			if (validCell.figure) {
+				return validCell;
+			}
+		}
+		return null;
+	}
+
+	private findFirstFigureDiagonal(startX: number, startY: number, dx: number, dy: number): Cell | null {
+		let x = startX;
+		let y = startY;
+		while (x >= 0 && x <= 7 && y >= 0 && y <= 7) {
+			x += dx;
+			y += dy;
+			if (x < 0 || x > 7 || y < 0 || y > 7) break;
+			const validCell = this.cell.board.getCell(x, y) as Cell;
+			if (validCell.figure) {
+				return validCell;
+			}
+		}
+		return null;
 	}
 
 	private isQueenOrRookShahStraightMove(shahFigure: Figure, selfCell: Cell, target: Cell, allyKing: King): boolean {

@@ -2,9 +2,11 @@ import React, { useEffect, useState } from 'react';
 import styles from './index.module.scss';
 import BoardComponent from '../components/Board';
 import { Board } from '../models/Board';
+import { useSelected } from '../hooks/useSelected';
 
 function App() {
 	const [board, setBoard] = useState<Board>(new Board());
+	const [selectedCell, setSelectedCell, selectHandler, updateBoard] = useSelected(board, setBoard);
 
 	useEffect(() => {
 		restart();

@@ -18,7 +18,6 @@ export function useFifgureDrag(
 	const mouseDownHandler = (e: React.MouseEvent<HTMLDivElement>, cell: Cell): void => {
 		selectHandler(cell);
 		const target = e.target as HTMLElement;
-
 		if (cell.figure && target.tagName === 'IMG' && cell.figure?.color == board.move) {
 			setDragging(true);
 			setDraggedElement(target);
