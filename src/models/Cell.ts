@@ -31,6 +31,50 @@ export class Cell {
 				cell.figure?.checkKingShah();
 			}
 		}
+		this.checkKingMate(board);
+	}
+
+	public checkKingMate(board: Board): void {
+		const whiteKing = board.getKing(Colors.WHITE);
+		const blackKing = board.getKing(Colors.BLACK);
+
+		if (whiteKing?.shah) {
+			const whiteFigures = this.getFiguresByColor(board, Colors.WHITE);
+			if (!this.canAnyFigureMove(whiteFigures, board)) {
+				console.log('поставлен мат белым');
+			}
+		}
+
+		if (blackKing?.shah) {
+			const blackFigures = this.getFiguresByColor(board, Colors.BLACK);
+			if (!this.canAnyFigureMove(blackFigures, board)) {
+				console.log('поставлен мат черным');
+			}
+		}
+	}
+	private getFiguresByColor(board: Board, color: Colors): Figure[] {
+		const figures = [] as Figure[];
+		for (let row of board.cells) {
+			for (let cell of row) {
+				if (cell.figure?.color === color) {
+					figures.push(cell.figure);
+				}
+			}
+		}
+		return figures;
+	}
+
+	private canAnyFigureMove(figures: Figure[], board: Board): boolean {
+		for (let figure of figures) {
+			for (let row of board.cells) {
+				for (let cell of row) {
+					if (figure.canMove(cell)) {
+						return true;
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	public moveFigure(target: Cell, board: Board): void {

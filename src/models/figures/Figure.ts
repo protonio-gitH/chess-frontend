@@ -38,20 +38,25 @@ export class Figure {
 		} else {
 			enemyKing.shah = false;
 		}
-
-		this.checkKingStalemate();
 	}
 
-	public checkKingStalemate(): void {
-		const enemyKing = this.cell.board.getKing(this.color === Colors.WHITE ? Colors.BLACK : Colors.WHITE) as King;
-		const canMoveFigureState = true;
+	// public checkKingStalemate(king: King): void {
+	// 	const allyKing = this.cell.board.getKing(this.cell.board.move) as King;
 
-		if (!enemyKing) return;
+	// 	if (!allyKing) return;
 
-		if (enemyKing?.shah) {
-			console.log(enemyKing);
-		}
-	}
+	// 	if (allyKing?.shah) {
+	// 		for (let i = 0; i < 8; i++) {
+	// 			for (let j = 0; j < 8; j++) {
+	// 				const cell = this.cell.board.getCell(j, i) as Cell;
+	// 				if (cell.figure?.color === allyKing.color) {
+	// 					// console.log(cell);
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+
+	// }
 
 	public canMove(target: Cell, forKing?: boolean): boolean {
 		const allyKing = this.cell.board.getKing(this.color) as King;

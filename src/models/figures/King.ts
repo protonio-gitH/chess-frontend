@@ -18,7 +18,7 @@ export class King extends Figure {
 		this.stalemate = false;
 	}
 
-	validMove(target: Cell): boolean {
+	public validMove(target: Cell): boolean {
 		const dy = target.y - this.cell.y;
 		const dx = target.x - this.cell.x;
 		const absDy = Math.abs(dy);
@@ -29,7 +29,7 @@ export class King extends Figure {
 		}
 
 		// if (this.cell.board.isCellUnderAttack(target, this.cell)) return false;
-
+		//если king.shah и никто не может схавать шах фигуру то мат.
 		const originalCell = this.cell;
 		const originalTargetFigure = target.figure;
 
