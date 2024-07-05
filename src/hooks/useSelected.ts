@@ -13,11 +13,9 @@ export const useSelected = (board: Board, setBoard: (board: Board) => void): Use
 		const newBoard = board.getCopyBoard();
 		setBoard(newBoard);
 	}
-	function selectHandler(cell: Cell) {
-		// console.log('Clicked cell:', cell);
-
+	function selectHandler(cell: Cell, isDragging?: boolean) {
 		if (cell?.figure && cell.figure.color === board.move) {
-			if (cell?.x === selectedCell?.x && cell?.y === selectedCell?.y) {
+			if (cell?.x === selectedCell?.x && cell?.y === selectedCell?.y && !isDragging) {
 				setSelectedCell(null);
 			} else {
 				setSelectedCell(cell);

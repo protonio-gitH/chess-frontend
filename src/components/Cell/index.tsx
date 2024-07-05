@@ -2,7 +2,7 @@ import React, { FC, useEffect, useRef, useState, memo } from 'react';
 import styles from './index.module.scss';
 import { Cell } from '../../models/Cell';
 import { Board } from '../../models/Board';
-import { useFifgureDrag } from '../../hooks/useFigureDrag';
+import { useFigureDrag } from '../../hooks/useFigureDrag';
 import { CellSelectHandler } from '../../types/useFigureDragTypes';
 import { FigureNames } from '../../models/FigureNames';
 import { King } from '../../models/figures/King';
@@ -25,7 +25,7 @@ function getClassNames(cell: Cell, selected: boolean): string {
 }
 
 const CellComponent: FC<CellProps> = ({ cell, selectHandler, selected, board }) => {
-	const [mouseDownHandler] = useFifgureDrag(cell, selectHandler, selected, board);
+	const [mouseDownHandler] = useFigureDrag(cell, selectHandler, selected, board);
 	let classNames = getClassNames(cell, selected);
 
 	return (

@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { Cell } from '../models/Cell';
 import { Board } from '../models/Board';
 import { CellSelectHandler } from '../types/useFigureDragTypes';
 
 type useFigureDragHook = [(e: React.MouseEvent<HTMLDivElement>, cell: Cell) => void];
 
-export function useFifgureDrag(
+export function useFigureDrag(
 	cell: Cell,
 	selectHandler: CellSelectHandler,
 	selected: boolean,
@@ -14,19 +14,27 @@ export function useFifgureDrag(
 	const [dragging, setDragging] = useState<boolean>(false);
 	const [draggedElement, setDraggedElement] = useState<HTMLElement | null>(null);
 	const [isDragging, setIsDragging] = useState<boolean>(false);
+	const [mouseDownTime, setMouseDownTime] = useState<number>(0);
+	const [element, setElement] = useState<HTMLElement | null>(null);
+	const timer = useRef<NodeJS.Timeout | null>(null);
 
 	const mouseDownHandler = (e: React.MouseEvent<HTMLDivElement>, cell: Cell): void => {
-		selectHandler(cell);
 		const target = e.target as HTMLElement;
+		setElement(target);
+		setMouseDownTime(0);
 		if (cell.figure && target.tagName === 'IMG' && cell.figure?.color == board.move) {
+			timer.current = setInterval(() => {
+				setMouseDownTime(prev => prev + 1);
+			}, 10);
+			selectHandler(cell, true);
 			setDragging(true);
-			setDraggedElement(target);
 		}
 	};
 
 	const mouseMoveHandler = (e: MouseEvent): void => {
 		if (dragging && draggedElement) {
 			setIsDragging(true);
+			selectHandler(cell, true);
 			draggedElement.style.position = 'fixed';
 			draggedElement.style.left = `${e.clientX - draggedElement.offsetWidth / 2}px`;
 			draggedElement.style.top = `${e.clientY - draggedElement.offsetHeight / 2}px`;
@@ -34,6 +42,11 @@ export function useFifgureDrag(
 	};
 
 	const mouseUpHandler = (e: MouseEvent): void => {
+		if (timer.current) {
+			clearInterval(timer.current);
+			timer.current = null;
+			// setMouseDownTime(0);
+		}
 		if (dragging) {
 			setDragging(false);
 			if (draggedElement) {
@@ -55,11 +68,18 @@ export function useFifgureDrag(
 				draggedElement.style.position = '';
 				draggedElement.style.left = '';
 				draggedElement.style.top = '';
+				// selectHandler(cell);
 			}
 			setDraggedElement(null);
 			setIsDragging(false);
 		}
 	};
+
+	useEffect(() => {
+		if (mouseDownTime === 10) {
+			setDraggedElement(element);
+		}
+	}, [mouseDownTime]);
 
 	useEffect(() => {
 		if (dragging) {
@@ -75,7 +95,7 @@ export function useFifgureDrag(
 			window.removeEventListener('mousemove', mouseMoveHandler);
 			window.removeEventListener('mouseup', mouseUpHandler);
 		};
-	}, [dragging, isDragging]);
+	}, [dragging, isDragging, mouseDownTime]);
 
 	return [mouseDownHandler] as useFigureDragHook;
 }

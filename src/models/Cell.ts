@@ -41,14 +41,14 @@ export class Cell {
 		if (whiteKing?.shah) {
 			const whiteFigures = this.getFiguresByColor(board, Colors.WHITE);
 			if (!this.canAnyFigureMove(whiteFigures, board)) {
-				console.log('поставлен мат белым');
+				whiteKing.stalemate = true;
 			}
 		}
 
 		if (blackKing?.shah) {
 			const blackFigures = this.getFiguresByColor(board, Colors.BLACK);
 			if (!this.canAnyFigureMove(blackFigures, board)) {
-				console.log('поставлен мат черным');
+				blackKing.stalemate = true;
 			}
 		}
 	}

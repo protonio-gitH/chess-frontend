@@ -4,6 +4,8 @@ import { Board } from '../../models/Board';
 import CellComponent from '../Cell';
 import { Cell } from '../../models/Cell';
 import { useSelected } from '../../hooks/useSelected';
+import { Colors } from '../../models/Colors';
+import { King } from '../../models/figures/King';
 
 interface BoardProps {
 	board: Board;
@@ -12,11 +14,17 @@ interface BoardProps {
 
 const BoardComponent: FC<BoardProps> = ({ board, setBoard }) => {
 	const [selectedCell, setSelectedCell, selectHandler, updateBoard] = useSelected(board, setBoard);
+	const [whiteKing, setWhiteKing] = useState<King | null>(null);
+	const [blackKing, setBlackKing] = useState<King | null>(null);
 
 	function hightlightCells() {
 		board.hightlightCells(selectedCell);
 		updateBoard();
 	}
+	useEffect(() => {
+		setWhiteKing(board.getKing(Colors.WHITE));
+		setBlackKing(board.getKing(Colors.BLACK));
+	}, [board]);
 
 	useEffect(() => {
 		hightlightCells();
@@ -38,6 +46,7 @@ const BoardComponent: FC<BoardProps> = ({ board, setBoard }) => {
 					))}
 				</React.Fragment>
 			))}
+			<div>{(whiteKing?.stalemate && 'Мат белым') || (blackKing?.stalemate && 'Мат черным')}</div>
 		</div>
 	);
 };

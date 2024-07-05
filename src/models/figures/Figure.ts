@@ -62,7 +62,7 @@ export class Figure {
 		const allyKing = this.cell.board.getKing(this.color) as King;
 
 		if (allyKing?.shah) {
-			if (allyKing.shahFigures.length === 1) {
+			if (allyKing.shahFigures.length !== 0) {
 				const shahFigure = allyKing.shahFigures[0] as Figure;
 				if (this.validMove(shahFigure.cell) && target.x === shahFigure.cell.x && target.y === shahFigure.cell.y) {
 					return true;
