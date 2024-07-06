@@ -7,10 +7,14 @@ import whiteLogo from '../../assets/white-pawn.svg';
 import { King } from './King';
 
 export class Pawn extends Figure {
+	enPassant: boolean;
+	enPassantCell: Cell | null;
 	constructor(color: Colors, cell: Cell) {
 		super(color, cell);
 		this.logo = color === Colors.BLACK ? blackLogo : whiteLogo;
 		this.name = FigureNames.PAWN;
+		this.enPassant = false;
+		this.enPassantCell = null;
 	}
 
 	public validMove(target: Cell, forKing?: boolean): boolean {
@@ -31,6 +35,10 @@ export class Pawn extends Figure {
 			if (absDy === 1) {
 				return true;
 			}
+		}
+
+		if (target.x === this.enPassantCell?.x && target.y === this.enPassantCell?.y) {
+			return true;
 		}
 
 		if (absDy === 1 && dy === direction && absDx === 1 && target.figure && target.figure.color !== this.color) {

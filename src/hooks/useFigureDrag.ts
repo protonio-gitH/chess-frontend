@@ -21,12 +21,11 @@ export function useFigureDrag(
 	const mouseDownHandler = (e: React.MouseEvent<HTMLDivElement>, cell: Cell): void => {
 		const target = e.target as HTMLElement;
 		setElement(target);
-		setMouseDownTime(0);
+		selectHandler(cell);
 		if (cell.figure && target.tagName === 'IMG' && cell.figure?.color == board.move) {
 			timer.current = setInterval(() => {
 				setMouseDownTime(prev => prev + 1);
 			}, 10);
-			selectHandler(cell, true);
 			setDragging(true);
 		}
 	};
@@ -45,7 +44,7 @@ export function useFigureDrag(
 		if (timer.current) {
 			clearInterval(timer.current);
 			timer.current = null;
-			// setMouseDownTime(0);
+			setMouseDownTime(0);
 		}
 		if (dragging) {
 			setDragging(false);
