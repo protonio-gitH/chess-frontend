@@ -2,8 +2,8 @@ import { Cell } from '../Cell';
 import { Colors } from '../Colors';
 import { Figure } from './Figure';
 import { FigureNames } from '../FigureNames';
-import blackLogo from '../../assets/black-bishop.svg';
-import whiteLogo from '../../assets/white-bishop.svg';
+import blackLogo from '../../assets/figures/black-bishop.svg';
+import whiteLogo from '../../assets/figures/white-bishop.svg';
 
 export class Bishop extends Figure {
 	constructor(color: Colors, cell: Cell) {

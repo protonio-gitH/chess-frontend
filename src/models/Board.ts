@@ -7,10 +7,14 @@ import { Knight } from './figures/Knight';
 import { Pawn } from './figures/Pawn';
 import { Queen } from './figures/Queen';
 import { Rook } from './figures/Rook';
+import moveSound from '../assets/audio/Move.mp3';
+import eatSound from '../assets/audio/Capture.mp3';
 
 export class Board {
 	cells: Cell[][] = [];
 	move: Colors = Colors.WHITE;
+	moveSound: HTMLAudioElement = new Audio(moveSound);
+	eatSound: HTMLAudioElement = new Audio(eatSound);
 
 	public initCells() {
 		for (let i = 0; i < 8; i++) {
@@ -24,6 +28,47 @@ export class Board {
 			}
 			this.cells.push(row);
 		}
+	}
+
+	public getCellsForCastling(king: King): Cell[][] {
+		const queenFlang = [] as Cell[];
+		const kingFlang = [] as Cell[];
+
+		if ((king.cell.y === 7 && king.cell.x === 4) || (king.cell.y === 0 && king.cell.x === 4)) {
+			for (let i = king.cell.x - 1; i > 1; i--) {
+				queenFlang.push(this.getCell(i, king.cell.y));
+			}
+			for (let i = king.cell.x + 1; i < 7; i++) {
+				kingFlang.push(this.getCell(i, king.cell.y));
+			}
+		}
+
+		return [queenFlang, kingFlang];
+	}
+
+	public getAllyRooks(king: King): Rook[] {
+		const allyRooks = [] as Rook[];
+
+		if (king.cell.y === 7 && king.cell.x === 4) {
+			if (this.getCell(0, 7).figure instanceof Rook) {
+				const rook = this.getCell(0, 7).figure as Rook;
+				if (rook?.castling) allyRooks.push(rook);
+			}
+			if (this.getCell(7, 7).figure instanceof Rook) {
+				const rook = this.getCell(7, 7).figure as Rook;
+				if (rook?.castling) allyRooks.push(rook);
+			}
+		} else if (king.cell.y === 0 && king.cell.x === 4) {
+			if (this.getCell(0, 0).figure instanceof Rook) {
+				const rook = this.getCell(0, 0).figure as Rook;
+				if (rook?.castling) allyRooks.push(rook);
+			}
+			if (this.getCell(7, 0).figure instanceof Rook) {
+				const rook = this.getCell(7, 0).figure as Rook;
+				if (rook?.castling) allyRooks.push(rook);
+			}
+		}
+		return allyRooks;
 	}
 
 	public getKing(color: Colors): King | null {

@@ -2,8 +2,8 @@ import { Cell } from '../Cell';
 import { Colors } from '../Colors';
 import { Figure } from './Figure';
 import { FigureNames } from '../FigureNames';
-import blackLogo from '../../assets/black-knight.svg';
-import whiteLogo from '../../assets/white-knight.svg';
+import blackLogo from '../../assets/figures/black-knight.svg';
+import whiteLogo from '../../assets/figures/white-knight.svg';
 import { King } from './King';
 
 export class Knight extends Figure {

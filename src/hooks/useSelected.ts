@@ -3,6 +3,8 @@ import { Cell } from '../models/Cell';
 import { Board } from '../models/Board';
 import { Colors } from '../models/Colors';
 import { CellSelectHandler } from '../types/useFigureDragTypes';
+import { King } from '../models/figures/King';
+import { Rook } from '../models/figures/Rook';
 
 type UseSelectedHook = [Cell | null, (cell: Cell | null) => void, CellSelectHandler, () => void];
 
@@ -18,7 +20,17 @@ export const useSelected = (board: Board, setBoard: (board: Board) => void): Use
 			if (cell?.x === selectedCell?.x && cell?.y === selectedCell?.y && !isDragging) {
 				setSelectedCell(null);
 			} else {
-				setSelectedCell(cell);
+				if (
+					selectedCell?.figure instanceof King &&
+					selectedCell.figure.castling &&
+					cell.figure instanceof Rook &&
+					cell.figure.castling
+				) {
+					setSelectedCell(null);
+					selectedCell.moveFigure(cell, board);
+				} else {
+					setSelectedCell(cell);
+				}
 			}
 		} else if (selectedCell && selectedCell.figure?.canMove(cell)) {
 			setSelectedCell(null);

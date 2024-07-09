@@ -2,9 +2,8 @@ import { Figure } from './Figure';
 import { FigureNames } from '../FigureNames';
 import { Colors } from '../Colors';
 import { Cell } from '../Cell';
-import blackLogo from '../../assets/black-pawn.svg';
-import whiteLogo from '../../assets/white-pawn.svg';
-import { King } from './King';
+import blackLogo from '../../assets/figures/black-pawn.svg';
+import whiteLogo from '../../assets/figures/white-pawn.svg';
 
 export class Pawn extends Figure {
 	enPassant: boolean;

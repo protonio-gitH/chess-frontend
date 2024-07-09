@@ -4,6 +4,7 @@ import { Figure } from './figures/Figure';
 import { FigureNames } from './FigureNames';
 import { King } from './figures/King';
 import { Pawn } from './figures/Pawn';
+import { Rook } from './figures/Rook';
 
 export class Cell {
 	readonly x: number;
@@ -106,6 +107,62 @@ export class Cell {
 		}
 	}
 
+	private isFlangClear(flang: Cell[]): boolean {
+		return flang.every(cell => cell.figure === null);
+	}
+
+	private handleCastling(target: Cell, board: Board): boolean {
+		if (!(this.figure instanceof King)) {
+			return false;
+		}
+		const allyRooks = board.getAllyRooks(this.figure);
+		const flangs = board.getCellsForCastling(this.figure);
+		const queenFlangClear = this.isFlangClear(flangs[0]);
+		const kingFlangClear = this.isFlangClear(flangs[1]);
+
+		if (this.isQueenFlangCastling(queenFlangClear, flangs[0], target)) {
+			this.makeSound(target);
+			this.performCastling(flangs[0][1], flangs[0][0], allyRooks[0]);
+			this.endMoving(this, board);
+			return true;
+		}
+
+		if (this.isKingFlangCastling(kingFlangClear, flangs[1], target)) {
+			this.makeSound(target);
+			this.performCastling(flangs[1][0], flangs[1][1], allyRooks[1]);
+			this.endMoving(this, board);
+			return true;
+		}
+
+		return false;
+	}
+
+	private isQueenFlangCastling(queenFlangClear: boolean, flang: Cell[], target: Cell): boolean {
+		return (
+			queenFlangClear &&
+			(flang.some(cell => cell.x === target.x && cell.y == target.y) || target.figure?.name === FigureNames.ROOK)
+		);
+	}
+
+	private isKingFlangCastling(kingFlangClear: boolean, flang: Cell[], target: Cell): boolean {
+		return (
+			kingFlangClear &&
+			(flang.some(cell => cell.x === target.x && cell.y == target.y) || target.figure?.name === FigureNames.ROOK)
+		);
+	}
+
+	private performCastling(kingTargetCell: Cell, rookTargetCell: Cell, rook: Rook): void {
+		if (this.figure !== null) {
+			kingTargetCell.figure = this.figure;
+			this.figure.cell = kingTargetCell;
+			this.figure = null;
+
+			rook.cell.figure = null;
+			rookTargetCell.figure = rook;
+			rook.cell = rookTargetCell;
+		}
+	}
+
 	public moveFigure(target: Cell, board: Board): void {
 		const isWhite = this.figure?.color === Colors.WHITE;
 		const isBlack = this.figure?.color === Colors.BLACK;
@@ -129,13 +186,31 @@ export class Cell {
 					this.enPassantLogic(this, target, board);
 				}
 
+				if (this.figure?.name === FigureNames.KING || this.figure?.name === FigureNames.ROOK) {
+					const kingOrRook = this.figure as King | Rook;
+					kingOrRook.castling = false;
+					if (this.figure instanceof King && Math.abs(this.x - target.x) !== 1) {
+						if (this.handleCastling(target, board)) {
+							return;
+						}
+					}
+				}
+				this.makeSound(target);
 				target.figure = this.figure;
 				target.figure.cell = target;
 
 				this.figure = null;
-				board.changeMoveColor();
-				this.checkKingShah(board);
+				this.endMoving(this, board);
 			}
 		}
+	}
+
+	private makeSound(target: Cell) {
+		target.figure ? this.board.eatSound.play() : this.board.moveSound.play();
+	}
+
+	private endMoving(cell: Cell, board: Board) {
+		board.changeMoveColor();
+		this.checkKingShah(board);
 	}
 }

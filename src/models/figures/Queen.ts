@@ -1,5 +1,5 @@
-import blackLogo from '../../assets/black-queen.svg';
-import whiteLogo from '../../assets/white-queen.svg';
+import blackLogo from '../../assets/figures/black-queen.svg';
+import whiteLogo from '../../assets/figures/white-queen.svg';
 import { Figure } from './Figure';
 import { Colors } from '../Colors';
 import { Cell } from '../Cell';

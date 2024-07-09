@@ -1,4 +1,4 @@
-import logo from '../../assets/black-bishop.svg';
+import logo from '../../figures/assets/black-bishop.svg';
 import { Cell } from '../Cell';
 import { Colors } from '../Colors';
 import { King } from './King';
@@ -35,6 +35,7 @@ export class Figure {
 
 		if (enemyKing.shahFigures.length !== 0) {
 			enemyKing.shah = true;
+			enemyKing.castling = false;
 		} else {
 			enemyKing.shah = false;
 		}

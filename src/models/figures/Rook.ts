@@ -1,15 +1,17 @@
-import blackLogo from '../../assets/black-rook.svg';
-import whiteLogo from '../../assets/white-rook.svg';
+import blackLogo from '../../assets/figures/black-rook.svg';
+import whiteLogo from '../../assets/figures/white-rook.svg';
 import { Cell } from '../Cell';
 import { Colors } from '../Colors';
 import { Figure } from './Figure';
 import { FigureNames } from '../FigureNames';
 
 export class Rook extends Figure {
+	castling: boolean;
 	constructor(color: Colors, cell: Cell) {
 		super(color, cell);
 		this.logo = color === Colors.BLACK ? blackLogo : whiteLogo;
 		this.name = FigureNames.ROOK;
+		this.castling = true;
 	}
 
 	public validMove(target: Cell): boolean {
