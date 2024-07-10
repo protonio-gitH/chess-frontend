@@ -13,8 +13,8 @@ import eatSound from '../assets/audio/Capture.mp3';
 export class Board {
 	cells: Cell[][] = [];
 	move: Colors = Colors.WHITE;
-	moveSound: HTMLAudioElement = new Audio(moveSound);
-	eatSound: HTMLAudioElement = new Audio(eatSound);
+	// moveSound: HTMLAudioElement = new Audio(moveSound);
+	// eatSound: HTMLAudioElement = new Audio(eatSound);
 
 	public initCells() {
 		for (let i = 0; i < 8; i++) {

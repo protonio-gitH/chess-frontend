@@ -5,6 +5,7 @@ import { FigureNames } from './FigureNames';
 import { King } from './figures/King';
 import { Pawn } from './figures/Pawn';
 import { Rook } from './figures/Rook';
+import { audioManager } from './AudioManager';
 
 export class Cell {
 	readonly x: number;
@@ -206,7 +207,7 @@ export class Cell {
 	}
 
 	private makeSound(target: Cell) {
-		target.figure ? this.board.eatSound.play() : this.board.moveSound.play();
+		target.figure ? audioManager.playEatSound() : audioManager.playMoveSound();
 	}
 
 	private endMoving(cell: Cell, board: Board) {

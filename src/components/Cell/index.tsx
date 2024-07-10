@@ -20,8 +20,10 @@ function getClassNames(cell: Cell, selected: boolean): string {
 	const colorClass = styles[cell.color];
 	const selectedClass = selected ? styles.selected : '';
 	const shahClass = cell.figure instanceof King && cell.figure?.shah ? styles['shah-' + cell.color] : '';
+	const shahSelectedClass =
+		cell.figure instanceof King && cell.figure?.shah && selected ? styles['shah-selected-' + cell.color] : '';
 
-	return [baseClass, availableClass, colorClass, selectedClass, shahClass].filter(Boolean).join(' ');
+	return [baseClass, availableClass, colorClass, selectedClass, shahClass, shahSelectedClass].filter(Boolean).join(' ');
 }
 
 const CellComponent: FC<CellProps> = ({ cell, selectHandler, selected, board }) => {
