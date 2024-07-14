@@ -42,6 +42,7 @@ const BoardComponent: FC<BoardProps> = ({ board, setBoard }) => {
 								selectedCell?.x === cell.x && selectedCell?.y === cell.y && selectedCell.figure?.color == board.move
 							}
 							board={board}
+							updateBoard={updateBoard}
 						/>
 					))}
 				</React.Fragment>

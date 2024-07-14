@@ -6,12 +6,14 @@ import { useFigureDrag } from '../../hooks/useFigureDrag';
 import { CellSelectHandler } from '../../types/useFigureDragTypes';
 import { FigureNames } from '../../models/FigureNames';
 import { King } from '../../models/figures/King';
+import PromotionPawn from '../PromotionPawn';
 
 interface CellProps {
 	cell: Cell;
 	selectHandler: CellSelectHandler;
 	selected: boolean;
 	board: Board;
+	updateBoard: () => void;
 }
 
 function getClassNames(cell: Cell, selected: boolean): string {
@@ -26,21 +28,26 @@ function getClassNames(cell: Cell, selected: boolean): string {
 	return [baseClass, availableClass, colorClass, selectedClass, shahClass, shahSelectedClass].filter(Boolean).join(' ');
 }
 
-const CellComponent: FC<CellProps> = ({ cell, selectHandler, selected, board }) => {
+const CellComponent: FC<CellProps> = ({ cell, selectHandler, selected, board, updateBoard }) => {
 	const [mouseDownHandler] = useFigureDrag(cell, selectHandler, selected, board);
 	let classNames = getClassNames(cell, selected);
 
 	return (
-		<div
-			className={classNames}
-			onMouseDown={e => mouseDownHandler(e, cell)}
-			onDragStart={e => e.preventDefault()}
-			data-x={cell.x}
-			data-y={cell.y}
-		>
-			{cell?.available && !cell.figure && <div className={styles.available}></div>}
-			{cell.figure?.logo && <img src={cell.figure?.logo} />}
-		</div>
+		<>
+			<div
+				className={classNames}
+				onMouseDown={e => mouseDownHandler(e, cell)}
+				onDragStart={e => e.preventDefault()}
+				data-x={cell.x}
+				data-y={cell.y}
+			>
+				{cell?.available && !cell.figure && <div className={styles.available}></div>}
+				{cell.figure?.logo && <img src={cell.figure?.logo} />}
+			</div>
+			{(cell.y === 0 || cell.y === 7) && cell.figure?.name === FigureNames.PAWN && (
+				<PromotionPawn cell={cell} updateBoard={updateBoard} board={board} />
+			)}
+		</>
 	);
 };
 

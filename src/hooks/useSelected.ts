@@ -13,10 +13,11 @@ export const useSelected = (board: Board, setBoard: (board: Board) => void): Use
 
 	function updateBoard() {
 		const newBoard = board.getCopyBoard();
+		// if (newBoard.promotion) newBoard.changePromotion();
 		setBoard(newBoard);
 	}
 	function selectHandler(cell: Cell, isDragging?: boolean) {
-		if (cell?.figure && cell.figure.color === board.move) {
+		if (cell?.figure && cell.figure.color === board.move && !board.promotion) {
 			if (cell?.x === selectedCell?.x && cell?.y === selectedCell?.y && !isDragging) {
 				setSelectedCell(null);
 			} else {
@@ -32,7 +33,7 @@ export const useSelected = (board: Board, setBoard: (board: Board) => void): Use
 					setSelectedCell(cell);
 				}
 			}
-		} else if (selectedCell && selectedCell.figure?.canMove(cell)) {
+		} else if (selectedCell && selectedCell.figure?.canMove(cell) && !board.promotion) {
 			setSelectedCell(null);
 			selectedCell.moveFigure(cell, board);
 		} else {

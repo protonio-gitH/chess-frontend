@@ -31,7 +31,7 @@ export class Pawn extends Figure {
 				return false;
 			}
 
-			if (absDy === 1) {
+			if (absDy === 1 && dy === direction) {
 				return true;
 			}
 		}

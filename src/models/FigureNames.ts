@@ -1,9 +1,9 @@
 export enum FigureNames {
-	FIGURE = 'Фигура',
-	KING = 'Король',
-	KNIGHT = 'Конь',
-	PAWN = 'Пешка',
-	QUEEN = 'Ферзь',
-	BISHOP = 'Слон',
-	ROOK = 'Ладья',
+	FIGURE = 'Figure',
+	KING = 'King',
+	KNIGHT = 'Knight',
+	PAWN = 'Pawn',
+	QUEEN = 'Queen',
+	BISHOP = 'Bishop',
+	ROOK = 'Rook',
 }

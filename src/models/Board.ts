@@ -13,8 +13,7 @@ import eatSound from '../assets/audio/Capture.mp3';
 export class Board {
 	cells: Cell[][] = [];
 	move: Colors = Colors.WHITE;
-	// moveSound: HTMLAudioElement = new Audio(moveSound);
-	// eatSound: HTMLAudioElement = new Audio(eatSound);
+	promotion: boolean = false;
 
 	public initCells() {
 		for (let i = 0; i < 8; i++) {
@@ -187,7 +186,21 @@ export class Board {
 		const newBoard = new Board();
 		newBoard.cells = this.cells;
 		newBoard.move = this.move;
+		newBoard.promotion = this.promotion;
 		return newBoard;
+	}
+
+	public changePromotion() {
+		this.promotion = !this.promotion;
+		for (let i = 0; i < this.cells.length; i++) {
+			const row = this.cells[i];
+			for (let j = 0; j < row.length; j++) {
+				const target = row[j];
+				if (target.available) {
+					target.available = false;
+				}
+			}
+		}
 	}
 
 	public hightlightCells(selectedCell: Cell | null) {
@@ -195,7 +208,10 @@ export class Board {
 			const row = this.cells[i];
 			for (let j = 0; j < row.length; j++) {
 				const target = row[j];
-				target.available = selectedCell?.figure?.color === this.move ? !!selectedCell?.figure?.canMove(target) : false;
+				if (!this.promotion) {
+					target.available =
+						selectedCell?.figure?.color === this.move ? !!selectedCell?.figure?.canMove(target) : false;
+				}
 			}
 		}
 	}

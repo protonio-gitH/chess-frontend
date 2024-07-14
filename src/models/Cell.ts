@@ -6,6 +6,10 @@ import { King } from './figures/King';
 import { Pawn } from './figures/Pawn';
 import { Rook } from './figures/Rook';
 import { audioManager } from './AudioManager';
+import { Queen } from './figures/Queen';
+import { Knight } from './figures/Knight';
+import { Bishop } from './figures/Bishop';
+import { NewFigures } from '../types/newFigureTypes';
 
 export class Cell {
 	readonly x: number;
@@ -94,11 +98,16 @@ export class Cell {
 
 		if ((thisCell.figure?.cell.y === 1 || thisCell.figure?.cell.y === 6) && (target.y === 3 || target.y === 4)) {
 			pawn.enPassant = true;
-
-			if (board.getCell(target.x + 1, target.y)?.figure?.name === FigureNames.PAWN) {
+			if (
+				board.getCell(target.x + 1, target.y)?.figure?.name === FigureNames.PAWN &&
+				board.getCell(target.x + 1, target.y)?.figure?.color !== thisCell.figure.color
+			) {
 				const pawnNear = board.getCell(target.x + 1, target.y).figure as Pawn;
 				pawnNear.enPassantCell = board.getCell(this.x, this.y + direction);
-			} else if (board.getCell(target.x - 1, target.y)?.figure?.name === FigureNames.PAWN) {
+			} else if (
+				board.getCell(target.x - 1, target.y)?.figure?.name === FigureNames.PAWN &&
+				board.getCell(target.x - 1, target.y)?.figure?.color !== thisCell.figure.color
+			) {
 				const pawnNear = board.getCell(target.x - 1, target.y).figure as Pawn;
 				pawnNear.enPassantCell = board.getCell(this.x, this.y + direction);
 			}
@@ -164,6 +173,19 @@ export class Cell {
 		}
 	}
 
+	public promotionLogic(figureName: keyof NewFigures) {
+		if (this.figure) {
+			let newFigures: NewFigures = {
+				Queen: new Queen(this.figure?.color, this),
+				Rook: new Rook(this.figure?.color, this),
+				Knight: new Knight(this.figure?.color, this),
+				Bishop: new Bishop(this.figure?.color, this),
+			};
+			this.figure = newFigures[figureName];
+			this.figure.checkKingShah();
+		}
+	}
+
 	public moveFigure(target: Cell, board: Board): void {
 		const isWhite = this.figure?.color === Colors.WHITE;
 		const isBlack = this.figure?.color === Colors.BLACK;
@@ -184,6 +206,9 @@ export class Cell {
 				}
 
 				if (this.figure?.name === FigureNames.PAWN) {
+					if (target.y === 0 || target.y === 7) {
+						board.changePromotion();
+					}
 					this.enPassantLogic(this, target, board);
 				}
 

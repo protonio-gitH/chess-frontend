@@ -70,9 +70,13 @@ export class Figure {
 				} else if (this.name !== FigureNames.KING) {
 					const queenOrRook = shahFigure.name === FigureNames.QUEEN || shahFigure.name === FigureNames.ROOK;
 					const queenOrBishop = shahFigure.name === FigureNames.QUEEN || shahFigure.name === FigureNames.BISHOP;
-					if (queenOrRook && shahFigure.cell.x === allyKing.cell.x) {
+
+					if (queenOrRook && (shahFigure.cell.x === allyKing.cell.x || shahFigure.cell.y === allyKing.cell.y)) {
 						return this.isQueenOrRookShahStraightMove(shahFigure, this.cell, target, allyKing);
-					} else if (queenOrBishop && shahFigure.cell.x !== allyKing.cell.x && shahFigure.cell.y !== allyKing.cell.y) {
+					} else if (
+						queenOrBishop &&
+						Math.abs(shahFigure.cell.x - allyKing.cell.x) === Math.abs(shahFigure.cell.y - allyKing.cell.y)
+					) {
 						return this.isBishopOrQueenShahDiagonalMove(shahFigure, this.cell, target, allyKing);
 					}
 				} else {
@@ -84,28 +88,63 @@ export class Figure {
 			const dx = this.cell.x < allyKing?.cell.x ? 1 : -1;
 			const dy = this.cell.y < allyKing?.cell.y ? 1 : -1;
 
-			const firstFigureStraight = this.findFirstFigureVertical(this.cell.x, this.cell.y, dy);
-			const secondFigureStraight = this.findFirstFigureVertical(this.cell.x, this.cell.y, -dy);
+			const firstFigureStraightVertical = this.findFirstFigureVertical(this.cell.x, this.cell.y, dy);
+			const secondFigureStraightVertical = this.findFirstFigureVertical(this.cell.x, this.cell.y, -dy);
 
 			const firstFigureDiagonal = this.findFirstFigureDiagonal(this.cell.x, this.cell.y, dx, dy);
 			const secondFigureDiagonal = this.findFirstFigureDiagonal(this.cell.x, this.cell.y, -dx, -dy);
 
-			const queenOrRook =
-				secondFigureStraight?.figure?.name === FigureNames.QUEEN ||
-				secondFigureStraight?.figure?.name === FigureNames.ROOK;
+			const firstFigureStraightHorizontal = this.findFirstFigureHorizontal(this.cell.x, this.cell.y, dx);
+			const secondFigureStraightHorizontal = this.findFirstFigureHorizontal(this.cell.x, this.cell.y, -dx);
+
+			const queenOrRookVertical =
+				secondFigureStraightVertical?.figure?.name === FigureNames.QUEEN ||
+				secondFigureStraightVertical?.figure?.name === FigureNames.ROOK;
+
+			const queenOrRookHorizontal =
+				secondFigureStraightHorizontal?.figure?.name === FigureNames.QUEEN ||
+				secondFigureStraightHorizontal?.figure?.name === FigureNames.ROOK;
 
 			const queenOrBishop =
 				secondFigureDiagonal?.figure?.name === FigureNames.QUEEN ||
 				secondFigureDiagonal?.figure?.name === FigureNames.BISHOP;
 
-			if (queenOrRook && firstFigureStraight?.figure?.name === FigureNames.KING) {
+			if (
+				queenOrRookVertical &&
+				firstFigureStraightVertical?.figure?.name === FigureNames.KING &&
+				secondFigureStraightVertical?.figure?.color !== allyKing?.color
+			) {
 				if (target.x !== this.cell.x) {
 					return false;
 				}
-			} else if (queenOrBishop && firstFigureDiagonal?.figure?.name === FigureNames.KING) {
-				if (Math.abs(target.x - this.cell.x) !== Math.abs(target.y - this.cell.y)) {
+			} else if (
+				queenOrRookHorizontal &&
+				firstFigureStraightHorizontal?.figure?.name === FigureNames.KING &&
+				secondFigureStraightHorizontal?.figure?.color !== allyKing?.color
+			) {
+				if (target.y !== this.cell.y) {
 					return false;
 				}
+			} else if (
+				queenOrBishop &&
+				firstFigureDiagonal?.figure?.name === FigureNames.KING &&
+				secondFigureDiagonal?.figure?.color !== allyKing?.color
+			) {
+				let x = secondFigureDiagonal.x;
+				let y = secondFigureDiagonal.y;
+				let dx = allyKing?.cell.x > x ? 1 : -1;
+				let dy = allyKing?.cell.y > y ? 1 : -1;
+
+				while (x >= 0 && x <= 7 && y >= 0 && y <= 7) {
+					const cell = this.cell.board.getCell(x, y) as Cell;
+					if (x === target.x && y === target.y && target.figure?.color !== this.color && this.validMove(target)) {
+						return true;
+					}
+					x += dx;
+					y += dy;
+				}
+
+				return false;
 			}
 			return forKing ? this.validMove(target, forKing) : this.validMove(target);
 		}
@@ -139,19 +178,41 @@ export class Figure {
 		return null;
 	}
 
-	private isQueenOrRookShahStraightMove(shahFigure: Figure, selfCell: Cell, target: Cell, allyKing: King): boolean {
-		const dy = shahFigure.cell.y < allyKing.cell.y ? 1 : -1;
-
-		let y = shahFigure.cell.y;
-
-		while (y !== allyKing.cell.y) {
-			y += dy;
-			const validCell = this.cell.board.getCell(shahFigure.cell.x, y);
-			if (target.x === validCell.x && target.y === validCell.y && this.validMove(validCell)) {
-				return true;
+	private findFirstFigureHorizontal(startX: number, startY: number, dx: number): Cell | null {
+		let x = startX;
+		while (x >= 0 && x <= 7) {
+			x += dx;
+			if (x < 0 || x > 7) break;
+			const validCell = this.cell.board.getCell(x, startY) as Cell;
+			if (validCell.figure) {
+				return validCell;
 			}
 		}
+		return null;
+	}
 
+	private isQueenOrRookShahStraightMove(shahFigure: Figure, selfCell: Cell, target: Cell, allyKing: King): boolean {
+		if (shahFigure.cell.x === allyKing.cell.x) {
+			const dy = shahFigure.cell.y < allyKing.cell.y ? 1 : -1;
+			let y = shahFigure.cell.y;
+			while (y !== allyKing.cell.y) {
+				y += dy;
+				const validCell = this.cell.board.getCell(shahFigure.cell.x, y);
+				if (target.x === validCell.x && target.y === validCell.y && this.validMove(validCell)) {
+					return true;
+				}
+			}
+		} else if (shahFigure.cell.y === allyKing.cell.y) {
+			const dx = shahFigure.cell.x < allyKing.cell.x ? 1 : -1;
+			let x = shahFigure.cell.x;
+			while (x !== allyKing.cell.x) {
+				x += dx;
+				const validCell = this.cell.board.getCell(x, shahFigure.cell.y);
+				if (target.x === validCell.x && target.y === validCell.y && this.validMove(validCell)) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 

@@ -23,10 +23,10 @@ export function useFigureDrag(
 		setElement(target);
 		selectHandler(cell);
 		if (cell.figure && target.tagName === 'IMG' && cell.figure?.color == board.move) {
-			// timer.current = setInterval(() => {
-			// 	setMouseDownTime(prev => prev + 1);
-			// }, 10);
-			setDraggedElement(target);
+			timer.current = setInterval(() => {
+				setMouseDownTime(prev => prev + 1);
+			}, 10);
+			// setDraggedElement(target);
 			setDragging(true);
 		}
 	};
@@ -42,11 +42,11 @@ export function useFigureDrag(
 	};
 
 	const mouseUpHandler = (e: MouseEvent): void => {
-		// if (timer.current) {
-		// 	clearInterval(timer.current);
-		// 	timer.current = null;
-		// 	setMouseDownTime(0);
-		// }
+		if (timer.current) {
+			clearInterval(timer.current);
+			timer.current = null;
+			setMouseDownTime(0);
+		}
 		if (dragging) {
 			setDragging(false);
 			if (draggedElement) {
@@ -75,11 +75,11 @@ export function useFigureDrag(
 		}
 	};
 
-	// useEffect(() => {
-	// 	if (mouseDownTime === 10) {
-	// 		setDraggedElement(element);
-	// 	}
-	// }, [mouseDownTime]);
+	useEffect(() => {
+		if (mouseDownTime === 5) {
+			setDraggedElement(element);
+		}
+	}, [mouseDownTime]);
 
 	useEffect(() => {
 		if (dragging) {
