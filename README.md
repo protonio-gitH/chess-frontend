@@ -1,46 +1,53 @@
-# Getting Started with Create React App
+# Chess Game
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Этот проект представляет собой полноценную игру в шахматы, реализованную с использованием React. В проекте учтены все правила шахмат, и он предоставляет полноценный игровой функционал.
 
-## Available Scripts
+## Функциональные возможности
 
-In the project directory, you can run:
+<ul>
+  <li>Полная реализация всех шахматных фигур: король, ферзь, ладья, слон, конь и пешка.</li>
+  <li>Поддержка всех шахматных правил, включая рокировку, взятие на проходе и превращение пешки.</li>
+  <li>Возможность хода обеими цветами (белыми и черными).</li>
+  <li>Индикация возможных ходов для выбранной фигуры.</li>
+  <li>Проверка на шах и мат.</li>
+  <li>Ведение истории ходов.</li>
+  <li>Поддержка режима "игра с компьютером" и "игра с другим игроком".</li>
+  <li>Простая и интуитивно понятная графика и пользовательский интерфейс.</li>
+</ul>
 
-### `npm start`
+### Установка зависимостей
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+1. Склонируйте репозиторий на ваш локальный компьютер:
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+   ```sh
+   git clone https://github.com/ваш-репозиторий/chess-game.git
+   ```
 
-### `npm test`
+2. Перейдите в директорию проекта:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+   ```sh
+   cd chess-game
+   ```
 
-### `npm run build`
+3. Установите необходимые зависимости:
+   ```sh
+   npm install
+   ```
+   или, если вы используете yarn:
+   ```sh
+   yarn install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Запуск приложения
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Для запуска приложения в режиме разработки выполните:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```sh
+npm start
+```
 
-### `npm run eject`
+или
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+```sh
+yarn start
+```
