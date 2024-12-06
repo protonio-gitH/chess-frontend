@@ -19,7 +19,7 @@
 1. Склонируйте репозиторий на ваш локальный компьютер:
 
    ```sh
-   git clone https://github.com/ваш-репозиторий/chess-game.git
+   git clone https://github.com/ваш-репозиторий/chess-frontend.git
    ```
 
 2. Перейдите в директорию проекта:
