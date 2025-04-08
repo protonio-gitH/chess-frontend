@@ -4,7 +4,7 @@ import { Cell } from '../../models/Cell';
 import { Board } from '../../models/Board';
 import { useFigureDrag } from '../../hooks/useFigureDrag';
 import { CellSelectHandler } from '../../types/useFigureDragTypes';
-import { FigureNames } from '../../models/FigureNames';
+import { FigureNames } from '../../constants/FigureNames';
 import { King } from '../../models/figures/King';
 import PromotionPawn from '../PromotionPawn';
 

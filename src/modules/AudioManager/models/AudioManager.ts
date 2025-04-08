@@ -11,11 +11,11 @@ class AudioManager {
 		this.eatSound = new Audio(eatSound);
 	}
 
-	playMoveSound() {
+	public playMoveSound() {
 		this.moveSound.play();
 	}
 
-	playEatSound() {
+	public playEatSound() {
 		this.eatSound.play();
 	}
 }

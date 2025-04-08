@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Cell } from '../models/Cell';
 import { Board } from '../models/Board';
-import { Colors } from '../models/Colors';
+import { Colors } from '../constants/Colors';
 import { CellSelectHandler } from '../types/useFigureDragTypes';
 import { King } from '../models/figures/King';
 import { Rook } from '../models/figures/Rook';

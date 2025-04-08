@@ -1,6 +1,6 @@
 import { Figure } from './Figure';
-import { FigureNames } from '../FigureNames';
-import { Colors } from '../Colors';
+import { Colors } from '../../constants/Colors';
+import { FigureNames } from '../../constants/FigureNames';
 import { Cell } from '../Cell';
 import blackLogo from '../../assets/figures/black-pawn.svg';
 import whiteLogo from '../../assets/figures/white-pawn.svg';
@@ -16,7 +16,7 @@ export class Pawn extends Figure {
 		this.enPassantCell = null;
 	}
 
-	public validMove(target: Cell, forKing?: boolean): boolean {
+	protected validMove(target: Cell, forKing?: boolean): boolean {
 		const isWhite = this.cell.figure?.color === Colors.WHITE;
 		const isBlack = this.cell.figure?.color === Colors.BLACK;
 		const direction = isWhite ? -1 : 1;

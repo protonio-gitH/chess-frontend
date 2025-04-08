@@ -1,14 +1,12 @@
 import { Cell } from './Cell';
-import { Colors } from './Colors';
+import { Colors } from '../constants/Colors';
 import { Bishop } from './figures/Bishop';
-import { FigureNames } from './FigureNames';
+import { FigureNames } from '../constants/FigureNames';
 import { King } from './figures/King';
 import { Knight } from './figures/Knight';
 import { Pawn } from './figures/Pawn';
 import { Queen } from './figures/Queen';
 import { Rook } from './figures/Rook';
-import moveSound from '../assets/audio/Move.mp3';
-import eatSound from '../assets/audio/Capture.mp3';
 
 export class Board {
 	cells: Cell[][] = [];

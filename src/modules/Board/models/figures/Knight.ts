@@ -1,7 +1,7 @@
 import { Cell } from '../Cell';
-import { Colors } from '../Colors';
 import { Figure } from './Figure';
-import { FigureNames } from '../FigureNames';
+import { Colors } from '../../constants/Colors';
+import { FigureNames } from '../../constants/FigureNames';
 import blackLogo from '../../assets/figures/black-knight.svg';
 import whiteLogo from '../../assets/figures/white-knight.svg';
 import { King } from './King';
@@ -13,7 +13,7 @@ export class Knight extends Figure {
 		this.name = FigureNames.KNIGHT;
 	}
 
-	public validMove(target: Cell): boolean {
+	protected validMove(target: Cell): boolean {
 		const dy = this.cell.y - target.y;
 		const dx = this.cell.x - target.x;
 		const absDy = Math.abs(dy);

@@ -1,7 +1,7 @@
 import { Cell } from '../Cell';
-import { Colors } from '../Colors';
+import { Colors } from '../../constants/Colors';
 import { Figure } from './Figure';
-import { FigureNames } from '../FigureNames';
+import { FigureNames } from '../../constants/FigureNames';
 import blackLogo from '../../assets/figures/black-bishop.svg';
 import whiteLogo from '../../assets/figures/white-bishop.svg';
 
@@ -12,7 +12,7 @@ export class Bishop extends Figure {
 		this.name = FigureNames.BISHOP;
 	}
 
-	public validMove(target: Cell): boolean {
+	protected validMove(target: Cell): boolean {
 		const isWhite = this.cell.figure?.color === Colors.WHITE;
 		const isBlack = this.cell.figure?.color === Colors.BLACK;
 

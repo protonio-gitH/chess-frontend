@@ -10,7 +10,7 @@ import blackKnight from '../../assets/figures/black-knight.svg';
 import whiteBishop from '../../assets/figures/white-bishop.svg';
 import blackBishop from '../../assets/figures/black-bishop.svg';
 import { Cell } from '../../models/Cell';
-import { Colors } from '../../models/Colors';
+import { Colors } from '../../constants/Colors';
 import { NewFigures } from '../../types/newFigureTypes';
 import { Board } from '../../models/Board';
 

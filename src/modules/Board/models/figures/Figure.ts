@@ -1,8 +1,8 @@
 import logo from '../../figures/assets/black-bishop.svg';
 import { Cell } from '../Cell';
-import { Colors } from '../Colors';
 import { King } from './King';
-import { FigureNames } from '../FigureNames';
+import { Colors } from '../../constants/Colors';
+import { FigureNames } from '../../constants/FigureNames';
 
 export class Figure {
 	color: Colors;
@@ -236,7 +236,7 @@ export class Figure {
 		return false;
 	}
 
-	public validMove(target: Cell, forKing?: boolean): boolean {
+	protected validMove(target: Cell, forKing?: boolean): boolean {
 		return true;
 	}
 }

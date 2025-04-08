@@ -1,6 +1,6 @@
 import { Figure } from './Figure';
-import { FigureNames } from '../FigureNames';
-import { Colors } from '../Colors';
+import { Colors } from '../../constants/Colors';
+import { FigureNames } from '../../constants/FigureNames';
 import { Cell } from '../Cell';
 import blackLogo from '../../assets/figures/black-king.svg';
 import whiteLogo from '../../assets/figures/white-king.svg';
@@ -68,7 +68,7 @@ export class King extends Figure {
 		return false;
 	}
 
-	public validMove(target: Cell): boolean {
+	protected validMove(target: Cell): boolean {
 		const dy = target.y - this.cell.y;
 		const dx = target.x - this.cell.x;
 		const absDy = Math.abs(dy);

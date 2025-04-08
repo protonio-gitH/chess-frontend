@@ -1,18 +1,20 @@
-import blackLogo from '../../assets/figures/black-queen.svg';
-import whiteLogo from '../../assets/figures/white-queen.svg';
-import { Figure } from './Figure';
-import { Colors } from '../Colors';
+import blackLogo from '../../assets/figures/black-rook.svg';
+import whiteLogo from '../../assets/figures/white-rook.svg';
 import { Cell } from '../Cell';
-import { FigureNames } from '../FigureNames';
+import { Colors } from '../../constants/Colors';
+import { Figure } from './Figure';
+import { FigureNames } from '../../constants/FigureNames';
 
-export class Queen extends Figure {
+export class Rook extends Figure {
+	castling: boolean;
 	constructor(color: Colors, cell: Cell) {
 		super(color, cell);
 		this.logo = color === Colors.BLACK ? blackLogo : whiteLogo;
-		this.name = FigureNames.QUEEN;
+		this.name = FigureNames.ROOK;
+		this.castling = true;
 	}
 
-	public validMove(target: Cell): boolean {
+	protected validMove(target: Cell): boolean {
 		const isWhite = this.cell.figure?.color === Colors.WHITE;
 		const isBlack = this.cell.figure?.color === Colors.BLACK;
 
@@ -23,7 +25,7 @@ export class Queen extends Figure {
 		const dx = target.x - this.cell.x;
 		const dy = target.y - this.cell.y;
 
-		if (Math.abs(dx) > 0 && Math.abs(dy) > 0 && Math.abs(dx) !== Math.abs(dy)) return false;
+		if (Math.abs(dx) > 0 && Math.abs(dy) > 0) return false;
 
 		const stepX = dx !== 0 ? (dx > 0 ? 1 : -1) : 0;
 		const stepY = dy !== 0 ? (dy > 0 ? 1 : -1) : 0;

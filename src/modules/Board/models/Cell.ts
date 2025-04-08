@@ -1,11 +1,11 @@
 import { Board } from './Board';
-import { Colors } from './Colors';
+import { Colors } from '../constants/Colors';
 import { Figure } from './figures/Figure';
-import { FigureNames } from './FigureNames';
+import { FigureNames } from '../constants/FigureNames';
 import { King } from './figures/King';
 import { Pawn } from './figures/Pawn';
 import { Rook } from './figures/Rook';
-import { audioManager } from './AudioManager';
+import { audioManager } from '@/modules/AudioManager';
 import { Queen } from './figures/Queen';
 import { Knight } from './figures/Knight';
 import { Bishop } from './figures/Bishop';

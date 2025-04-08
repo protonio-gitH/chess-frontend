@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.scss';
-import BoardComponent from '../components/Board';
-import { Board } from '../models/Board';
-import { useSelected } from '../hooks/useSelected';
+// import { BoardComponent } from '@/modules/Board';
+// import { Board } from '@/modules/Board';
+// import { useSelected } from '@/modules/Board';
+import { useSelected } from '../modules/Board/hooks/useSelected';
+import BoardComponent from '../modules/Board/components/Board';
+import { Board } from '../modules/Board/models/Board';
 
 function App() {
 	const [board, setBoard] = useState<Board>(new Board());

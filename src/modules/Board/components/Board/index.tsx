@@ -2,9 +2,8 @@ import React, { FC, useEffect, useState } from 'react';
 import styles from './index.module.scss';
 import { Board } from '../../models/Board';
 import CellComponent from '../Cell';
-import { Cell } from '../../models/Cell';
 import { useSelected } from '../../hooks/useSelected';
-import { Colors } from '../../models/Colors';
+import { Colors } from '../../constants/Colors';
 import { King } from '../../models/figures/King';
 
 interface BoardProps {
