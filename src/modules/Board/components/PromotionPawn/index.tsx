@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useEffect, useRef, useState, memo } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './index.module.scss';
 import whiteQueen from '../../assets/figures/white-queen.svg';

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useState, memo } from 'react';
 import styles from './index.module.scss';
 import { Board } from '../../models/Board';
 import CellComponent from '../Cell';
@@ -51,4 +51,4 @@ const BoardComponent: FC<BoardProps> = ({ board, setBoard }) => {
 	);
 };
 
-export default BoardComponent;
+export default memo(BoardComponent);

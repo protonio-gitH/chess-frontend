@@ -1,5 +1,6 @@
 import { Cell } from './Cell';
 import { Colors } from '../constants/Colors';
+import { Files } from '../constants/Files';
 import { Bishop } from './figures/Bishop';
 import { FigureNames } from '../constants/FigureNames';
 import { King } from './figures/King';
@@ -14,13 +15,15 @@ export class Board {
 	promotion: boolean = false;
 
 	public initCells() {
+		const files = Object.values(Files);
+
 		for (let i = 0; i < 8; i++) {
 			const row: Cell[] = [];
 			for (let j = 0; j < 8; j++) {
 				if ((i + j) % 2 !== 0) {
-					row.push(new Cell(j, i, Colors.BLACK, null, this));
+					row.push(new Cell(j, i, Colors.BLACK, null, files[j], this));
 				} else {
-					row.push(new Cell(j, i, Colors.WHITE, null, this));
+					row.push(new Cell(j, i, Colors.WHITE, null, files[j], this));
 				}
 			}
 			this.cells.push(row);

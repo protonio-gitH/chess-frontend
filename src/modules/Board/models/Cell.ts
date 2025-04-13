@@ -1,5 +1,6 @@
 import { Board } from './Board';
 import { Colors } from '../constants/Colors';
+import { Files } from '../constants/Files';
 import { Figure } from './figures/Figure';
 import { FigureNames } from '../constants/FigureNames';
 import { King } from './figures/King';
@@ -15,18 +16,20 @@ export class Cell {
 	readonly x: number;
 	readonly y: number;
 	readonly color: Colors;
+	readonly file: Files;
+	readonly id: number;
 	figure: Figure | null;
 	available: boolean;
-	id: number;
 	board: Board;
 
-	constructor(x: number, y: number, color: Colors, figure: Figure | null, board: Board) {
+	constructor(x: number, y: number, color: Colors, figure: Figure | null, file: Files, board: Board) {
 		this.x = x;
 		this.y = y;
 		this.color = color;
 		this.figure = figure;
+		this.file = file;
 		this.available = false;
-		this.id = Math.random();
+		this.id = +Math.random().toString().slice(2);
 		this.board = board;
 	}
 

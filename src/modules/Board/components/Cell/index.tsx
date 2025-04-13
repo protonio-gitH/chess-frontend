@@ -40,6 +40,7 @@ const CellComponent: FC<CellProps> = ({ cell, selectHandler, selected, board, up
 				onDragStart={e => e.preventDefault()}
 				data-x={cell.x}
 				data-y={cell.y}
+				data-file={cell.file}
 			>
 				{cell?.available && !cell.figure && <div className={styles.available}></div>}
 				{cell.figure?.logo && <img src={cell.figure?.logo} />}
@@ -51,4 +52,4 @@ const CellComponent: FC<CellProps> = ({ cell, selectHandler, selected, board, up
 	);
 };
 
-export default CellComponent;
+export default memo(CellComponent);
