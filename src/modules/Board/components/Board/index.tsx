@@ -5,7 +5,7 @@ import CellComponent from '../Cell';
 import { useSelected } from '../../hooks/useSelected';
 import { Colors } from '../../constants/Colors';
 import { King } from '../../models/figures/King';
-
+import Files from '../Files';
 interface BoardProps {
 	board: Board;
 	setBoard: (board: Board) => void;
@@ -46,6 +46,7 @@ const BoardComponent: FC<BoardProps> = ({ board, setBoard }) => {
 					))}
 				</React.Fragment>
 			))}
+			<Files />
 			<div>{(whiteKing?.stalemate && 'Мат белым') || (blackKing?.stalemate && 'Мат черным')}</div>
 		</div>
 	);

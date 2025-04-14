@@ -1,0 +1,13 @@
+.board__files-list {
+	list-style: none;
+	display: flex;
+	margin: 0;
+	padding: 0;
+
+	li {
+		width: 64px;
+		height: 64px;
+		display: flex;
+		justify-content: center;
+	}
+}
