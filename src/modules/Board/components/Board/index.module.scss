@@ -1,6 +1,8 @@
+@import '../../styles/_variables.scss';
+
 .board {
-	width: calc(64px * 8);
-	height: calc(64px * 8);
+	width: $board-size;
+	height: $board-size;
 	display: flex;
 	flex-wrap: wrap;
 }
