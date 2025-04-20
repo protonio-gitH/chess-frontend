@@ -12,7 +12,7 @@ interface BoardProps {
 }
 
 const BoardComponent: FC<BoardProps> = ({ board, setBoard }) => {
-	const [selectedCell, setSelectedCell, selectHandler, updateBoard] = useSelected(board, setBoard);
+	const { selectedCell, setSelectedCell, selectHandler, updateBoard } = useSelected(board, setBoard);
 	const [whiteKing, setWhiteKing] = useState<King | null>(null);
 	const [blackKing, setBlackKing] = useState<King | null>(null);
 

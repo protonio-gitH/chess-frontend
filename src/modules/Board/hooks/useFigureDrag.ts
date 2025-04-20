@@ -3,7 +3,9 @@ import { Cell } from '../models/Cell';
 import { Board } from '../models/Board';
 import { CellSelectHandler } from '../types/useFigureDragTypes';
 
-type useFigureDragHook = [(e: React.MouseEvent<HTMLDivElement>, cell: Cell) => void];
+type useFigureDragHook = {
+	mouseDownHandler: (e: React.MouseEvent<HTMLDivElement>, cell: Cell) => void;
+};
 
 export function useFigureDrag(
 	cell: Cell,
@@ -97,5 +99,5 @@ export function useFigureDrag(
 		};
 	}, [dragging, isDragging, mouseDownTime]);
 
-	return [mouseDownHandler] as useFigureDragHook;
+	return { mouseDownHandler };
 }

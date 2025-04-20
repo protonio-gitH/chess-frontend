@@ -4,7 +4,7 @@ import { Board, BoardComponent, useSelected } from '../modules/Board';
 
 function App() {
 	const [board, setBoard] = useState<Board>(new Board());
-	const [selectedCell, setSelectedCell, selectHandler, updateBoard] = useSelected(board, setBoard);
+	const { selectedCell, setSelectedCell, selectHandler, updateBoard } = useSelected(board, setBoard);
 
 	useEffect(() => {
 		restart();

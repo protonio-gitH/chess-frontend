@@ -6,7 +6,12 @@ import { CellSelectHandler } from '../types/useFigureDragTypes';
 import { King } from '../models/figures/King';
 import { Rook } from '../models/figures/Rook';
 
-type UseSelectedHook = [Cell | null, (cell: Cell | null) => void, CellSelectHandler, () => void];
+type UseSelectedHook = {
+	selectedCell: Cell | null;
+	setSelectedCell: (cell: Cell | null) => void;
+	selectHandler: CellSelectHandler;
+	updateBoard: () => void;
+};
 
 export const useSelected = (board: Board, setBoard: (board: Board) => void): UseSelectedHook => {
 	const [selectedCell, setSelectedCell] = useState<Cell | null>(null);
@@ -43,5 +48,5 @@ export const useSelected = (board: Board, setBoard: (board: Board) => void): Use
 		updateBoard();
 	}
 
-	return [selectedCell, setSelectedCell, selectHandler, updateBoard];
+	return { selectedCell, setSelectedCell, selectHandler, updateBoard };
 };

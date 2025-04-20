@@ -29,7 +29,7 @@ function getClassNames(cell: Cell, selected: boolean): string {
 }
 
 const CellComponent: FC<CellProps> = ({ cell, selectHandler, selected, board, updateBoard }) => {
-	const [mouseDownHandler] = useFigureDrag(cell, selectHandler, selected, board);
+	const { mouseDownHandler } = useFigureDrag(cell, selectHandler, selected, board);
 	let classNames = getClassNames(cell, selected);
 
 	return (
