@@ -1,5 +1,7 @@
 import { Move } from '../types/moveTypes';
 
+//добавить возможность запиывать клетки
+
 class MoveHistory {
 	private movesWhite: Move[] = [];
 	private movesBlack: Move[] = [];
@@ -19,5 +21,5 @@ class MoveHistory {
 		this.movesBlack = [];
 	}
 }
-
-export const moveHistory = new MoveHistory();
+export default MoveHistory;
+// export const moveHistory = new MoveHistory();

@@ -8,11 +8,13 @@ import { Knight } from './figures/Knight';
 import { Pawn } from './figures/Pawn';
 import { Queen } from './figures/Queen';
 import { Rook } from './figures/Rook';
+import { MoveHistory } from '../../MoveHistory/';
 
 export class Board {
 	cells: Cell[][] = [];
 	move: Colors = Colors.WHITE;
 	promotion: boolean = false;
+	private moveHistory: MoveHistory = new MoveHistory();
 
 	public initCells() {
 		const files = Object.values(Files);

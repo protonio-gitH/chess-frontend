@@ -3,8 +3,8 @@ import { MOVE_TYPES } from '../constants/Moves';
 
 interface Move {
 	moveType: MOVE_TYPES;
-	from: string;
-	to: string;
+	from: Cell;
+	to: Cell;
 	cellsDump: Cell[];
 }
 

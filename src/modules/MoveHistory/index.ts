@@ -1,1 +1,1 @@
-export { moveHistory } from './models/MoveHistory';
+export { default as MoveHistory } from './models/MoveHistory';

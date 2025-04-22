@@ -11,7 +11,7 @@ import { Queen } from './figures/Queen';
 import { Knight } from './figures/Knight';
 import { Bishop } from './figures/Bishop';
 import { NewFigures } from '../types/newFigureTypes';
-
+import { MOVE_TYPES } from '../../MoveHistory/constants/Moves';
 export class Cell {
 	readonly x: number;
 	readonly y: number;
@@ -192,7 +192,13 @@ export class Cell {
 	public moveFigure(target: Cell, board: Board): void {
 		const isWhite = this.figure?.color === Colors.WHITE;
 		const isBlack = this.figure?.color === Colors.BLACK;
-
+		const move = {
+			moveType: target.figure ? MOVE_TYPES.CAPTURE : MOVE_TYPES.MOVE,
+			from: this,
+			to: target,
+			boardDump: board.cells,
+		};
+		console.log({ ...move });
 		if (this.figure?.color === board.move) {
 			if (this.figure && this.figure?.canMove(target) && target.figure?.name !== FigureNames.KING) {
 				if (this.figure.name === FigureNames.KING) {
