@@ -1,3 +1,4 @@
+import { Colors } from '../../Board';
 import { Move } from '../types/moveTypes';
 
 //добавить возможность запиывать клетки
@@ -7,9 +8,8 @@ class MoveHistory {
 	private movesBlack: Move[] = [];
 	constructor() {}
 
-	public addMove(move: Move) {
-		this.movesWhite.push(move);
-		this.movesBlack.push(move);
+	public addMove(move: Move, color: Colors) {
+		color === Colors.WHITE ? this.movesWhite.push(move) : this.movesBlack.push(move);
 	}
 
 	public getMoves() {
@@ -22,4 +22,3 @@ class MoveHistory {
 	}
 }
 export default MoveHistory;
-// export const moveHistory = new MoveHistory();

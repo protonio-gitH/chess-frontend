@@ -196,9 +196,10 @@ export class Cell {
 			moveType: target.figure ? MOVE_TYPES.CAPTURE : MOVE_TYPES.MOVE,
 			from: this,
 			to: target,
-			boardDump: board.cells,
+			cellsDump: board.cells,
 		};
-		console.log({ ...move });
+		board.moveHistory.addMove(move, board.move);
+		console.log(board.moveHistory.getMoves());
 		if (this.figure?.color === board.move) {
 			if (this.figure && this.figure?.canMove(target) && target.figure?.name !== FigureNames.KING) {
 				if (this.figure.name === FigureNames.KING) {

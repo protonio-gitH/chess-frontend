@@ -5,7 +5,7 @@ interface Move {
 	moveType: MOVE_TYPES;
 	from: Cell;
 	to: Cell;
-	cellsDump: Cell[];
+	cellsDump: Cell[][];
 }
 
 export type { Move };
