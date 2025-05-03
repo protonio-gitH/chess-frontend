@@ -30,22 +30,25 @@ const BoardComponent: FC<BoardProps> = ({ board, setBoard }) => {
 	}, [selectedCell]);
 	return (
 		<div className={styles.board}>
-			{board.cells.map((row, i) => (
-				<React.Fragment key={i}>
-					{row.map(cell => (
-						<CellComponent
-							key={cell.id}
-							cell={cell}
-							selectHandler={selectHandler}
-							selected={
-								selectedCell?.x === cell.x && selectedCell?.y === cell.y && selectedCell.figure?.color == board.move
-							}
-							board={board}
-							updateBoard={updateBoard}
-						/>
-					))}
-				</React.Fragment>
-			))}
+			{board.cells
+				.slice()
+				.reverse()
+				.map((row, i) => (
+					<React.Fragment key={i}>
+						{row.map(cell => (
+							<CellComponent
+								key={cell.id}
+								cell={cell}
+								selectHandler={selectHandler}
+								selected={
+									selectedCell?.x === cell.x && selectedCell?.y === cell.y && selectedCell.figure?.color == board.move
+								}
+								board={board}
+								updateBoard={updateBoard}
+							/>
+						))}
+					</React.Fragment>
+				))}
 			<Files />
 			<div>{(whiteKing?.stalemate && 'Мат белым') || (blackKing?.stalemate && 'Мат черным')}</div>
 		</div>

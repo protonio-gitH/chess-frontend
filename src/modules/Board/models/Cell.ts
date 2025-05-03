@@ -11,7 +11,7 @@ import { Queen } from './figures/Queen';
 import { Knight } from './figures/Knight';
 import { Bishop } from './figures/Bishop';
 import { NewFigures } from '../types/newFigureTypes';
-import { MOVE_TYPES } from '../../MoveHistory/constants/Moves';
+import { MOVE_TYPES } from '../../MoveHistory';
 export class Cell {
 	readonly x: number;
 	readonly y: number;
@@ -91,7 +91,7 @@ export class Cell {
 		const isWhite = this.figure?.color === Colors.WHITE;
 		const isBlack = this.figure?.color === Colors.BLACK;
 
-		const direction = isWhite ? -1 : 1;
+		const direction = isWhite ? 1 : -1;
 		const pawn = this.figure as Pawn;
 
 		if (target.x === pawn.enPassantCell?.x && target.y === pawn.enPassantCell?.y && target.figure === null) {
@@ -188,7 +188,7 @@ export class Cell {
 			this.figure.checkKingShah();
 		}
 	}
-
+	//ПОФИКСИТЬ ШАХ ПЕШКОЙ
 	public moveFigure(target: Cell, board: Board): void {
 		const isWhite = this.figure?.color === Colors.WHITE;
 		const isBlack = this.figure?.color === Colors.BLACK;
@@ -196,10 +196,10 @@ export class Cell {
 			moveType: target.figure ? MOVE_TYPES.CAPTURE : MOVE_TYPES.MOVE,
 			from: this,
 			to: target,
-			cellsDump: board.cells,
+			cellsDump: board.cells.slice(),
+			title: !target.figure ? target.file + (target.y + 1) : this.figure?.name + 'x' + target.file + (target.y + 1),
 		};
-		board.moveHistory.addMove(move, board.move);
-		console.log(board.moveHistory.getMoves());
+
 		if (this.figure?.color === board.move) {
 			if (this.figure && this.figure?.canMove(target) && target.figure?.name !== FigureNames.KING) {
 				if (this.figure.name === FigureNames.KING) {
@@ -234,8 +234,9 @@ export class Cell {
 				this.makeSound(target);
 				target.figure = this.figure;
 				target.figure.cell = target;
-
 				this.figure = null;
+				// console.log(move);
+				board.moveHistory.addMove(move, board.move);
 				this.endMoving(this, board);
 			}
 		}

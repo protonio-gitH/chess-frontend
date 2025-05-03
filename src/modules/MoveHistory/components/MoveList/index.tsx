@@ -12,12 +12,12 @@ const MoveList: FC<MoveListProps> = ({ whiteMoves, blackMoves }) => {
 		<div className={styles.moveList}>
 			<ul>
 				{whiteMoves.map((move, i) => (
-					<li key={i}>1</li>
+					<li key={i}>{move.title}</li>
 				))}
 			</ul>
 			<ul>
 				{blackMoves.map((move, i) => (
-					<li key={i}>1</li>
+					<li key={i}>{move.title}</li>
 				))}
 			</ul>
 		</div>

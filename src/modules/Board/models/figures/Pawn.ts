@@ -19,8 +19,8 @@ export class Pawn extends Figure {
 	protected validMove(target: Cell, forKing?: boolean): boolean {
 		const isWhite = this.cell.figure?.color === Colors.WHITE;
 		const isBlack = this.cell.figure?.color === Colors.BLACK;
-		const direction = isWhite ? -1 : 1;
-		const startRow = isWhite ? 6 : 1;
+		const direction = isWhite ? 1 : -1;
+		const startRow = isWhite ? 1 : 6;
 		const dy = target.y - this.cell.y;
 		const dx = target.x - this.cell.x;
 		const absDy = Math.abs(dy);
@@ -30,10 +30,10 @@ export class Pawn extends Figure {
 			if (absDx === 0 || absDx > 1) {
 				return false;
 			}
-
 			if (absDy === 1 && dy === direction) {
 				return true;
 			}
+			return false;
 		}
 
 		if (target.x === this.enPassantCell?.x && target.y === this.enPassantCell?.y) {

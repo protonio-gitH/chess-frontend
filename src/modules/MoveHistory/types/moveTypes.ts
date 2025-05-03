@@ -6,6 +6,7 @@ interface Move {
 	from: Cell;
 	to: Cell;
 	cellsDump: Cell[][];
+	title: string;
 }
 
 export type { Move };

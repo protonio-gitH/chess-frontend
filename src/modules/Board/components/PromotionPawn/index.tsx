@@ -99,4 +99,4 @@ const PromotionPawn: FC<PromotionPawnProps> = function ({ cell, updateBoard, boa
 	);
 };
 
-export default PromotionPawn;
+export default memo(PromotionPawn);

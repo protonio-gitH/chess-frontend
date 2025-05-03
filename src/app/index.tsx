@@ -5,8 +5,7 @@ import { MoveList } from '../modules/MoveHistory';
 import { Move } from '../modules/MoveHistory/types/moveTypes';
 function App() {
 	const [board, setBoard] = useState<Board>(new Board());
-	const [whiteMoves, setWhiteMoves] = useState<Move[]>([]);
-	const [blackMoves, setBlackMoves] = useState<Move[]>([]);
+	const [moves, setMoves] = useState<Record<'white' | 'black', Move[]>>({ white: [], black: [] });
 	const { selectedCell, setSelectedCell, selectHandler, updateBoard } = useSelected(board, setBoard);
 
 	useEffect(() => {
@@ -15,9 +14,11 @@ function App() {
 
 	useEffect(() => {
 		const moves = board.moveHistory.getMoves();
-		console.log(moves);
-		setWhiteMoves(moves.movesWhite);
-		setBlackMoves(moves.movesBlack);
+		// console.log(moves);
+		setMoves({
+			white: [...moves.movesWhite],
+			black: [...moves.movesBlack],
+		});
 	}, [board.move]);
 
 	function restart() {
@@ -30,7 +31,7 @@ function App() {
 	return (
 		<div className={styles.app}>
 			<BoardComponent board={board} setBoard={setBoard} />
-			<MoveList whiteMoves={whiteMoves} blackMoves={blackMoves} />
+			<MoveList whiteMoves={moves.white} blackMoves={moves.black} />
 		</div>
 	);
 }

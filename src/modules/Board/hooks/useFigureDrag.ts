@@ -99,5 +99,5 @@ export function useFigureDrag(
 		};
 	}, [dragging, isDragging, mouseDownTime]);
 
-	return { mouseDownHandler };
+	return { mouseDownHandler } as useFigureDragHook;
 }
