@@ -8,13 +8,15 @@ import { Knight } from './figures/Knight';
 import { Pawn } from './figures/Pawn';
 import { Queen } from './figures/Queen';
 import { Rook } from './figures/Rook';
-import { MoveHistory } from '../../MoveHistory/';
+import { Move, MoveHistory } from '../../MoveHistory/';
 
 export class Board {
 	cells: Cell[][] = [];
 	move: Colors = Colors.WHITE;
 	promotion: boolean = false;
 	moveHistory: MoveHistory = new MoveHistory();
+	fromCell: Cell | null = null;
+	toCell: Cell | null = null;
 
 	public initCells() {
 		const files = Object.values(Files);
@@ -191,6 +193,16 @@ export class Board {
 		newBoard.move = this.move;
 		newBoard.promotion = this.promotion;
 		newBoard.moveHistory = this.moveHistory;
+		newBoard.fromCell = this.fromCell;
+		newBoard.toCell = this.toCell;
+		return newBoard;
+	}
+
+	public getMoveBoard(move: Move): Board {
+		const newBoard = this.getCopyBoard();
+		newBoard.fromCell = move.from;
+		newBoard.toCell = move.to;
+		newBoard.cells = move.cellsDump;
 		return newBoard;
 	}
 

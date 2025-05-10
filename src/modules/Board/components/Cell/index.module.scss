@@ -27,6 +27,13 @@
 	background: $highlight-color;
 }
 
+.selected-from-move {
+	background: $selected-from-move-color;
+}
+.selected-to-move {
+	background: $selected-to-move-color;
+}
+
 .available {
 	width: 15px;
 	height: 15px;

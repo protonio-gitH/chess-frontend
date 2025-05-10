@@ -1,7 +1,8 @@
+@import '../../styles/_variables.scss';
+
 .promotion {
 	position: absolute;
 	ul {
-		list-style: none;
 		padding: 0;
 		margin: 0;
 		li {
@@ -9,13 +10,13 @@
 			border-radius: 10%;
 
 			&:hover {
-				background: radial-gradient(circle, transparent 0%, transparent 79%, rgba(20, 85, 0, 0.3) 80%);
+				background: $highlight-gradient;
 				background-color: #fff;
 			}
 
 			img {
-				width: 64px;
-				height: 64px;
+				width: $cell-size;
+				height: $cell-size;
 			}
 		}
 	}

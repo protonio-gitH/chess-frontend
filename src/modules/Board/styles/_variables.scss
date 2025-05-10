@@ -3,6 +3,8 @@ $board-size: $cell-size * 8;
 $black-cell-color: #8b4939;
 $white-cell-color: #eed4ac;
 $highlight-color: rgba(20, 85, 30, 0.5);
+$selected-from-move-color: rgba(112, 143, 3, 0.618);
+$selected-to-move-color: rgba(156, 199, 0, 0.721);
 
 // Градиенты
 $highlight-gradient: radial-gradient(circle, transparent 0%, transparent 79%, rgba(20, 85, 0, 0.3) 80%);

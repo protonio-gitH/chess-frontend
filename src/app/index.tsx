@@ -14,7 +14,6 @@ function App() {
 
 	useEffect(() => {
 		const moves = board.moveHistory.getMoves();
-		// console.log(moves);
 		setMoves({
 			white: [...moves.movesWhite],
 			black: [...moves.movesBlack],
@@ -28,10 +27,15 @@ function App() {
 		setBoard(newBoard);
 	}
 
+	function handleMoveClick(move: Move) {
+		const newBoard = board.getMoveBoard(move);
+		setBoard(newBoard);
+	}
+
 	return (
 		<div className={styles.app}>
 			<BoardComponent board={board} setBoard={setBoard} />
-			<MoveList whiteMoves={moves.white} blackMoves={moves.black} />
+			<MoveList whiteMoves={moves.white} blackMoves={moves.black} handleMoveClick={handleMoveClick} />
 		</div>
 	);
 }

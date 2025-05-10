@@ -11,7 +11,9 @@ import { Queen } from './figures/Queen';
 import { Knight } from './figures/Knight';
 import { Bishop } from './figures/Bishop';
 import { NewFigures } from '../types/newFigureTypes';
-import { MOVE_TYPES } from '../../MoveHistory';
+import { Move, MOVE_TYPES } from '../../MoveHistory';
+import cloneDeep from 'lodash/cloneDeep';
+
 export class Cell {
 	readonly x: number;
 	readonly y: number;
@@ -87,7 +89,8 @@ export class Cell {
 		return false;
 	}
 
-	private enPassantLogic(thisCell: Cell, target: Cell, board: Board): void {
+	private enPassantLogic(thisCell: Cell, target: Cell, board: Board): boolean {
+		let eatingEnPassant = false;
 		const isWhite = this.figure?.color === Colors.WHITE;
 		const isBlack = this.figure?.color === Colors.BLACK;
 
@@ -97,6 +100,7 @@ export class Cell {
 		if (target.x === pawn.enPassantCell?.x && target.y === pawn.enPassantCell?.y && target.figure === null) {
 			board.getCell(target.x, target.y - direction).figure = null;
 			pawn.enPassantCell = null;
+			eatingEnPassant = true;
 		}
 
 		if ((thisCell.figure?.cell.y === 1 || thisCell.figure?.cell.y === 6) && (target.y === 3 || target.y === 4)) {
@@ -118,6 +122,7 @@ export class Cell {
 			pawn.enPassant = false;
 			pawn.enPassantCell = null;
 		}
+		return eatingEnPassant;
 	}
 
 	private isFlangClear(flang: Cell[]): boolean {
@@ -188,17 +193,19 @@ export class Cell {
 			this.figure.checkKingShah();
 		}
 	}
-	//ПОФИКСИТЬ ШАХ ПЕШКОЙ
+
 	public moveFigure(target: Cell, board: Board): void {
+		let eatingEnPassant = false;
 		const isWhite = this.figure?.color === Colors.WHITE;
 		const isBlack = this.figure?.color === Colors.BLACK;
-		const move = {
-			moveType: target.figure ? MOVE_TYPES.CAPTURE : MOVE_TYPES.MOVE,
-			from: this,
-			to: target,
-			cellsDump: board.cells.slice(),
-			title: !target.figure ? target.file + (target.y + 1) : this.figure?.name + 'x' + target.file + (target.y + 1),
-		};
+		const enPassantCell =
+			this.figure instanceof Pawn ? { x: this.figure.enPassantCell?.x, y: this.figure.enPassantCell?.y } : null;
+		const from = this;
+		const to = target;
+		const moveType = target.figure ? MOVE_TYPES.CAPTURE : MOVE_TYPES.MOVE;
+		const title = !target.figure
+			? target.file + (target.y + 1)
+			: this.figure?.name + 'x' + target.file + (target.y + 1);
 
 		if (this.figure?.color === board.move) {
 			if (this.figure && this.figure?.canMove(target) && target.figure?.name !== FigureNames.KING) {
@@ -219,7 +226,7 @@ export class Cell {
 					if (target.y === 0 || target.y === 7) {
 						board.changePromotion();
 					}
-					this.enPassantLogic(this, target, board);
+					eatingEnPassant = this.enPassantLogic(this, target, board);
 				}
 
 				if (this.figure?.name === FigureNames.KING || this.figure?.name === FigureNames.ROOK) {
@@ -231,19 +238,37 @@ export class Cell {
 						}
 					}
 				}
-				this.makeSound(target);
+				if (eatingEnPassant) {
+					this.makeSound(target, 'eat');
+				} else {
+					this.makeSound(target);
+				}
 				target.figure = this.figure;
 				target.figure.cell = target;
 				this.figure = null;
-				// console.log(move);
+				let move = {
+					moveType: moveType,
+					from: from,
+					to: to,
+					cellsDump: cloneDeep(board.cells),
+					title: title,
+				};
+				board.toCell = target;
+				board.fromCell = this;
 				board.moveHistory.addMove(move, board.move);
 				this.endMoving(this, board);
 			}
 		}
 	}
 
-	private makeSound(target: Cell) {
-		target.figure ? audioManager.playEatSound() : audioManager.playMoveSound();
+	private makeSound(target: Cell, type?: 'move' | 'eat') {
+		if (type === 'move') {
+			audioManager.playMoveSound();
+		} else if (type === 'eat') {
+			audioManager.playEatSound();
+		} else {
+			target.figure ? audioManager.playEatSound() : audioManager.playMoveSound();
+		}
 	}
 
 	private endMoving(cell: Cell, board: Board) {

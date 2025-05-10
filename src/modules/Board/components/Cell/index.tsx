@@ -16,7 +16,7 @@ interface CellProps {
 	updateBoard: () => void;
 }
 
-function getClassNames(cell: Cell, selected: boolean): string {
+function getClassNames(cell: Cell, selected: boolean, board: Board): string {
 	const baseClass = styles.cell;
 	const availableClass = cell?.available && cell.figure ? styles['attacked-' + cell.color] : '';
 	const colorClass = styles[cell.color];
@@ -24,13 +24,28 @@ function getClassNames(cell: Cell, selected: boolean): string {
 	const shahClass = cell.figure instanceof King && cell.figure?.shah ? styles['shah-' + cell.color] : '';
 	const shahSelectedClass =
 		cell.figure instanceof King && cell.figure?.shah && selected ? styles['shah-selected-' + cell.color] : '';
+	const selectedFromMoveClass =
+		cell.x === board.fromCell?.x && cell.y === board.fromCell?.y ? styles['selected-from-move'] : '';
+	const selectedToMoveClass =
+		cell.x === board.toCell?.x && cell.y === board.toCell?.y ? styles['selected-to-move'] : '';
 
-	return [baseClass, availableClass, colorClass, selectedClass, shahClass, shahSelectedClass].filter(Boolean).join(' ');
+	return [
+		baseClass,
+		availableClass,
+		colorClass,
+		selectedClass,
+		shahClass,
+		shahSelectedClass,
+		selectedFromMoveClass,
+		selectedToMoveClass,
+	]
+		.filter(Boolean)
+		.join(' ');
 }
 
 const CellComponent: FC<CellProps> = ({ cell, selectHandler, selected, board, updateBoard }) => {
 	const { mouseDownHandler } = useFigureDrag(cell, selectHandler, selected, board);
-	let classNames = getClassNames(cell, selected);
+	let classNames = getClassNames(cell, selected, board);
 
 	return (
 		<>
