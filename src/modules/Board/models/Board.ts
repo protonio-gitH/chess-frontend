@@ -9,6 +9,7 @@ import { Pawn } from './figures/Pawn';
 import { Queen } from './figures/Queen';
 import { Rook } from './figures/Rook';
 import { Move, MoveHistory } from '../../MoveHistory/';
+import cloneDeep from 'lodash/cloneDeep';
 
 export class Board {
 	cells: Cell[][] = [];
@@ -195,6 +196,11 @@ export class Board {
 		newBoard.moveHistory = this.moveHistory;
 		newBoard.fromCell = this.fromCell;
 		newBoard.toCell = this.toCell;
+		for (const line of newBoard.cells) {
+			for (let cell of line) {
+				cell.board = newBoard;
+			}
+		}
 		return newBoard;
 	}
 
@@ -203,6 +209,12 @@ export class Board {
 		newBoard.fromCell = move.from;
 		newBoard.toCell = move.to;
 		newBoard.cells = move.cellsDump;
+		for (const line of newBoard.cells) {
+			for (let cell of line) {
+				cell.board = newBoard;
+				cell.available = false;
+			}
+		}
 		return newBoard;
 	}
 

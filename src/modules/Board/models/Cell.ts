@@ -205,7 +205,7 @@ export class Cell {
 		const moveType = target.figure ? MOVE_TYPES.CAPTURE : MOVE_TYPES.MOVE;
 		const title = !target.figure
 			? target.file + (target.y + 1)
-			: this.figure?.name + 'x' + target.file + (target.y + 1);
+			: this.figure?.name[0] + 'x' + target.file + (target.y + 1);
 
 		if (this.figure?.color === board.move) {
 			if (this.figure && this.figure?.canMove(target) && target.figure?.name !== FigureNames.KING) {

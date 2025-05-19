@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState, memo } from 'react';
+import React, { FC, useEffect, useRef, useState, memo, forwardRef } from 'react';
 import styles from './index.module.scss';
 import { Cell } from '../../models/Cell';
 import { Board } from '../../models/Board';
@@ -43,28 +43,30 @@ function getClassNames(cell: Cell, selected: boolean, board: Board): string {
 		.join(' ');
 }
 
-const CellComponent: FC<CellProps> = ({ cell, selectHandler, selected, board, updateBoard }) => {
-	const { mouseDownHandler } = useFigureDrag(cell, selectHandler, selected, board);
-	let classNames = getClassNames(cell, selected, board);
+const CellComponent = forwardRef<HTMLImageElement, CellProps>(
+	({ cell, selectHandler, selected, board, updateBoard }, ref) => {
+		const { mouseDownHandler } = useFigureDrag(cell, selectHandler, selected, board);
+		let classNames = getClassNames(cell, selected, board);
 
-	return (
-		<>
-			<div
-				className={classNames}
-				onMouseDown={e => mouseDownHandler(e, cell)}
-				onDragStart={e => e.preventDefault()}
-				data-x={cell.x}
-				data-y={cell.y}
-				data-file={cell.file}
-			>
-				{cell?.available && !cell.figure && <div className={styles.available}></div>}
-				{cell.figure?.logo && <img src={cell.figure?.logo} />}
-			</div>
-			{(cell.y === 0 || cell.y === 7) && cell.figure?.name === FigureNames.PAWN && (
-				<PromotionPawn cell={cell} updateBoard={updateBoard} board={board} />
-			)}
-		</>
-	);
-};
+		return (
+			<>
+				<div
+					className={classNames}
+					onMouseDown={e => mouseDownHandler(e, cell)}
+					onDragStart={e => e.preventDefault()}
+					data-x={cell.x}
+					data-y={cell.y}
+					data-file={cell.file}
+				>
+					{cell?.available && !cell.figure && <div className={styles.available}></div>}
+					{cell.figure?.logo && <img ref={ref} src={cell.figure?.logo} />}
+				</div>
+				{(cell.y === 0 || cell.y === 7) && cell.figure?.name === FigureNames.PAWN && (
+					<PromotionPawn cell={cell} updateBoard={updateBoard} board={board} />
+				)}
+			</>
+		);
+	},
+);
 
 export default memo(CellComponent);

@@ -6,7 +6,7 @@ import { Move } from '../modules/MoveHistory/types/moveTypes';
 function App() {
 	const [board, setBoard] = useState<Board>(new Board());
 	const [moves, setMoves] = useState<Record<'white' | 'black', Move[]>>({ white: [], black: [] });
-	const { selectedCell, setSelectedCell, selectHandler, updateBoard } = useSelected(board, setBoard);
+	// const { selectedCell, setSelectedCell, selectHandler, updateBoard } = useSelected(board, setBoard);
 
 	useEffect(() => {
 		restart();

@@ -23,7 +23,7 @@ export function useFigureDrag(
 	const mouseDownHandler = (e: React.MouseEvent<HTMLDivElement>, cell: Cell): void => {
 		const target = e.target as HTMLElement;
 		setElement(target);
-		selectHandler(cell);
+		selectHandler(cell, false, e.currentTarget);
 		if (cell.figure && target.tagName === 'IMG' && cell.figure?.color == board.move) {
 			timer.current = setInterval(() => {
 				setMouseDownTime(prev => prev + 1);

@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState, memo } from 'react';
+import React, { FC, useEffect, useState, memo, useRef } from 'react';
 import styles from './index.module.scss';
 import { Board } from '../../models/Board';
 import CellComponent from '../Cell';
@@ -12,7 +12,12 @@ interface BoardProps {
 }
 
 const BoardComponent: FC<BoardProps> = ({ board, setBoard }) => {
-	const { selectedCell, setSelectedCell, selectHandler, updateBoard } = useSelected(board, setBoard);
+	const imgForMove = useRef<HTMLImageElement | null>(null);
+	const { selectedCell, setSelectedCell, selectHandler, updateBoard } = useSelected(
+		board,
+		setBoard,
+		imgForMove.current,
+	);
 	const [whiteKing, setWhiteKing] = useState<King | null>(null);
 	const [blackKing, setBlackKing] = useState<King | null>(null);
 
@@ -26,6 +31,7 @@ const BoardComponent: FC<BoardProps> = ({ board, setBoard }) => {
 	}, [board]);
 
 	useEffect(() => {
+		// console.log(imgForMove.current);
 		hightlightCells();
 	}, [selectedCell]);
 	return (
@@ -37,6 +43,7 @@ const BoardComponent: FC<BoardProps> = ({ board, setBoard }) => {
 					<React.Fragment key={i}>
 						{row.map(cell => (
 							<CellComponent
+								ref={selectedCell?.x === cell.x && selectedCell?.y === cell.y ? imgForMove : null}
 								key={cell.id}
 								cell={cell}
 								selectHandler={selectHandler}
