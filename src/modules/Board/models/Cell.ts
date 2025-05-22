@@ -11,7 +11,7 @@ import { Queen } from './figures/Queen';
 import { Knight } from './figures/Knight';
 import { Bishop } from './figures/Bishop';
 import { NewFigures } from '../types/newFigureTypes';
-import { Move, MOVE_TYPES } from '../../MoveHistory';
+import { Move, MOVE_TYPES, CellWithNullBoard } from '../../MoveHistory';
 import cloneDeep from 'lodash/cloneDeep';
 
 export class Cell {
@@ -248,9 +248,15 @@ export class Cell {
 				this.figure = null;
 				let move = {
 					moveType: moveType,
-					from: from,
-					to: to,
-					cellsDump: cloneDeep(board.cells),
+					from: { ...from, board: null } as CellWithNullBoard,
+					to: { ...to, board: null } as CellWithNullBoard,
+					// cellsDump: cloneDeep(board.cells),
+					cellsDump: board.cells.map(row =>
+						row.map(cell => ({
+							...cell,
+							board: null,
+						})),
+					) as CellWithNullBoard[][],
 					title: title,
 				};
 				board.toCell = target;

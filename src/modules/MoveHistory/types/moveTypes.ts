@@ -1,12 +1,14 @@
 import { Cell } from '../../Board/';
 import { MOVE_TYPES } from '../constants/Moves';
 
+type CellWithNullBoard = Omit<Cell, 'board'> & { board: null };
+
 interface Move {
 	moveType: MOVE_TYPES;
-	from: Cell;
-	to: Cell;
-	cellsDump: Cell[][];
+	from: CellWithNullBoard;
+	to: CellWithNullBoard;
+	cellsDump: CellWithNullBoard[][];
 	title: string;
 }
 
-export type { Move };
+export type { Move, CellWithNullBoard };

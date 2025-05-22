@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Cell } from '../models/Cell';
 import { Board } from '../models/Board';
 import { CellSelectHandler } from '../types/useFigureDragTypes';
+import { Colors } from '../constants/Colors';
 
 type useFigureDragHook = {
 	mouseDownHandler: (e: React.MouseEvent<HTMLDivElement>, cell: Cell) => void;
@@ -22,6 +23,10 @@ export function useFigureDrag(
 
 	const mouseDownHandler = (e: React.MouseEvent<HTMLDivElement>, cell: Cell): void => {
 		const target = e.target as HTMLElement;
+		const moves = board.moveHistory.getMoves();
+		let isLastMoveInHistory;
+		if (board.move === Colors.WHITE) {
+		}
 		setElement(target);
 		selectHandler(cell, false, e.currentTarget);
 		if (cell.figure && target.tagName === 'IMG' && cell.figure?.color == board.move) {
@@ -70,7 +75,6 @@ export function useFigureDrag(
 				draggedElement.style.position = '';
 				draggedElement.style.left = '';
 				draggedElement.style.top = '';
-				// selectHandler(cell);
 			}
 			setDraggedElement(null);
 			setIsDragging(false);

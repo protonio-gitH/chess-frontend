@@ -1,8 +1,6 @@
 import { Colors } from '../../Board';
 import { Move } from '../types/moveTypes';
 
-//добавить возможность запиывать клетки
-
 class MoveHistory {
 	private movesWhite: Move[] = [];
 	private movesBlack: Move[] = [];

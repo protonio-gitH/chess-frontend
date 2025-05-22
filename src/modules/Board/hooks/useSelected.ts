@@ -19,32 +19,28 @@ export const useSelected = (
 	imgForMove: HTMLImageElement | null,
 ): UseSelectedHook => {
 	const [selectedCell, setSelectedCell] = useState<Cell | null>(null);
-	// console.log(imgForMove?.style);
-	// if (imgForMove) {
-	// 	imgForMove.style.position = 'absolute';
-	// 	imgForMove.style.left = '500px';
-	// }
 
 	async function moveElementSlow(element: HTMLImageElement, targetElement: HTMLDivElement): Promise<void> {
 		const targetRect = targetElement.getBoundingClientRect();
 		const elementRect = element.getBoundingClientRect();
 		const deltaY = targetRect.top - elementRect.top;
 		const deltaX = targetRect.left - elementRect.left;
-		element.style.transition = `transform 0.4s ease-out`;
+		const animTiming = deltaX ** 2 + deltaY ** 2;
+		element.style.transition = `transform ${Math.sqrt(animTiming)}ms ease-out`;
 		element.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-		const waitAnimPromise = new Promise(resolve => {
+		const waitAnimPromise = new Promise<void>(resolve => {
 			setTimeout(() => {
-				resolve(true);
-			}, 300);
+				resolve();
+			}, Math.sqrt(animTiming));
 		});
 		await waitAnimPromise;
 	}
 
-	function updateBoard() {
+	function updateBoard(): void {
 		const newBoard = board.getCopyBoard();
 		setBoard(newBoard);
 	}
-	async function selectHandler(cell: Cell, isDragging?: boolean, cellElement?: HTMLDivElement | null) {
+	async function selectHandler(cell: Cell, isDragging?: boolean, cellElement?: HTMLDivElement | null): Promise<void> {
 		if (cell?.figure && cell.figure.color === board.move && !board.promotion) {
 			if (cell?.x === selectedCell?.x && cell?.y === selectedCell?.y && !isDragging) {
 				setSelectedCell(null);

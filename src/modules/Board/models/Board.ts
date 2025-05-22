@@ -193,9 +193,12 @@ export class Board {
 		newBoard.cells = this.cells;
 		newBoard.move = this.move;
 		newBoard.promotion = this.promotion;
-		newBoard.moveHistory = this.moveHistory;
-		newBoard.fromCell = this.fromCell;
-		newBoard.toCell = this.toCell;
+		newBoard.moveHistory = new MoveHistory();
+		const moves = this.moveHistory.getMoves();
+		moves.movesWhite.forEach(move => newBoard.moveHistory.addMove(move, Colors.WHITE));
+		moves.movesBlack.forEach(move => newBoard.moveHistory.addMove(move, Colors.BLACK));
+		newBoard.fromCell = this.fromCell ? ({ ...this.fromCell, board: newBoard } as Cell) : null;
+		newBoard.toCell = this.toCell ? ({ ...this.toCell, board: newBoard } as Cell) : null;
 		for (const line of newBoard.cells) {
 			for (let cell of line) {
 				cell.board = newBoard;
@@ -206,15 +209,23 @@ export class Board {
 
 	public getMoveBoard(move: Move): Board {
 		const newBoard = this.getCopyBoard();
-		newBoard.fromCell = move.from;
-		newBoard.toCell = move.to;
-		newBoard.cells = move.cellsDump;
-		for (const line of newBoard.cells) {
-			for (let cell of line) {
-				cell.board = newBoard;
-				cell.available = false;
-			}
-		}
+		const files = Object.values(Files);
+		newBoard.fromCell = { ...move.from, board: newBoard } as Cell;
+		newBoard.toCell = { ...move.to, board: newBoard } as Cell;
+		newBoard.cells = move.cellsDump.map(row =>
+			row.map(nullBoardCell => {
+				const cell = new Cell(
+					nullBoardCell.x,
+					nullBoardCell.y,
+					nullBoardCell.color,
+					nullBoardCell.figure,
+					nullBoardCell.file,
+					newBoard,
+				);
+				return cell;
+			}),
+		);
+
 		return newBoard;
 	}
 

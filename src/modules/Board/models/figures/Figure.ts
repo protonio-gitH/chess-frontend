@@ -26,7 +26,7 @@ export class Figure {
 		if (!enemyKing) return;
 
 		if (this.canMove(enemyKing.cell)) {
-			console.log(this.cell);
+			// console.log(this.cell);
 			if (enemyKing.shahFigures.filter(i => i.id === this.id).length === 0) {
 				enemyKing.shahFigures = [...enemyKing.shahFigures, this];
 			}
