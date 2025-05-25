@@ -28,6 +28,7 @@ function App() {
 
 	function handleMoveClick(move: Move) {
 		const newBoard = board.getMoveBoard(move);
+		newBoard.moveHistory.setCurrentMove(move);
 		setBoard(newBoard);
 	}
 

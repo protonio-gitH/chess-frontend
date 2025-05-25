@@ -197,6 +197,8 @@ export class Board {
 		const moves = this.moveHistory.getMoves();
 		moves.movesWhite.forEach(move => newBoard.moveHistory.addMove(move, Colors.WHITE));
 		moves.movesBlack.forEach(move => newBoard.moveHistory.addMove(move, Colors.BLACK));
+		newBoard.moveHistory.setLastMove(this.moveHistory.getLastMove());
+		newBoard.moveHistory.setCurrentMove(this.moveHistory.getCurrentMove());
 		newBoard.fromCell = this.fromCell ? ({ ...this.fromCell, board: newBoard } as Cell) : null;
 		newBoard.toCell = this.toCell ? ({ ...this.toCell, board: newBoard } as Cell) : null;
 		for (const line of newBoard.cells) {

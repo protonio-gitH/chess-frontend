@@ -25,13 +25,14 @@ export const useSelected = (
 		const elementRect = element.getBoundingClientRect();
 		const deltaY = targetRect.top - elementRect.top;
 		const deltaX = targetRect.left - elementRect.left;
-		const animTiming = deltaX ** 2 + deltaY ** 2;
-		element.style.transition = `transform ${Math.sqrt(animTiming)}ms ease-out`;
+		const sqrAnimTiming = deltaX ** 2 + deltaY ** 2;
+		const sqrtAnimTiming = Math.sqrt(sqrAnimTiming);
+		element.style.transition = `transform ${sqrtAnimTiming}ms ease-out`;
 		element.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
 		const waitAnimPromise = new Promise<void>(resolve => {
 			setTimeout(() => {
 				resolve();
-			}, Math.sqrt(animTiming));
+			}, sqrtAnimTiming);
 		});
 		await waitAnimPromise;
 	}
@@ -41,7 +42,14 @@ export const useSelected = (
 		setBoard(newBoard);
 	}
 	async function selectHandler(cell: Cell, isDragging?: boolean, cellElement?: HTMLDivElement | null): Promise<void> {
-		if (cell?.figure && cell.figure.color === board.move && !board.promotion) {
+		const lastMove = board.moveHistory.getLastMove();
+		const currentMove = board.moveHistory.getCurrentMove();
+		const canMove =
+			currentMove === null || currentMove?.title === lastMove?.title || (currentMove === null && lastMove === null)
+				? true
+				: false;
+
+		if (cell?.figure && cell.figure.color === board.move && !board.promotion && canMove) {
 			if (cell?.x === selectedCell?.x && cell?.y === selectedCell?.y && !isDragging) {
 				setSelectedCell(null);
 			} else {
@@ -57,7 +65,7 @@ export const useSelected = (
 					setSelectedCell(cell);
 				}
 			}
-		} else if (selectedCell && selectedCell.figure?.canMove(cell) && !board.promotion) {
+		} else if (selectedCell && selectedCell.figure?.canMove(cell) && !board.promotion && canMove) {
 			setSelectedCell(null);
 			if (imgForMove && cellElement) {
 				await moveElementSlow(imgForMove, cellElement);
