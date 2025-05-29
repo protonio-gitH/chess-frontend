@@ -48,6 +48,7 @@ export const useSelected = (
 			currentMove === null || currentMove?.title === lastMove?.title || (currentMove === null && lastMove === null)
 				? true
 				: false;
+		console.log(canMove);
 
 		if (cell?.figure && cell.figure.color === board.move && !board.promotion && canMove) {
 			if (cell?.x === selectedCell?.x && cell?.y === selectedCell?.y && !isDragging) {
@@ -61,6 +62,7 @@ export const useSelected = (
 				) {
 					setSelectedCell(null);
 					selectedCell.moveFigure(cell, board);
+					board.moveHistory.setCurrentMove(board.moveHistory.getLastMove());
 				} else {
 					setSelectedCell(cell);
 				}
@@ -71,6 +73,7 @@ export const useSelected = (
 				await moveElementSlow(imgForMove, cellElement);
 			}
 			selectedCell.moveFigure(cell, board);
+			board.moveHistory.setCurrentMove(board.moveHistory.getLastMove());
 		} else {
 			setSelectedCell(null);
 		}
