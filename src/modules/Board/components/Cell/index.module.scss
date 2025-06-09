@@ -18,8 +18,9 @@
 	transition: background 0.1s ease;
 
 	img {
-		width: 64px;
-		height: 64px;
+		width: $cell-size;
+		height: $cell-size;
+		object-fit: contain;
 	}
 }
 
@@ -35,8 +36,8 @@
 }
 
 .available {
-	width: 15px;
-	height: 15px;
+	width: calc($cell-size / 4);
+	height: calc($cell-size / 4);
 	background: $highlight-color;
 	border-radius: 50%;
 }

@@ -1,5 +1,7 @@
-$cell-size: 64px;
-$board-size: $cell-size * 8;
+// @import './_responsive.scss';
+
+$cell-size: var(--base-cell-size);
+$board-size: calc($cell-size * 8);
 $black-cell-color: #8b4939;
 $white-cell-color: #eed4ac;
 $highlight-color: rgba(20, 85, 30, 0.5);
