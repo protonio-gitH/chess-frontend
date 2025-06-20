@@ -1,30 +1,23 @@
 import React, { FC, memo } from 'react';
 import styles from './index.module.scss';
-import { Move } from '../../types/moveTypes';
+import { Move, HandleMoveClick } from '../../types/moveTypes';
+import MoveColumn from '../MoveColumn';
+import MoveControls from '../MoveControls';
 
 interface MoveListProps {
 	whiteMoves: Move[];
 	blackMoves: Move[];
-	handleMoveClick: (move: Move) => void;
+	handleMoveClick: HandleMoveClick;
 }
 
 const MoveList: FC<MoveListProps> = ({ whiteMoves, blackMoves, handleMoveClick }) => {
 	return (
 		<div className={styles.moveList}>
-			<ul className={styles.moveList__list}>
-				{whiteMoves.map((move, i) => (
-					<li className={styles['moveList__list-item']} key={i}>
-						<button onClick={() => handleMoveClick(move)}>{move.title}</button>
-					</li>
-				))}
-			</ul>
-			<ul className={styles.moveList__list}>
-				{blackMoves.map((move, i) => (
-					<li className={styles['moveList__list-item']} key={i}>
-						<button onClick={() => handleMoveClick(move)}>{move.title}</button>
-					</li>
-				))}
-			</ul>
+			{(whiteMoves.length > 0 || blackMoves.length > 0) && <MoveControls />}
+			<div className={styles.moveList__columns}>
+				<MoveColumn moves={whiteMoves} handleMoveClick={handleMoveClick} />
+				<MoveColumn moves={blackMoves} handleMoveClick={handleMoveClick} />
+			</div>
 		</div>
 	);
 };

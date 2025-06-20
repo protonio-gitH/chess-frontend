@@ -1,0 +1,10 @@
+.moveList__controls {
+	display: flex;
+	gap: 0 clamp(0.3rem, 0.83vw, 0.625rem);
+	button {
+		background-color: transparent;
+		border: none;
+		cursor: pointer;
+		overflow: hidden;
+	}
+}

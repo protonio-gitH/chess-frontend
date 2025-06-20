@@ -5,3 +5,9 @@
 	justify-content: center;
 	align-items: center;
 }
+
+.playContent {
+	display: flex;
+	align-items: center;
+	gap: 0px clamp(0.25rem, 1.25vw, 0.95rem);
+}

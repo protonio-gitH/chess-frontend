@@ -1,0 +1,10 @@
+.moveList__item {
+	button {
+		background-color: transparent;
+		border: none;
+		cursor: pointer;
+
+		padding: clamp(0.25rem, 1vw, 0.75rem);
+		font-size: clamp(0.75rem, 2vw, 1.2rem);
+	}
+}

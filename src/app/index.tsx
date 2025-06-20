@@ -34,8 +34,10 @@ function App() {
 
 	return (
 		<div className={styles.app}>
-			<BoardComponent board={board} setBoard={setBoard} />
-			<MoveList whiteMoves={moves.white} blackMoves={moves.black} handleMoveClick={handleMoveClick} />
+			<div className={styles.playContent}>
+				<BoardComponent board={board} setBoard={setBoard} />
+				<MoveList whiteMoves={moves.white} blackMoves={moves.black} handleMoveClick={handleMoveClick} />
+			</div>
 		</div>
 	);
 }
