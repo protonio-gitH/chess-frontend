@@ -1,4 +1,0 @@
-@mixin icon-size($min: 0.9rem, $preferred: 2vw, $max: 1.5rem, $scale: 1) {
-	width: clamp(calc(#{$min} * #{$scale}), calc(#{$preferred} * #{$scale}), calc(#{$max} * #{$scale}));
-	height: clamp(calc(#{$min} * #{$scale}), calc(#{$preferred} * #{$scale}), calc(#{$max} * #{$scale}));
-}
