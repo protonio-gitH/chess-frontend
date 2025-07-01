@@ -1,14 +1,14 @@
-import { Colors } from '../../Board';
-import { Move } from '../types/moveTypes';
+import { Cell, Colors } from '../../Board';
+import { Move, CellWithNullBoard } from '../types/moveTypes';
 
 class MoveHistory {
 	private movesWhite: Move[] = [];
 	private movesBlack: Move[] = [];
 	private lastMove: Move | null = null;
 	private currentMove: Move | null = null;
-	constructor() {}
+	private initCells: CellWithNullBoard[][] = [];
 
-	public addMove(move: Move, color: Colors) {
+	public addMove(move: Move, color: Colors): void {
 		color === Colors.WHITE ? this.movesWhite.push(move) : this.movesBlack.push(move);
 		this.lastMove = move;
 	}
@@ -21,7 +21,7 @@ class MoveHistory {
 		return this.lastMove;
 	}
 
-	public setLastMove(move: Move | null) {
+	public setLastMove(move: Move | null): void {
 		this.lastMove = move;
 	}
 
@@ -29,13 +29,21 @@ class MoveHistory {
 		return this.currentMove;
 	}
 
-	public setCurrentMove(move: Move | null) {
+	public setCurrentMove(move: Move | null): void {
 		this.currentMove = move;
 	}
 
-	public clearMoves() {
+	public clearMoves(): void {
 		this.movesWhite = [];
 		this.movesBlack = [];
+	}
+
+	public getInitCells(): CellWithNullBoard[][] {
+		return this.initCells;
+	}
+
+	public setInitCells(initCells: CellWithNullBoard[][]): void {
+		this.initCells = initCells;
 	}
 }
 export default MoveHistory;

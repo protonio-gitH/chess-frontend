@@ -206,6 +206,9 @@ export class Cell {
 		const title = !target.figure
 			? target.file + (target.y + 1)
 			: this.figure?.name[0] + 'x' + target.file + (target.y + 1);
+		const color = board.move;
+		const lastMove = board.moveHistory.getLastMove();
+		const id = (lastMove?.id ?? 0) + 1;
 
 		if (this.figure?.color === board.move) {
 			if (this.figure && this.figure?.canMove(target) && target.figure?.name !== FigureNames.KING) {
@@ -247,6 +250,7 @@ export class Cell {
 				target.figure.cell = target;
 				this.figure = null;
 				let move = {
+					id,
 					moveType: moveType,
 					from: { ...from, board: null } as CellWithNullBoard,
 					to: { ...to, board: null } as CellWithNullBoard,
@@ -258,6 +262,7 @@ export class Cell {
 						})),
 					) as CellWithNullBoard[][],
 					title: title,
+					color,
 				};
 				board.toCell = target;
 				board.fromCell = this;

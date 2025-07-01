@@ -6,13 +6,17 @@ import logo_next_double from '../../assets/icon-history-next-double.svg';
 import logo_previous_double from '../../assets/icon-history-previous-double.svg';
 import ControlsButton from '../ControlsButton';
 
-const MoveControls: FC = () => {
+interface MoveControlsProps {
+	handleContolBtnClick: (action: 'first' | 'next' | 'prev' | 'last') => void;
+}
+
+const MoveControls: FC<MoveControlsProps> = ({ handleContolBtnClick }) => {
 	return (
 		<div className={styles.moveList__controls}>
-			<ControlsButton logo={logo_previous_double} />
-			<ControlsButton logo={logo_previous} />
-			<ControlsButton logo={logo_next} />
-			<ControlsButton logo={logo_next_double} />
+			<ControlsButton logo={logo_previous_double} action="first" handleContolBtnClick={handleContolBtnClick} />
+			<ControlsButton logo={logo_previous} action="prev" handleContolBtnClick={handleContolBtnClick} />
+			<ControlsButton logo={logo_next} action="next" handleContolBtnClick={handleContolBtnClick} />
+			<ControlsButton logo={logo_next_double} action="last" handleContolBtnClick={handleContolBtnClick} />
 		</div>
 	);
 };

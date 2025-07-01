@@ -6,13 +6,14 @@ import { Move, HandleMoveClick } from '../../types/moveTypes';
 interface MoveColumnProps {
 	moves: Move[];
 	handleMoveClick: HandleMoveClick;
+	currentMove: Move | null;
 }
 
-const MoveColumn: FC<MoveColumnProps> = ({ moves, handleMoveClick }) => {
+const MoveColumn: FC<MoveColumnProps> = ({ moves, handleMoveClick, currentMove }) => {
 	return (
 		<ul className={styles.moveList__list}>
 			{moves.map((move, i) => (
-				<MoveButton key={i} move={move} handleMoveClick={handleMoveClick} index={i} />
+				<MoveButton key={i} move={move} handleMoveClick={handleMoveClick} index={i} currentMove={currentMove} />
 			))}
 		</ul>
 	);

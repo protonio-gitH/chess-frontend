@@ -8,7 +8,7 @@ import { Knight } from './figures/Knight';
 import { Pawn } from './figures/Pawn';
 import { Queen } from './figures/Queen';
 import { Rook } from './figures/Rook';
-import { Move, MoveHistory } from '../../MoveHistory/';
+import { CellWithNullBoard, Move, MoveHistory } from '../../MoveHistory/';
 import cloneDeep from 'lodash/cloneDeep';
 
 export class Board {
@@ -194,6 +194,7 @@ export class Board {
 		newBoard.move = this.move;
 		newBoard.promotion = this.promotion;
 		newBoard.moveHistory = new MoveHistory();
+		newBoard.moveHistory.setInitCells(this.moveHistory.getInitCells());
 		const moves = this.moveHistory.getMoves();
 		moves.movesWhite.forEach(move => newBoard.moveHistory.addMove(move, Colors.WHITE));
 		moves.movesBlack.forEach(move => newBoard.moveHistory.addMove(move, Colors.BLACK));
@@ -215,6 +216,28 @@ export class Board {
 		newBoard.fromCell = { ...move.from, board: newBoard } as Cell;
 		newBoard.toCell = { ...move.to, board: newBoard } as Cell;
 		newBoard.cells = move.cellsDump.map(row =>
+			row.map(nullBoardCell => {
+				const cell = new Cell(
+					nullBoardCell.x,
+					nullBoardCell.y,
+					nullBoardCell.color,
+					nullBoardCell.figure,
+					nullBoardCell.file,
+					newBoard,
+				);
+				return cell;
+			}),
+		);
+
+		return newBoard;
+	}
+
+	public getInitBoard(): Board {
+		const newBoard = this.getCopyBoard();
+		const initCells = newBoard.moveHistory.getInitCells();
+		newBoard.fromCell = null;
+		newBoard.toCell = null;
+		newBoard.cells = initCells.map(row =>
 			row.map(nullBoardCell => {
 				const cell = new Cell(
 					nullBoardCell.x,
@@ -296,6 +319,14 @@ export class Board {
 		new Knight(Colors.BLACK, this.getCell(6, 7));
 	}
 
+	private addInitCellsToHistory() {
+		const initCellsWithNullBoard = this.cells.map(row =>
+			row.map(cell => ({ ...cell, board: null } as CellWithNullBoard)),
+		);
+
+		this.moveHistory.setInitCells(initCellsWithNullBoard);
+	}
+
 	public initFigures() {
 		this.addPawns();
 		this.addBishops();
@@ -303,5 +334,6 @@ export class Board {
 		this.addQueens();
 		this.addKnights();
 		this.addRooks();
+		this.addInitCellsToHistory();
 	}
 }
