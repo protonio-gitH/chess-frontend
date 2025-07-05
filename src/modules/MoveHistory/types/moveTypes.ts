@@ -15,4 +15,6 @@ interface Move {
 	color: Colors;
 }
 
-export type { Move, CellWithNullBoard, HandleMoveClick };
+type MoveActions = 'first' | 'next' | 'prev' | 'last';
+
+export type { Move, CellWithNullBoard, HandleMoveClick, MoveActions };

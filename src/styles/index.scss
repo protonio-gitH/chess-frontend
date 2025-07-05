@@ -9,36 +9,36 @@ button {
 }
 
 :root {
-	--base-cell-size: 4rem; // 56px
+	--base-cell-size: 64px; // 64px
 }
 
 @media (max-width: 1200px) {
 	:root {
-		--base-cell-size: 3.5rem; // 56px
+		--base-cell-size: 56px; // 56px
 	}
 }
 
 @media (max-width: 992px) {
 	:root {
-		--base-cell-size: 3rem; // 48px
+		--base-cell-size: 48px; // 48px
 	}
 }
 
 @media (max-width: 768px) {
 	:root {
-		--base-cell-size: 2.5rem; // 40px
+		--base-cell-size: 40px; // 40px
 	}
 }
 
 @media (max-width: 576px) {
 	:root {
-		--base-cell-size: 2rem; // 32px
+		--base-cell-size: 32px; // 32px
 	}
 }
 
 // Для очень маленьких экранов
 @media (max-width: 320px) {
 	:root {
-		--base-cell-size: 1.5rem;
+		--base-cell-size: 24px;
 	}
 }

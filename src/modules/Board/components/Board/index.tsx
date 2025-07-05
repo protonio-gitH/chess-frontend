@@ -31,7 +31,6 @@ const BoardComponent: FC<BoardProps> = ({ board, setBoard }) => {
 	}, [board]);
 
 	useEffect(() => {
-		// console.log(imgForMove.current);
 		hightlightCells();
 	}, [selectedCell]);
 	return (

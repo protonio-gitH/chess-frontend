@@ -3,13 +3,14 @@ import styles from './index.module.scss';
 import { Move, HandleMoveClick } from '../../types/moveTypes';
 import MoveColumn from '../MoveColumn';
 import MoveControls from '../MoveControls';
+import { MoveActions } from '../../types/moveTypes';
 
 interface MoveListProps {
 	whiteMoves: Move[];
 	blackMoves: Move[];
 	handleMoveClick: HandleMoveClick;
 	currentMove: Move | null;
-	handleContolBtnClick: (action: 'first' | 'next' | 'prev' | 'last') => void;
+	handleContolBtnClick: (action: MoveActions) => void;
 }
 
 const MoveList: FC<MoveListProps> = ({
