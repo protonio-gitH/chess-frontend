@@ -1,8 +1,12 @@
 .moveList__columns {
 	display: flex;
 	justify-content: space-between;
+	width: clamp(4.5rem, 10vw, 7.875rem);
 }
 
 .moveList {
-	width: clamp(4.5rem, 10vw, 7.875rem);
+	width: calc(clamp(4.5rem, 10vw, 7.875rem) + var(--base-cell-size) - var(--base-cell-size) / 2);
+	height: calc((var(--base-cell-size) * 8) / 2);
+	overflow: auto;
+	align-self: flex-start;
 }

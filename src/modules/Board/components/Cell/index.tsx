@@ -60,6 +60,8 @@ const CellComponent = forwardRef<HTMLImageElement, CellProps>(
 				>
 					{cell?.available && !cell.figure && <div className={styles.available}></div>}
 					{cell.figure?.logo && <img ref={ref} src={cell.figure?.logo} />}
+					{/* <use href={logo} /> */}
+					{/* <img ref={ref} src={cell.figure?.logo} /> */}
 				</div>
 				{(cell.y === 0 || cell.y === 7) && cell.figure?.name === FigureNames.PAWN && (
 					<PromotionPawn cell={cell} updateBoard={updateBoard} board={board} />

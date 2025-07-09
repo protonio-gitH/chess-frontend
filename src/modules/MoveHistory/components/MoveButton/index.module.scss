@@ -10,6 +10,7 @@
 	button {
 		@extend %btn-reset;
 	}
+
 	&--current {
 		button {
 			color: red;
