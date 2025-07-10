@@ -8,7 +8,8 @@
 		li {
 			background-color: #fff;
 			border-radius: 10%;
-
+			width: $cell-size;
+			height: $cell-size;
 			&:hover {
 				background: $highlight-gradient;
 				background-color: #fff;
@@ -20,11 +21,8 @@
 			}
 		}
 	}
-
-	// &__list {
-	// 	&-item {
-	// 		background-color: #fff;
-	// 		border-radius: 10%;
-	// 	}
-	// }
+	button {
+		width: $cell-size;
+		height: $cell-size;
+	}
 }

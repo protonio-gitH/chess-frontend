@@ -62,7 +62,7 @@ const PromotionPawn: FC<PromotionPawnProps> = function ({ cell, updateBoard, boa
 	}
 
 	const cellPositionStyle = {
-		top: `${position.top + (cell.y === 7 ? -position.promRefHeight : position.height)}px`,
+		top: `${position.top + (cell.y === 0 ? -position.promRefHeight : position.height)}px`,
 		left: `${position.left}px`,
 	};
 
