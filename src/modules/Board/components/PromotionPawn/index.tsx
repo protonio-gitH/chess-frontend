@@ -94,7 +94,12 @@ const PromotionPawn: FC<PromotionPawnProps> = function ({ cell, updateBoard, boa
 					<img src={cell.figure?.color === Colors.WHITE ? whiteBishop : blackBishop} alt="Bishop" />
 				</li>
 			</ul>
-			<button onClick={cancelHanler}>Отмена</button>
+			<button onClick={cancelHanler}>
+				<div className={styles.cross}>
+					<span></span>
+					<span></span>
+				</div>
+			</button>
 		</div>
 	);
 };
