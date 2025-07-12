@@ -1,0 +1,13 @@
+.game {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.gameContent {
+	display: flex;
+	align-items: center;
+	gap: 0px clamp(0.25rem, 1.25vw, 0.95rem);
+}
