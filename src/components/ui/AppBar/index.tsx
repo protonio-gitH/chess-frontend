@@ -12,13 +12,25 @@ import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import { useModal } from '../../../hooks/useModal';
+import { ModalType } from '../../../types/modalContextTypes';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const signButtons: { title: string; type: ModalType }[] = [
+	{ title: 'Login', type: 'login' },
+	{ title: 'Registration', type: 'register' },
+];
 
-function AppBarComponent() {
+const AppBarComponent: FC = () => {
 	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+	const { modalOptions, setModalOptions } = useModal();
+
+	const handleModal = (type: ModalType) => {
+		setModalOptions({ modalType: type, open: true });
+	};
 
 	const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorElNav(event.currentTarget);
@@ -119,7 +131,7 @@ function AppBarComponent() {
 						))}
 					</Box>
 					<Box sx={{ flexGrow: 0 }}>
-						<Tooltip title="Open settings">
+						{/* <Tooltip title="Open settings">
 							<IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
 								<Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
 							</IconButton>
@@ -145,11 +157,20 @@ function AppBarComponent() {
 									<Typography sx={{ textAlign: 'center' }}>{setting}</Typography>
 								</MenuItem>
 							))}
-						</Menu>
+						</Menu> */}
 					</Box>
+					{signButtons.map(page => (
+						<Button
+							onClick={() => handleModal(page.type)}
+							key={page.title}
+							sx={{ my: 2, color: 'white', display: 'block' }}
+						>
+							{page.title}
+						</Button>
+					))}
 				</Toolbar>
 			</Container>
 		</AppBar>
 	);
-}
+};
 export default AppBarComponent;

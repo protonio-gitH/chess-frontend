@@ -1,0 +1,5 @@
+#login-form{
+	display: flex;
+	flex-direction: column;
+	gap: clamp(0.75rem, 2vw, 1.2rem);
+}

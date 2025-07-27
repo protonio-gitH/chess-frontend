@@ -16,8 +16,15 @@ body,
 	padding: 0;
 }
 
+.auth-form {
+	display: flex;
+	flex-direction: column;
+	gap: clamp(0.75rem, 2vw, 1.2rem);
+}
+
 :root {
 	--base-cell-size: 64px; // 64px
+	--form-font-size: clamp(1.5rem, 2.8vw, 2.25rem);
 }
 
 @media (max-width: 1200px) {
