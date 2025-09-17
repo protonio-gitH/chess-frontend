@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react';
+import React, { FC, useState, useEffect, memo } from 'react';
 import { createPortal } from 'react-dom';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -54,4 +54,4 @@ const BasicModal: FC<BasiscModalProps> = ({ children }) => {
 	);
 };
 
-export default BasicModal;
+export default memo(BasicModal);

@@ -10,10 +10,10 @@ import { ModalProvider } from './hooks/useModal';
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
 	<React.StrictMode>
-		<ModalProvider>
-			<Provider store={store}>
+		<Provider store={store}>
+			<ModalProvider>
 				<App />
-			</Provider>
-		</ModalProvider>
+			</ModalProvider>
+		</Provider>
 	</React.StrictMode>,
 );

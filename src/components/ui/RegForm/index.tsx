@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import styles from './index.module.scss';
@@ -26,7 +26,7 @@ const formDataSchema = z
 
 type FormData = z.infer<typeof formDataSchema>;
 
-const LoginForm = () => {
+const RegForm = () => {
 	const [userFormData, setUserFormData] = useState<Partial<FormData>>({});
 	const [isErrors, setIsErrors] = useState<boolean>(false);
 
@@ -91,4 +91,4 @@ const LoginForm = () => {
 	);
 };
 
-export default LoginForm;
+export default memo(RegForm);

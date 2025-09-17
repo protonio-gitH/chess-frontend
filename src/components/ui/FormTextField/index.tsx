@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, memo } from 'react';
 import { TextField, Typography, Box } from '@mui/material';
 import { ChangeEvent } from 'react';
 
@@ -23,4 +23,4 @@ const FormTextField: FC<FormTextFieldProps> = ({ label, value, required = false,
 	);
 };
 
-export default FormTextField;
+export default memo(FormTextField);

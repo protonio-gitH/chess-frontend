@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import styles from './index.module.scss';
@@ -13,7 +13,7 @@ const initialState = {
 };
 
 const formDataSchema = z.object({
-	login: z.string().nonempty('Login is required'),
+	login: z.string().email('Invalid email address').nonempty('Login is required'),
 	password: z.string().nonempty('Password is required').min(6, 'Password must be at least 6 characters'),
 });
 
@@ -77,4 +77,4 @@ const LoginForm = () => {
 	);
 };
 
-export default LoginForm;
+export default memo(LoginForm);
