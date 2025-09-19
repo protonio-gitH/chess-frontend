@@ -1,15 +1,16 @@
 import APIService from './api/client';
+import { Config } from './config';
 
-class Services {
-	private config: unknown;
+export default class Services {
+	private config: Config;
 	private declare apiService: APIService;
-	constructor(config: unknown) {
+	constructor(config: Config) {
 		this.config = config;
 	}
 
 	get api(): APIService {
 		if (!this.api) {
-			this.apiService = new APIService(this);
+			this.apiService = new APIService(this, this.config.api);
 		}
 		return this.apiService;
 	}

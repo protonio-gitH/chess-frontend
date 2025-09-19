@@ -1,11 +1,13 @@
-import { ApiResponse, RequestOptions } from '../types';
+import { Config } from '../config';
+import Services from '../services';
+import { ApiResponse, ConfigAPI, RequestOptions } from '../types';
 
 export default class APIService {
 	private headers: Record<string, string>;
-	private services;
+	private services: Services;
 	private baseUrl: string = 'https://localhost:3000';
 
-	constructor(services: unknown) {
+	constructor(services: Services, config: ConfigAPI) {
 		this.headers = {
 			'Content-Type': 'application/json',
 		};
