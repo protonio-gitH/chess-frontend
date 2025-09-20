@@ -1,17 +1,31 @@
 import APIService from './api/client';
-import { Config } from './config';
+import ReduxService from './store';
+import type { Store } from 'redux';
+import type { AnyAction } from '@reduxjs/toolkit';
+import { Config, config } from './config';
 
-export default class Services {
+export class Services {
 	private config: Config;
-	private declare apiService: APIService;
+	private apiService!: APIService;
+	private reduxService!: ReduxService;
+
 	constructor(config: Config) {
 		this.config = config;
 	}
 
-	get api(): APIService {
-		if (!this.api) {
+	public getApi(): APIService {
+		if (!this.apiService) {
 			this.apiService = new APIService(this, this.config.api);
 		}
 		return this.apiService;
 	}
+
+	public getRedux(): Store<unknown, AnyAction> {
+		if (!this.reduxService) {
+			this.reduxService = new ReduxService(this.config.redux);
+		}
+		return this.reduxService.getStore();
+	}
 }
+
+export const services = new Services(config);

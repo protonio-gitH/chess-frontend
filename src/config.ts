@@ -13,6 +13,7 @@ const config = {
 	api: {
 		baseUrl: 'https://localhost:3000',
 	},
+	redux: {},
 };
 export type Config = typeof config;
 export { config };

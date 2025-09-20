@@ -6,14 +6,18 @@ import './styles/index.scss';
 import App from './app';
 import 'normalize.css';
 import { ModalProvider } from './hooks/useModal';
+import { services } from './services';
+import { ServicesContext } from './hooks/useContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
 	<React.StrictMode>
-		<Provider store={store}>
-			<ModalProvider>
-				<App />
-			</ModalProvider>
-		</Provider>
+		<ServicesContext.Provider value={services}>
+			<Provider store={store}>
+				<ModalProvider>
+					<App />
+				</ModalProvider>
+			</Provider>
+		</ServicesContext.Provider>
 	</React.StrictMode>,
 );

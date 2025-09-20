@@ -1,5 +1,5 @@
 import { Config } from '../config';
-import Services from '../services';
+import { Services } from '../services';
 import { ApiResponse, ConfigAPI, RequestOptions } from '../types';
 
 export default class APIService {
