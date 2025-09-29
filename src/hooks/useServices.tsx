@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { FC, useState } from 'react';
 import { Services } from '../services';
+import { config } from '../config';
 
 export const ServicesContext = React.createContext<Services | null>(null);
 

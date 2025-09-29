@@ -5,7 +5,7 @@ import Main from './Main';
 import Layout from '../components/Layout';
 import Modal from '../components/ui/Modal';
 import { useModal } from '../hooks/useModal';
-import LoginForm from '../components/ui/LoginForm';
+import LoginForm, { LoginFormData } from '../components/ui/LoginForm';
 import RegForm from '../components/ui/RegForm';
 
 function App() {
@@ -15,10 +15,16 @@ function App() {
 	// });
 	const { modalOptions, setModalOptions } = useModal();
 
+	function login(data: LoginFormData) {
+		try {
+			const response = '';
+		} catch (e) {}
+	}
+
 	const renderContent = () => {
 		switch (modalOptions.modalType) {
 			case 'login':
-				return <LoginForm />;
+				return <LoginForm login={login} />;
 			case 'register':
 				return <RegForm />;
 			default:

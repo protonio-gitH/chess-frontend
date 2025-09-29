@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, FC } from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import styles from './index.module.scss';
@@ -17,10 +17,18 @@ const formDataSchema = z.object({
 	password: z.string().nonempty('Password is required').min(6, 'Password must be at least 6 characters'),
 });
 
-type FormData = z.infer<typeof formDataSchema>;
+interface LoginFormProps {
+	login: (data: LoginFormData) => void;
+}
 
-const LoginForm = () => {
-	const [userFormData, setUserFormData] = useState<Partial<FormData>>({});
+function isValidLoginFormData(data: Partial<LoginFormData>): data is LoginFormData {
+	return typeof data.login === 'string' && typeof data.password === 'string';
+}
+
+export type LoginFormData = z.infer<typeof formDataSchema>;
+
+const LoginForm: FC<LoginFormProps> = ({ login }) => {
+	const [userFormData, setUserFormData] = useState<Partial<LoginFormData>>({});
 	const [isErrors, setIsErrors] = useState<boolean>(false);
 
 	const formData = {
@@ -36,11 +44,13 @@ const LoginForm = () => {
 
 	const handlerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
 		const errors = validate();
 		if (errors) {
 			setIsErrors(true);
 			return;
+		}
+		if (isValidLoginFormData(userFormData)) {
+			login(userFormData);
 		}
 	};
 

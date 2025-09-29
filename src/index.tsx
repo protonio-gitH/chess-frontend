@@ -1,13 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
-import { store } from './store';
 import './styles/index.scss';
 import App from './app';
 import 'normalize.css';
 import { ModalProvider } from './hooks/useModal';
-import { services } from './services';
-import { ServicesContext } from './hooks/useContext';
+import { ServicesContext } from './hooks/useServices';
+import { Services } from './services';
+import { config } from './config';
+
+const services = new Services(config);
+export const store = services.getRedux();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
