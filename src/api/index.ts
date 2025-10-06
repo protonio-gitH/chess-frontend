@@ -5,7 +5,7 @@ import { ApiResponse, ConfigAPI, RequestOptions } from '../types';
 export default class APIService {
 	private headers: Record<string, string>;
 	private services: Services;
-	private baseUrl: string = 'https://localhost:3000';
+	private baseUrl: string = 'http://localhost:4000';
 
 	constructor(services: Services, config: ConfigAPI) {
 		this.headers = {

@@ -8,9 +8,9 @@ import { ModalProvider } from './hooks/useModal';
 import { ServicesContext } from './hooks/useServices';
 import { Services } from './services';
 import { config } from './config';
+import { store } from './store';
 
-const services = new Services(config);
-export const store = services.getRedux();
+export const services = new Services(config);
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

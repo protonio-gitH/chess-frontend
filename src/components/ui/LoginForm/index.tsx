@@ -6,30 +6,34 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { z } from 'zod';
 import FormTextField from '../FormTextField';
+import { useDispatch, useSelector } from 'react-redux';
+import { loginThunk } from '../../../store/authSlice';
+import { useAppDispatch } from '../../../store';
 
 const initialState = {
-	login: '',
+	email: '',
 	password: '',
 };
 
 const formDataSchema = z.object({
-	login: z.string().email('Invalid email address').nonempty('Login is required'),
+	email: z.string().email('Invalid email address').nonempty('Login is required'),
 	password: z.string().nonempty('Password is required').min(6, 'Password must be at least 6 characters'),
 });
 
-interface LoginFormProps {
-	login: (data: LoginFormData) => void;
-}
+// interface LoginFormProps {
+// 	login: (data: LoginFormData) => void;
+// }
 
 function isValidLoginFormData(data: Partial<LoginFormData>): data is LoginFormData {
-	return typeof data.login === 'string' && typeof data.password === 'string';
+	return typeof data.email === 'string' && typeof data.password === 'string';
 }
 
 export type LoginFormData = z.infer<typeof formDataSchema>;
 
-const LoginForm: FC<LoginFormProps> = ({ login }) => {
+const LoginForm: FC = () => {
 	const [userFormData, setUserFormData] = useState<Partial<LoginFormData>>({});
 	const [isErrors, setIsErrors] = useState<boolean>(false);
+	const dispatch = useAppDispatch();
 
 	const formData = {
 		...initialState,
@@ -42,7 +46,7 @@ const LoginForm: FC<LoginFormProps> = ({ login }) => {
 		return res.error.format();
 	};
 
-	const handlerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handlerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const errors = validate();
 		if (errors) {
@@ -50,7 +54,8 @@ const LoginForm: FC<LoginFormProps> = ({ login }) => {
 			return;
 		}
 		if (isValidLoginFormData(userFormData)) {
-			login(userFormData);
+			// сделать кастомную темку с try catch
+			await dispatch(loginThunk(userFormData)).unwrap();
 		}
 	};
 
@@ -71,9 +76,9 @@ const LoginForm: FC<LoginFormProps> = ({ login }) => {
 			<FormTextField
 				label="Login"
 				required
-				value={formData.login}
-				onChange={e => setUserFormData(l => ({ ...l, login: e.target.value }))}
-				error={errors?.login?._errors}
+				value={formData.email}
+				onChange={e => setUserFormData(l => ({ ...l, email: e.target.value }))}
+				error={errors?.email?._errors}
 			/>
 			<FormTextField
 				label="Password"

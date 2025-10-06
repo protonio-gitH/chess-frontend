@@ -15,16 +15,10 @@ function App() {
 	// });
 	const { modalOptions, setModalOptions } = useModal();
 
-	function login(data: LoginFormData) {
-		try {
-			const response = '';
-		} catch (e) {}
-	}
-
 	const renderContent = () => {
 		switch (modalOptions.modalType) {
 			case 'login':
-				return <LoginForm login={login} />;
+				return <LoginForm />;
 			case 'register':
 				return <RegForm />;
 			default:
