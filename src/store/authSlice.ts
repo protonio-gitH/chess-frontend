@@ -55,11 +55,11 @@ const authSlice = createSlice({
 				state.error = null;
 			})
 			.addCase(loginThunk.fulfilled, (state, action) => {
+				console.log(jwtDecode(action.payload.token));
 				state.loading = false;
 				state.token = action.payload ? action.payload.token : null;
 			})
 			.addCase(loginThunk.rejected, (state, action) => {
-				console.log(action.payload);
 				state.loading = false;
 				state.error = action.payload ? action.payload.message : null;
 			});

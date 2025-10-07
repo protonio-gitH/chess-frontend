@@ -7,6 +7,7 @@ import Modal from '../components/ui/Modal';
 import { useModal } from '../hooks/useModal';
 import LoginForm, { LoginFormData } from '../components/ui/LoginForm';
 import RegForm from '../components/ui/RegForm';
+import ErrorBoundary from './ErrorBoundary';
 
 function App() {
 	// const [modalOptions, setModalOptions] = useState<ModalOptions>({
@@ -27,15 +28,17 @@ function App() {
 	};
 
 	return (
-		<BrowserRouter>
-			<Routes>
-				<Route path="/" element={<Layout />}>
-					<Route index element={<Main />} />
-					<Route path="game" element={<Game />} />
-				</Route>
-			</Routes>
-			<Modal>{renderContent()}</Modal>
-		</BrowserRouter>
+		<ErrorBoundary>
+			<BrowserRouter>
+				<Routes>
+					<Route path="/" element={<Layout />}>
+						<Route index element={<Main />} />
+						<Route path="game" element={<Game />} />
+					</Route>
+				</Routes>
+				<Modal>{renderContent()}</Modal>
+			</BrowserRouter>
+		</ErrorBoundary>
 	);
 }
 
