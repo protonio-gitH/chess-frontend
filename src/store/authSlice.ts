@@ -1,7 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { services } from '..';
-import { jwtDecode } from 'jwt-decode';
-import { LoginResponse, AuthState, ErrorResponse } from '../types';
+import { LoginResponse, AuthState, ErrorResponse, Extra } from '../types';
 import { PayloadAction } from '@reduxjs/toolkit';
 
 function isErrorResponse(data: LoginResponse | ErrorResponse): data is ErrorResponse {
@@ -11,11 +9,10 @@ function isErrorResponse(data: LoginResponse | ErrorResponse): data is ErrorResp
 export const loginThunk = createAsyncThunk<
 	LoginResponse,
 	{ email: string; password: string },
-	{ rejectValue: ErrorResponse }
->('auth/login', async (credentials, { rejectWithValue }) => {
+	{ rejectValue: ErrorResponse; extra: Extra }
+>('auth/login', async (credentials, { extra, rejectWithValue }) => {
 	try {
-		const api = services.getApi();
-		const response = await api.request<LoginResponse | ErrorResponse>(
+		const response = await extra.api.request<LoginResponse | ErrorResponse>(
 			'/auth/login',
 			'POST',
 			{},
@@ -26,7 +23,6 @@ export const loginThunk = createAsyncThunk<
 		if (isErrorResponse(response.data)) {
 			return rejectWithValue({ message: response.data.message, status: response.status });
 		}
-
 		return response.data;
 	} catch (e) {
 		console.error('Ошибка при запросе /auth/login:', e);
@@ -39,6 +35,7 @@ export const loginThunk = createAsyncThunk<
 });
 
 const initialState: AuthState = {
+	isAuth: false,
 	token: null,
 	loading: false,
 	error: null,
@@ -47,7 +44,17 @@ const initialState: AuthState = {
 const authSlice = createSlice({
 	name: 'auth',
 	initialState,
-	reducers: {},
+	reducers: {
+		loginSuccess(state, action: PayloadAction<string>) {
+			state.token = action.payload;
+			state.isAuth = true;
+			state.error = null;
+		},
+		logout(state) {
+			state.token = null;
+			state.isAuth = false;
+		},
+	},
 	extraReducers: builder => {
 		builder
 			.addCase(loginThunk.pending, state => {
@@ -55,8 +62,8 @@ const authSlice = createSlice({
 				state.error = null;
 			})
 			.addCase(loginThunk.fulfilled, (state, action) => {
-				console.log(jwtDecode(action.payload.token));
 				state.loading = false;
+				state.isAuth = true;
 				state.token = action.payload ? action.payload.token : null;
 			})
 			.addCase(loginThunk.rejected, (state, action) => {
@@ -66,4 +73,5 @@ const authSlice = createSlice({
 	},
 });
 
+export const { loginSuccess, logout } = authSlice.actions;
 export default authSlice.reducer;

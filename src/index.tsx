@@ -6,11 +6,8 @@ import App from './app';
 import 'normalize.css';
 import { ModalProvider } from './hooks/useModal';
 import { ServicesContext } from './hooks/useServices';
-import { Services } from './services';
-import { config } from './config';
 import { store } from './store';
-
-export const services = new Services(config);
+import { services } from './servicesInstance';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(

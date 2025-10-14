@@ -9,6 +9,7 @@ import FormTextField from '../FormTextField';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginThunk } from '../../../store/authSlice';
 import { useAppDispatch } from '../../../store';
+import handleThunk from '../../../utils/handleThunk';
 
 const initialState = {
 	email: '',
@@ -54,8 +55,7 @@ const LoginForm: FC = () => {
 			return;
 		}
 		if (isValidLoginFormData(userFormData)) {
-			// сделать кастомную темку с try catch
-			await dispatch(loginThunk(userFormData)).unwrap();
+			await handleThunk(dispatch, loginThunk, userFormData);
 		}
 	};
 
