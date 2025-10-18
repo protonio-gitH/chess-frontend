@@ -19,3 +19,7 @@ export interface AuthState {
 	loading: boolean;
 	error: string | null;
 }
+
+export interface SnackBarState {
+	message: string | null;
+}

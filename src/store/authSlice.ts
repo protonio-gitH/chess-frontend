@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { LoginResponse, AuthState, ErrorResponse, Extra } from '../types';
 import { PayloadAction } from '@reduxjs/toolkit';
+import { LoginResponse, AuthState, ErrorResponse, Extra } from '../types';
 
 function isErrorResponse(data: LoginResponse | ErrorResponse): data is ErrorResponse {
 	return 'message' in data;

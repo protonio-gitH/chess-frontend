@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Game from './Game';
 import Main from './Main';
@@ -13,24 +13,35 @@ import { useServices } from '../hooks/useServices';
 import { isTokenOverdue } from '../utils/isTokenOvedue';
 import { decodeToken } from '../utils/decodeToken';
 import { loginSuccess } from '../store/authSlice';
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+
+interface State extends SnackbarOrigin {
+	open: boolean;
+	type: typeof Alert.prototype.props.severity;
+	message: string | null;
+}
 
 function App() {
 	const { modalOptions, setModalOptions } = useModal();
+	const [snackBarState, setSnackBackState] = useState<State>({
+		open: false,
+		vertical: 'top',
+		horizontal: 'right',
+		type: 'error',
+		message: null,
+	});
+	const { vertical, horizontal, open, type, message } = snackBarState;
+
 	const services = useServices();
 	const isAuth = useAppSelector(state => state.auth.isAuth);
 	const token = useAppSelector(state => state.auth.token);
+	const error = useAppSelector(state => state.auth.error);
 	const dispatch = useAppDispatch();
 
-	const renderContent = () => {
-		switch (modalOptions.modalType) {
-			case 'login':
-				return <LoginForm />;
-			case 'register':
-				return <RegForm />;
-			default:
-				return null;
-		}
-	};
+	function handleClose() {
+		setSnackBackState(prev => ({ ...prev, open: false }));
+	}
 
 	useEffect(() => {
 		const storedToken = localStorage.getItem('token');
@@ -55,6 +66,23 @@ function App() {
 		}
 	}, [isAuth, token]);
 
+	useEffect(() => {
+		if (error) {
+			setSnackBackState(prev => ({ ...prev, open: true, message: error, type: 'error' }));
+		}
+	}, [error]);
+
+	const renderContent = () => {
+		switch (modalOptions.modalType) {
+			case 'login':
+				return <LoginForm />;
+			case 'register':
+				return <RegForm />;
+			default:
+				return null;
+		}
+	};
+
 	return (
 		<ErrorBoundary>
 			<BrowserRouter>
@@ -66,6 +94,17 @@ function App() {
 				</Routes>
 				<Modal>{renderContent()}</Modal>
 			</BrowserRouter>
+			<Snackbar
+				open={open}
+				anchorOrigin={{ vertical, horizontal }}
+				key={vertical + horizontal}
+				autoHideDuration={6000}
+				onClose={handleClose}
+			>
+				<Alert onClose={handleClose} severity={type} variant="filled" sx={{ width: '100%' }}>
+					{message}
+				</Alert>
+			</Snackbar>
 		</ErrorBoundary>
 	);
 }
