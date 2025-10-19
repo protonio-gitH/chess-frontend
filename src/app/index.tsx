@@ -10,11 +10,9 @@ import RegForm from '../components/ui/RegForm';
 import ErrorBoundary from './ErrorBoundary';
 import { useAppDispatch, useAppSelector } from '../store';
 import { useServices } from '../hooks/useServices';
-import { isTokenOverdue } from '../utils/isTokenOvedue';
-import { decodeToken } from '../utils/decodeToken';
-import { loginSuccess } from '../store/authSlice';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
+import { useAuthEffect } from '../hooks/useAuthEffect';
 
 interface State extends SnackbarOrigin {
 	open: boolean;
@@ -38,33 +36,13 @@ function App() {
 	const token = useAppSelector(state => state.auth.token);
 	const error = useAppSelector(state => state.auth.error);
 	const dispatch = useAppDispatch();
+	const api = services.getApi();
+
+	useAuthEffect(isAuth, token, dispatch, api, modalOptions, setModalOptions);
 
 	function handleClose() {
 		setSnackBackState(prev => ({ ...prev, open: false }));
 	}
-
-	useEffect(() => {
-		const storedToken = localStorage.getItem('token');
-		if (storedToken) {
-			const decodedToken = decodeToken(storedToken);
-			if (decodedToken && !isTokenOverdue(decodedToken.exp)) {
-				services.getApi().setHeader('Authorization', `Bearer ${storedToken}`);
-				dispatch(loginSuccess(storedToken));
-			}
-		}
-	}, []);
-
-	useEffect(() => {
-		const storedToken = localStorage.getItem('token');
-		if (isAuth && storedToken !== token) {
-			const api = services.getApi();
-			modalOptions.open && setModalOptions(prev => ({ ...prev, open: false }));
-			if (token) {
-				api.setHeader('Authorization', `Bearer ${token}`);
-				localStorage.setItem('token', token);
-			}
-		}
-	}, [isAuth, token]);
 
 	useEffect(() => {
 		if (error) {
