@@ -6,6 +6,9 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { z } from 'zod';
 import FormTextField from '../FormTextField';
+import { loginThunk } from '../../../store/authSlice';
+import handleThunk from '../../../utils/handleThunk';
+import { useAppDispatch } from '../../../store';
 
 const initialState = {
 	login: '',
@@ -15,9 +18,10 @@ const initialState = {
 
 const formDataSchema = z
 	.object({
-		login: z.string().nonempty('Login is required'),
+		email: z.string().nonempty('Email is required'),
 		password: z.string().nonempty('Password is required').min(6, 'Password must be at least 6 characters'),
 		confirmPassword: z.string().nonempty('Please confirm your password'),
+		type: z.enum(['/auth/login', '/auth/registration']),
 	})
 	.refine(data => data.password === data.confirmPassword, {
 		message: 'Passwords do not match',
@@ -26,9 +30,20 @@ const formDataSchema = z
 
 type FormData = z.infer<typeof formDataSchema>;
 
+function isValidRegistrationFormData(data: FormData): data is FormData {
+	return (
+		typeof data.email === 'string' && typeof data.password === 'string' && typeof data.confirmPassword === 'string'
+	);
+}
 const RegForm = () => {
-	const [userFormData, setUserFormData] = useState<Partial<FormData>>({});
+	const [userFormData, setUserFormData] = useState<FormData>({
+		email: '',
+		password: '',
+		confirmPassword: '',
+		type: '/auth/registration',
+	});
 	const [isErrors, setIsErrors] = useState<boolean>(false);
+	const dispatch = useAppDispatch();
 
 	const formData = {
 		...initialState,
@@ -41,13 +56,15 @@ const RegForm = () => {
 		return res.error.format();
 	};
 
-	const handlerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handlerSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
 		const errors = validate();
 		if (errors) {
 			setIsErrors(true);
 			return;
+		}
+		if (isValidRegistrationFormData(userFormData)) {
+			await handleThunk(dispatch, loginThunk, userFormData);
 		}
 	};
 
@@ -66,11 +83,11 @@ const RegForm = () => {
 				Registration
 			</Typography>
 			<FormTextField
-				label="Login"
+				label="Email"
 				required
-				value={formData.login}
-				onChange={e => setUserFormData(l => ({ ...l, login: e.target.value }))}
-				error={errors?.login?._errors}
+				value={formData.email}
+				onChange={e => setUserFormData(l => ({ ...l, email: e.target.value }))}
+				error={errors?.email?._errors}
 			/>
 			<FormTextField
 				label="Password"

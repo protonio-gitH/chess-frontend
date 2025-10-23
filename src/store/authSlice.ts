@@ -8,16 +8,23 @@ function isErrorResponse(data: LoginResponse | ErrorResponse): data is ErrorResp
 
 export const loginThunk = createAsyncThunk<
 	LoginResponse,
-	{ email: string; password: string },
+	{ email: string; password: string; type: '/auth/login' | '/auth/registration' },
 	{ rejectValue: ErrorResponse; extra: Extra }
 >('auth/login', async (credentials, { extra, rejectWithValue }) => {
+	const type = credentials.type;
+
 	try {
+		const newCredentials = {
+			email: credentials.email,
+			password: credentials.password,
+		} as Pick<typeof credentials, 'email' | 'password'>;
+
 		const response = await extra.api.request<LoginResponse | ErrorResponse>(
-			'/auth/login',
+			type,
 			'POST',
 			{},
 			{
-				body: JSON.stringify(credentials),
+				body: JSON.stringify(newCredentials),
 			},
 		);
 		if (isErrorResponse(response.data)) {
@@ -25,7 +32,7 @@ export const loginThunk = createAsyncThunk<
 		}
 		return response.data;
 	} catch (e) {
-		console.error('Ошибка при запросе /auth/login:', e);
+		console.error(`Ошибка при запросе ${type}:`, e);
 
 		return rejectWithValue({
 			message: e instanceof Error ? e.message : 'Unknown error',
@@ -33,6 +40,8 @@ export const loginThunk = createAsyncThunk<
 		});
 	}
 });
+
+// export const registrationThunk = createAsyncThunk<
 
 const initialState: AuthState = {
 	isAuth: false,

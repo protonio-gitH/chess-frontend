@@ -19,20 +19,21 @@ const initialState = {
 const formDataSchema = z.object({
 	email: z.string().email('Invalid email address').nonempty('Login is required'),
 	password: z.string().nonempty('Password is required').min(6, 'Password must be at least 6 characters'),
+	type: z.enum(['/auth/login', '/auth/registration']),
 });
 
-// interface LoginFormProps {
-// 	login: (data: LoginFormData) => void;
-// }
-
-function isValidLoginFormData(data: Partial<LoginFormData>): data is LoginFormData {
+function isValidLoginFormData(data: LoginFormData): data is LoginFormData {
 	return typeof data.email === 'string' && typeof data.password === 'string';
 }
 
 export type LoginFormData = z.infer<typeof formDataSchema>;
 
 const LoginForm: FC = () => {
-	const [userFormData, setUserFormData] = useState<Partial<LoginFormData>>({});
+	const [userFormData, setUserFormData] = useState<LoginFormData>({
+		email: '',
+		password: '',
+		type: '/auth/login',
+	});
 	const [isErrors, setIsErrors] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 
@@ -74,7 +75,7 @@ const LoginForm: FC = () => {
 				Login
 			</Typography>
 			<FormTextField
-				label="Login"
+				label="Email"
 				required
 				value={formData.email}
 				onChange={e => setUserFormData(l => ({ ...l, email: e.target.value }))}
