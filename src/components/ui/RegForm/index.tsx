@@ -14,6 +14,7 @@ const initialState = {
 	login: '',
 	password: '',
 	confirmPassword: '',
+	type: '/auth/registration',
 };
 
 const formDataSchema = z

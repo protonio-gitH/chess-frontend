@@ -1,4 +1,4 @@
-import React, { FC, memo } from 'react';
+import React, { FC, memo, useEffect } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -14,6 +14,8 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useModal } from '../../../hooks/useModal';
 import { ModalType } from '../../../types/modalContextTypes';
+import { decodeToken } from '../../../utils/decodeToken';
+import { Link } from '@mui/material';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -22,11 +24,20 @@ const signButtons: { title: string; type: ModalType }[] = [
 	{ title: 'Registration', type: 'register' },
 ];
 
-const AppBarComponent: FC = () => {
+interface AppBarProps {
+	token: string | null;
+}
+
+const AppBarComponent: FC<AppBarProps> = ({ token }) => {
 	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
 	const { modalOptions, setModalOptions } = useModal();
+
+	let email;
+	if (token) {
+		email = decodeToken(token)?.email;
+	}
 
 	const handleModal = (type: ModalType) => {
 		setModalOptions({ modalType: type, open: true });
@@ -125,7 +136,7 @@ const AppBarComponent: FC = () => {
 					</Typography>
 					<Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
 						{pages.map(page => (
-							<Button key={page} onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }}>
+							<Button key={page} onClick={handleCloseNavMenu} color="inherit" sx={{ my: 2, display: 'block' }}>
 								{page}
 							</Button>
 						))}
@@ -159,15 +170,26 @@ const AppBarComponent: FC = () => {
 							))}
 						</Menu> */}
 					</Box>
-					{signButtons.map(page => (
-						<Button
-							onClick={() => handleModal(page.type)}
-							key={page.title}
-							sx={{ my: 2, color: 'white', display: 'block' }}
-						>
-							{page.title}
-						</Button>
-					))}
+					{token ? (
+						<Box sx={{ display: { xs: 'none', md: 'flex', alignItems: 'center' }, gap: '1rem' }}>
+							<Link color="inherit" underline="none" href="#" sx={{ display: 'block' }}>
+								{email}
+							</Link>
+							<Button color="inherit" sx={{ my: 2, display: 'block' }}>
+								Exit
+							</Button>
+						</Box>
+					) : (
+						signButtons.map(page => (
+							<Button
+								onClick={() => handleModal(page.type)}
+								key={page.title}
+								sx={{ my: 2, color: 'white', display: 'block' }}
+							>
+								{page.title}
+							</Button>
+						))
+					)}
 				</Toolbar>
 			</Container>
 		</AppBar>

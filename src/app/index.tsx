@@ -39,7 +39,7 @@ function App() {
 		<ErrorBoundary>
 			<BrowserRouter>
 				<Routes>
-					<Route path="/" element={<Layout />}>
+					<Route path="/" element={<Layout token={token} />}>
 						<Route index element={<Main />} />
 						<Route path="game" element={<Game />} />
 					</Route>

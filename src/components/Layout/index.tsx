@@ -1,11 +1,15 @@
 import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
-import Header from '../Header';
+import AppBar from '../ui/AppBar';
 
-const Layout: FC = () => {
+interface LayoutProps {
+	token: string | null;
+}
+
+const Layout: FC<LayoutProps> = ({ token }) => {
 	return (
 		<>
-			<Header />
+			<AppBar token={token} />
 			<Outlet />
 		</>
 	);

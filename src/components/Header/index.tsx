@@ -1,11 +1,11 @@
-import React, { FC, memo } from 'react';
-import AppBarComponent from '../ui/AppBar';
+// import React, { FC, memo } from 'react';
+// import AppBarComponent from '../ui/AppBar';
 
-const Header: FC = () => {
-	return (
-		<>
-			<AppBarComponent />
-		</>
-	);
-};
-export default memo(Header);
+// const Header: FC = () => {
+// 	return (
+// 		<>
+// 			<AppBarComponent />
+// 		</>
+// 	);
+// };
+// export default memo(Header);

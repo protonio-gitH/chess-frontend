@@ -14,6 +14,7 @@ import handleThunk from '../../../utils/handleThunk';
 const initialState = {
 	email: '',
 	password: '',
+	type: '/auth/login',
 };
 
 const formDataSchema = z.object({
