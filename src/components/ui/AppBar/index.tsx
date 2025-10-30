@@ -16,6 +16,8 @@ import { useModal } from '../../../hooks/useModal';
 import { ModalType } from '../../../types/modalContextTypes';
 import { decodeToken } from '../../../utils/decodeToken';
 import { Link } from '@mui/material';
+import { useAppDispatch } from '../../../store';
+import { logout } from '../../../store/authSlice';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -33,6 +35,8 @@ const AppBarComponent: FC<AppBarProps> = ({ token }) => {
 	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
 	const { modalOptions, setModalOptions } = useModal();
+
+	const dispatch = useAppDispatch();
 
 	let email;
 	if (token) {
@@ -56,6 +60,14 @@ const AppBarComponent: FC<AppBarProps> = ({ token }) => {
 
 	const handleCloseUserMenu = () => {
 		setAnchorElUser(null);
+	};
+
+	const handleExit = () => {
+		dispatch(logout());
+		localStorage.removeItem('token');
+		if (anchorElNav) {
+			handleCloseNavMenu();
+		}
 	};
 
 	return (
@@ -113,6 +125,16 @@ const AppBarComponent: FC<AppBarProps> = ({ token }) => {
 									<Typography sx={{ textAlign: 'center' }}>{page}</Typography>
 								</MenuItem>
 							))}
+							{token && (
+								<Box>
+									<MenuItem onClick={handleCloseNavMenu}>
+										<Typography sx={{ textAlign: 'center' }}>Profile</Typography>
+									</MenuItem>
+									<MenuItem onClick={handleExit}>
+										<Typography sx={{ textAlign: 'center' }}>Exit</Typography>
+									</MenuItem>
+								</Box>
+							)}
 						</Menu>
 					</Box>
 					<AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -172,10 +194,10 @@ const AppBarComponent: FC<AppBarProps> = ({ token }) => {
 					</Box>
 					{token ? (
 						<Box sx={{ display: { xs: 'none', md: 'flex', alignItems: 'center' }, gap: '1rem' }}>
-							<Link color="inherit" underline="none" href="#" sx={{ display: 'block' }}>
-								{email}
-							</Link>
 							<Button color="inherit" sx={{ my: 2, display: 'block' }}>
+								Profile
+							</Button>
+							<Button onClick={handleExit} color="inherit" sx={{ my: 2, display: 'block' }}>
 								Exit
 							</Button>
 						</Box>

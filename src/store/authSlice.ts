@@ -41,8 +41,6 @@ export const loginThunk = createAsyncThunk<
 	}
 });
 
-// export const registrationThunk = createAsyncThunk<
-
 const initialState: AuthState = {
 	isAuth: false,
 	token: null,
