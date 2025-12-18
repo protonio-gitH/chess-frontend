@@ -1,4 +1,4 @@
-export type ModalType = 'login' | 'register';
+export type ModalType = 'login' | 'register' | 'createGame';
 
 export interface ModalOptions {
 	modalType: ModalType;

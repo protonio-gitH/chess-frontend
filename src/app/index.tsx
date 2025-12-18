@@ -12,17 +12,14 @@ import { useAppDispatch, useAppSelector } from '../store';
 import { useServices } from '../hooks/useServices';
 import { useAuthEffect } from '../hooks/useAuthEffect';
 import SnackBarContainer from '../containers/SnackBarContainer';
+import { CreateGame } from '../modules/GamesBar';
 
 function App() {
 	const { modalOptions, setModalOptions } = useModal();
 
-	const services = useServices();
 	const isAuth = useAppSelector(state => state.auth.isAuth);
-	const token = useAppSelector(state => state.auth.token);
-	const dispatch = useAppDispatch();
-	const api = services.getApi();
 
-	useAuthEffect(isAuth, token, dispatch, api, modalOptions, setModalOptions);
+	useAuthEffect();
 
 	const renderContent = () => {
 		switch (modalOptions.modalType) {
@@ -30,6 +27,8 @@ function App() {
 				return <LoginForm />;
 			case 'register':
 				return <RegForm />;
+			case 'createGame':
+				return <CreateGame />;
 			default:
 				return null;
 		}
@@ -39,7 +38,7 @@ function App() {
 		<ErrorBoundary>
 			<BrowserRouter>
 				<Routes>
-					<Route path="/" element={<Layout token={token} />}>
+					<Route path="/" element={<Layout isAuth={isAuth} />}>
 						<Route index element={<Main />} />
 						<Route path="game" element={<Game />} />
 					</Route>

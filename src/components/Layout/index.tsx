@@ -3,13 +3,13 @@ import { Outlet } from 'react-router-dom';
 import AppBar from '../ui/AppBar';
 
 interface LayoutProps {
-	token: string | null;
+	isAuth: boolean;
 }
 
-const Layout: FC<LayoutProps> = ({ token }) => {
+const Layout: FC<LayoutProps> = ({ isAuth }) => {
 	return (
 		<>
-			<AppBar token={token} />
+			<AppBar isAuth={isAuth} />
 			<Outlet />
 		</>
 	);

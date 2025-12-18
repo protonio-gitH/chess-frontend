@@ -8,16 +8,22 @@ import { ModalProvider } from './hooks/useModal';
 import { ServicesContext } from './hooks/useServices';
 import { store } from './store';
 import { services } from './servicesInstance';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const theme = createTheme();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
 	<React.StrictMode>
-		<ServicesContext.Provider value={services}>
-			<Provider store={store}>
-				<ModalProvider>
-					<App />
-				</ModalProvider>
-			</Provider>
-		</ServicesContext.Provider>
+		<ThemeProvider theme={theme}>
+			<ServicesContext.Provider value={services}>
+				<Provider store={store}>
+					<ModalProvider>
+						<App />
+					</ModalProvider>
+				</Provider>
+			</ServicesContext.Provider>
+		</ThemeProvider>
+		,
 	</React.StrictMode>,
 );

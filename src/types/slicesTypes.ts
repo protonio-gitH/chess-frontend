@@ -5,7 +5,7 @@ export interface Extra {
 }
 
 export interface LoginResponse {
-	token: string;
+	accessToken: string;
 }
 
 export interface ErrorResponse {

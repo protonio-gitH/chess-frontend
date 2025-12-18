@@ -1,8 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { PayloadAction } from '@reduxjs/toolkit';
 import { LoginResponse, AuthState, ErrorResponse, Extra } from '../types';
+import { AxiosError } from 'axios';
 
-function isErrorResponse(data: LoginResponse | ErrorResponse): data is ErrorResponse {
+function isErrorResponse(data: LoginResponse | ErrorResponse | null): data is ErrorResponse {
+	if (data === null) {
+		return false;
+	}
 	return 'message' in data;
 }
 
@@ -11,35 +15,60 @@ export const loginThunk = createAsyncThunk<
 	{ email: string; password: string; type: '/auth/login' | '/auth/registration' },
 	{ rejectValue: ErrorResponse; extra: Extra }
 >('auth/login', async (credentials, { extra, rejectWithValue }) => {
-	const type = credentials.type;
+	const { type, email, password } = credentials;
 
 	try {
-		const newCredentials = {
-			email: credentials.email,
-			password: credentials.password,
-		} as Pick<typeof credentials, 'email' | 'password'>;
-
-		const response = await extra.api.request<LoginResponse | ErrorResponse>(
-			type,
-			'POST',
-			{},
-			{
-				body: JSON.stringify(newCredentials),
+		const response = await extra.api.request<LoginResponse>(type, {
+			method: 'POST',
+			data: {
+				email,
+				password,
 			},
-		);
-		if (isErrorResponse(response.data)) {
-			return rejectWithValue({ message: response.data.message, status: response.status });
-		}
+		});
 		return response.data;
 	} catch (e) {
-		console.error(`Ошибка при запросе ${type}:`, e);
+		const error = e as AxiosError<ErrorResponse>;
+
+		if (error.response) {
+			return rejectWithValue({
+				message: error.response.data?.message ?? 'Request failed',
+				status: error.response.status,
+			});
+		}
 
 		return rejectWithValue({
-			message: e instanceof Error ? e.message : 'Unknown error',
+			message: error.message || 'Network error',
 			status: 0,
 		});
 	}
 });
+
+export const logoutThunk = createAsyncThunk<null, void, { rejectValue: ErrorResponse; extra: Extra }>(
+	'auth/logout',
+	async (_, { extra, rejectWithValue }) => {
+		try {
+			const response = await extra.api.request<null>('/auth/logout', {
+				method: 'GET',
+			});
+
+			return response.data;
+		} catch (e) {
+			const error = e as AxiosError<ErrorResponse>;
+
+			if (error.response) {
+				return rejectWithValue({
+					message: error.response.data?.message ?? 'Logout failed',
+					status: error.response.status,
+				});
+			}
+
+			return rejectWithValue({
+				message: error.message || 'Network error',
+				status: 0,
+			});
+		}
+	},
+);
 
 const initialState: AuthState = {
 	isAuth: false,
@@ -57,10 +86,6 @@ const authSlice = createSlice({
 			state.isAuth = true;
 			state.error = null;
 		},
-		logout(state) {
-			state.token = null;
-			state.isAuth = false;
-		},
 	},
 	extraReducers: builder => {
 		builder
@@ -71,14 +96,27 @@ const authSlice = createSlice({
 			.addCase(loginThunk.fulfilled, (state, action) => {
 				state.loading = false;
 				state.isAuth = true;
-				state.token = action.payload ? action.payload.token : null;
+				state.token = action.payload ? action.payload.accessToken : null;
 			})
 			.addCase(loginThunk.rejected, (state, action) => {
+				state.loading = false;
+				state.error = action.payload ? action.payload.message : null;
+			})
+			.addCase(logoutThunk.pending, state => {
+				state.loading = true;
+				state.error = null;
+			})
+			.addCase(logoutThunk.fulfilled, state => {
+				state.loading = false;
+				state.isAuth = false;
+				state.token = null;
+			})
+			.addCase(logoutThunk.rejected, (state, action) => {
 				state.loading = false;
 				state.error = action.payload ? action.payload.message : null;
 			});
 	},
 });
 
-export const { loginSuccess, logout } = authSlice.actions;
+export const { loginSuccess } = authSlice.actions;
 export default authSlice.reducer;

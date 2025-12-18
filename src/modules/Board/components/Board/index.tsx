@@ -6,6 +6,7 @@ import { useSelected } from '../../hooks/useSelected';
 import { Colors } from '../../constants/Colors';
 import { King } from '../../models/figures/King';
 import Files from '../Files';
+
 interface BoardProps {
 	board: Board;
 	setBoard: (board: Board) => void;

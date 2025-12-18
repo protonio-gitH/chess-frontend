@@ -17,7 +17,8 @@ import { ModalType } from '../../../types/modalContextTypes';
 import { decodeToken } from '../../../utils/decodeToken';
 import { Link } from '@mui/material';
 import { useAppDispatch } from '../../../store';
-import { logout } from '../../../store/authSlice';
+import { logoutThunk } from '../../../store/authSlice';
+import handleThunk from '../../../utils/handleThunk';
 
 const pages = ['Products', 'Pricing', 'Blog'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
@@ -27,10 +28,10 @@ const signButtons: { title: string; type: ModalType }[] = [
 ];
 
 interface AppBarProps {
-	token: string | null;
+	isAuth: boolean;
 }
 
-const AppBarComponent: FC<AppBarProps> = ({ token }) => {
+const AppBarComponent: FC<AppBarProps> = ({ isAuth }) => {
 	const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
 	const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -38,10 +39,10 @@ const AppBarComponent: FC<AppBarProps> = ({ token }) => {
 
 	const dispatch = useAppDispatch();
 
-	let email;
-	if (token) {
-		email = decodeToken(token)?.email;
-	}
+	// let email;
+	// if (token) {
+	// 	email = decodeToken(token)?.email;
+	// }
 
 	const handleModal = (type: ModalType) => {
 		setModalOptions({ modalType: type, open: true });
@@ -62,8 +63,9 @@ const AppBarComponent: FC<AppBarProps> = ({ token }) => {
 		setAnchorElUser(null);
 	};
 
-	const handleExit = () => {
-		dispatch(logout());
+	const handleExit = async () => {
+		// dispatch(logout());
+		await handleThunk(dispatch, logoutThunk);
 		localStorage.removeItem('token');
 		if (anchorElNav) {
 			handleCloseNavMenu();
@@ -71,7 +73,7 @@ const AppBarComponent: FC<AppBarProps> = ({ token }) => {
 	};
 
 	return (
-		<AppBar position="static">
+		<AppBar sx={{ marginBottom: 'clamp(1rem, 3vw, 4rem);' }} position="static">
 			<Container maxWidth="xl">
 				<Toolbar disableGutters>
 					<AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -125,7 +127,7 @@ const AppBarComponent: FC<AppBarProps> = ({ token }) => {
 									<Typography sx={{ textAlign: 'center' }}>{page}</Typography>
 								</MenuItem>
 							))}
-							{token && (
+							{isAuth && (
 								<Box>
 									<MenuItem onClick={handleCloseNavMenu}>
 										<Typography sx={{ textAlign: 'center' }}>Profile</Typography>
@@ -192,7 +194,7 @@ const AppBarComponent: FC<AppBarProps> = ({ token }) => {
 							))}
 						</Menu> */}
 					</Box>
-					{token ? (
+					{isAuth ? (
 						<Box sx={{ display: { xs: 'none', md: 'flex', alignItems: 'center' }, gap: '1rem' }}>
 							<Button color="inherit" sx={{ my: 2, display: 'block' }}>
 								Profile

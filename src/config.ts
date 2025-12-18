@@ -11,7 +11,7 @@ const config = {
 	//     },
 	//   },
 	api: {
-		baseUrl: 'https://localhost:3000',
+		baseUrl: 'http://localhost:4000',
 	},
 	redux: {},
 };

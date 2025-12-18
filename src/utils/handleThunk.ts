@@ -4,7 +4,7 @@ import { AppDispatch } from '../types';
 export default async function handleThunk<TArg, TResult, TReject>(
 	dispatch: AppDispatch,
 	thunk: AsyncThunk<TResult, TArg, { rejectValue: TReject }>,
-	arg: TArg,
+	arg?: TArg,
 ): Promise<TResult | null> {
 	try {
 		const result = await dispatch(thunk(arg as any)).unwrap();

@@ -1,39 +1,64 @@
-import { Config } from '../config';
+import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+
+import { ConfigAPI } from '../types';
 import { Services } from '../services';
-import { ApiResponse, ConfigAPI, RequestOptions } from '../types';
 
 export default class APIService {
-	private headers: Record<string, string>;
+	private axiosInstance: AxiosInstance;
+	private baseUrl: string;
 	private services: Services;
-	private baseUrl: string = 'http://localhost:4000';
+	private pendingRequests: any = [];
+	public isRefreshing: boolean = false;
 
 	constructor(services: Services, config: ConfigAPI) {
-		this.headers = {
-			'Content-Type': 'application/json',
-		};
+		this.baseUrl = config.baseUrl;
 		this.services = services;
+		this.axiosInstance = axios.create({
+			baseURL: this.baseUrl,
+			withCredentials: true,
+			headers: {
+				'Content-Type': 'application/json',
+			},
+		});
 	}
 
-	public async request<T = unknown>(
-		path: string,
-		method: string = 'GET',
-		headers: Record<string, string> = {},
-		options: RequestOptions = {},
-	): Promise<ApiResponse<T>> {
-		const response = await fetch(`${this.baseUrl}${path}`, {
-			method,
-			headers: { ...this.headers, ...headers },
+	public async request<T = unknown>(path: string, options?: AxiosRequestConfig): Promise<AxiosResponse<T>> {
+		const response: AxiosResponse<T> = await this.axiosInstance.request<T>({
+			url: path,
 			...options,
 		});
+		return response;
+	}
 
-		return { data: await response.json(), status: response.status, headers: response.headers };
+	public addPendingRequest(request: any): void {
+		this.pendingRequests.push(request);
+	}
+
+	public getPendingRequests(): Array<any> {
+		return this.pendingRequests;
+	}
+
+	public clearPendingRequests(): void {
+		this.pendingRequests = [];
 	}
 
 	public setHeader(key: string, value: string): void {
-		this.headers[key] = value;
+		this.axiosInstance.defaults.headers.common[key] = value;
 	}
 
-	public removeHeader(key: keyof typeof this.headers): void {
-		delete this.headers[key];
+	public removeHeader(key: string): void {
+		delete this.axiosInstance.defaults.headers.common[key];
+	}
+
+	public getAxios(): AxiosInstance {
+		return this.axiosInstance;
+	}
+
+	public getServices(): Services {
+		return this.services;
+	}
+
+	public getBaseUrl(): string {
+		return this.baseUrl;
 	}
 }
