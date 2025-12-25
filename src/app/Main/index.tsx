@@ -1,8 +1,8 @@
 import React from 'react';
 import { Box, Container, Stack, useMediaQuery } from '@mui/material';
 import { GamesListContainer } from '../../modules/GamesList';
-import { GamesBarComponent } from '../../modules/GamesBar';
 import { useAppSelector, useAppDispatch } from '../../store';
+import { GamesBarContainer } from '../../modules/GamesBar';
 
 function Main() {
 	const isMobile = useMediaQuery('(max-width:600px)');
@@ -19,7 +19,7 @@ function Main() {
 				justifyContent={'center'}
 			>
 				<GamesListContainer />
-				{isAuth && <GamesBarComponent />}
+				{isAuth && <GamesBarContainer />}
 			</Stack>
 		</Container>
 	);

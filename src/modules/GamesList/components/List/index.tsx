@@ -3,7 +3,6 @@ import styles from './index.module.scss';
 import { Box } from '@mui/material';
 import ListItem from '../ListItem';
 import { Margin } from '@mui/icons-material';
-
 interface ListProps {
 	items: { nick: string }[];
 }

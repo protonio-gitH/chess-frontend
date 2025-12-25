@@ -1,5 +1,5 @@
 import { Cell, Colors } from '../../Board';
-import { Move, CellWithNullBoard } from '../types/moveTypes';
+import { Move, CellWithNullBoard } from '../types/move.types';
 
 class MoveHistory {
 	private movesWhite: Move[] = [];

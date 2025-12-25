@@ -1,10 +1,10 @@
 import React, { FC, useCallback } from 'react';
-import GamesBarButton from '../ui/GamesBarButton';
+import GamesBarButton from '../GamesBarButton';
 import { useModal } from '../../../../hooks/useModal';
 import { ModalType } from '../../../../types';
 import { Box } from '@mui/material';
 
-const GamesBarComponent: FC = () => {
+const GamesBar: FC = () => {
 	const { modalOptions, setModalOptions } = useModal();
 	const openModal = useCallback((type: ModalType) => {
 		setModalOptions({ modalType: type, open: true });
@@ -16,4 +16,4 @@ const GamesBarComponent: FC = () => {
 	);
 };
 
-export default GamesBarComponent;
+export default GamesBar;

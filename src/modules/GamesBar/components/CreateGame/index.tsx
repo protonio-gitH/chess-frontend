@@ -1,7 +1,7 @@
 import { Box, Button, Stack } from '@mui/material';
 import React, { FC, memo } from 'react';
 
-interface CreateGamePrps {}
+interface CreateGameProps {}
 
 const CreateGame: FC = () => {
 	return (

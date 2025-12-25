@@ -1,7 +1,7 @@
 import { memo, FC } from 'react';
 import styles from './index.module.scss';
 import MoveButton from '../MoveButton';
-import { Move, HandleMoveClick } from '../../types/moveTypes';
+import { Move, HandleMoveClick } from '../../types/';
 
 interface MoveColumnProps {
 	moves: Move[];

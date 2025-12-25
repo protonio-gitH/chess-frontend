@@ -1,6 +1,6 @@
 import { FC } from 'react';
 import { Outlet } from 'react-router-dom';
-import AppBar from '../ui/AppBar';
+import AppBar from '../AppBar';
 
 interface LayoutProps {
 	isAuth: boolean;

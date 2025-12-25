@@ -6,9 +6,9 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { z } from 'zod';
 import FormTextField from '../FormTextField';
-import { loginThunk } from '../../../store/authSlice';
-import handleThunk from '../../../utils/handleThunk';
-import { useAppDispatch } from '../../../store';
+import { loginThunk } from '../../store/authSlice';
+import handleThunk from '../../utils/handleThunk';
+import { useAppDispatch } from '../../store';
 
 const initialState = {
 	login: '',

@@ -1,9 +1,9 @@
 import React, { memo, FC, useEffect, useCallback } from 'react';
 import MoveList from '../../components/MoveList';
-import { Move } from '../../types/moveTypes';
+import { Move } from '../../types/move.types';
 import { Board } from '../../../Board';
 import { Colors } from '../../../Board';
-import { MoveActions } from '../../types/moveTypes';
+import { MoveActions } from '../../types/move.types';
 
 interface MoveHistoryContainerProps {
 	board: Board;

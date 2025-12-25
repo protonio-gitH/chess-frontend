@@ -1,9 +1,9 @@
 import React, { FC, memo, useEffect } from 'react';
 import styles from './index.module.scss';
-import { Move, HandleMoveClick } from '../../types/moveTypes';
+import { Move, HandleMoveClick } from '../../types/move.types';
 import MoveColumn from '../MoveColumn';
 import MoveControls from '../MoveControls';
-import { MoveActions } from '../../types/moveTypes';
+import { MoveActions } from '../../types';
 
 interface MoveListProps {
 	whiteMoves: Move[];

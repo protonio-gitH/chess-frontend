@@ -1,2 +1,2 @@
-export { default as GamesBarComponent } from './components/GamesBarComponent';
-export { default as CreateGame } from './components/ui/CreateGame';
+export { default as CreateGameModalContainer } from './containers/CreateGameModalContainer';
+export { default as GamesBarContainer } from './containers/GamesBarContainer';

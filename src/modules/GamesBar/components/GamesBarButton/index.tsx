@@ -1,6 +1,6 @@
 import React, { FC, memo } from 'react';
 import Button from '@mui/material/Button';
-import { ModalType } from '../../../../../types';
+import { ModalType } from '../../../../types';
 
 interface GamesBarButtonProps {
 	children: React.ReactNode;

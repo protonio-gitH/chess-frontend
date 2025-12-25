@@ -3,16 +3,16 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Game from './Game';
 import Main from './Main';
 import Layout from '../components/Layout';
-import Modal from '../components/ui/Modal';
+import Modal from '../components/Modal';
 import { useModal } from '../hooks/useModal';
-import LoginForm from '../components/ui/LoginForm';
-import RegForm from '../components/ui/RegForm';
+import LoginForm from '../components/LoginForm';
+import RegForm from '../components/RegForm';
 import ErrorBoundary from './ErrorBoundary';
 import { useAppDispatch, useAppSelector } from '../store';
 import { useServices } from '../hooks/useServices';
 import { useAuthEffect } from '../hooks/useAuthEffect';
 import SnackBarContainer from '../containers/SnackBarContainer';
-import { CreateGame } from '../modules/GamesBar';
+import ModalContainer from '../containers/ModalContainer';
 
 function App() {
 	const { modalOptions, setModalOptions } = useModal();
@@ -20,19 +20,6 @@ function App() {
 	const isAuth = useAppSelector(state => state.auth.isAuth);
 
 	useAuthEffect();
-
-	const renderContent = () => {
-		switch (modalOptions.modalType) {
-			case 'login':
-				return <LoginForm />;
-			case 'register':
-				return <RegForm />;
-			case 'createGame':
-				return <CreateGame />;
-			default:
-				return null;
-		}
-	};
 
 	return (
 		<ErrorBoundary>
@@ -43,7 +30,9 @@ function App() {
 						<Route path="game" element={<Game />} />
 					</Route>
 				</Routes>
-				<Modal>{renderContent()}</Modal>
+				<Modal>
+					<ModalContainer modalOptions={modalOptions} />
+				</Modal>
 			</BrowserRouter>
 			<SnackBarContainer />
 		</ErrorBoundary>

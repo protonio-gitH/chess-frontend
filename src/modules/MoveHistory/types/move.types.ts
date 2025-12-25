@@ -1,5 +1,6 @@
-import { Cell, Colors } from '../../Board/';
-import { MOVE_TYPES } from '../constants/Moves';
+import { Cell } from '../../Board';
+import { MOVE_TYPES } from '../constants/';
+import { Colors } from '../../Board';
 
 type CellWithNullBoard = Omit<Cell, 'board'> & { board: null };
 

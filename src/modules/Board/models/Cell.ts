@@ -1,8 +1,8 @@
 import { Board } from './Board';
-import { Colors } from '../constants/Colors';
+import { Colors } from '../constants';
 import { Files } from '../constants/Files';
 import { Figure } from './figures/Figure';
-import { FigureNames } from '../constants/FigureNames';
+import { FigureNames } from '../constants/';
 import { King } from './figures/King';
 import { Pawn } from './figures/Pawn';
 import { Rook } from './figures/Rook';
@@ -10,9 +10,8 @@ import { audioManager } from '../../AudioManager';
 import { Queen } from './figures/Queen';
 import { Knight } from './figures/Knight';
 import { Bishop } from './figures/Bishop';
-import { NewFigures } from '../types/newFigureTypes';
+import { NewFigures } from '../types/newFigure.types';
 import { Move, MOVE_TYPES, CellWithNullBoard } from '../../MoveHistory';
-import cloneDeep from 'lodash/cloneDeep';
 
 export class Cell {
 	readonly x: number;

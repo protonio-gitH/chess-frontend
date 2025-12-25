@@ -7,9 +7,9 @@ import Button from '@mui/material/Button';
 import { z } from 'zod';
 import FormTextField from '../FormTextField';
 import { useDispatch, useSelector } from 'react-redux';
-import { loginThunk } from '../../../store/authSlice';
-import { useAppDispatch } from '../../../store';
-import handleThunk from '../../../utils/handleThunk';
+import { loginThunk } from '../../store/authSlice';
+import { useAppDispatch } from '../../store';
+import handleThunk from '../../utils/handleThunk';
 
 const initialState = {
 	email: '',

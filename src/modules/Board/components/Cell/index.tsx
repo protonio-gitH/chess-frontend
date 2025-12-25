@@ -3,7 +3,7 @@ import styles from './index.module.scss';
 import { Cell } from '../../models/Cell';
 import { Board } from '../../models/Board';
 import { useFigureDrag } from '../../hooks/useFigureDrag';
-import { CellSelectHandler } from '../../types/useFigureDragTypes';
+import { CellSelectHandler } from '../../types/';
 import { FigureNames } from '../../constants/FigureNames';
 import { King } from '../../models/figures/King';
 import PromotionPawn from '../PromotionPawn';

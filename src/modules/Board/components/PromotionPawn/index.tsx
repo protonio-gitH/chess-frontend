@@ -1,5 +1,4 @@
 import React, { FC, useEffect, useRef, useState, memo } from 'react';
-import { createPortal } from 'react-dom';
 import styles from './index.module.scss';
 import whiteQueen from '../../assets/figures/white-queen.svg';
 import blackQueen from '../../assets/figures/black-queen.svg';
@@ -10,8 +9,8 @@ import blackKnight from '../../assets/figures/black-knight.svg';
 import whiteBishop from '../../assets/figures/white-bishop.svg';
 import blackBishop from '../../assets/figures/black-bishop.svg';
 import { Cell } from '../../models/Cell';
-import { Colors } from '../../constants/Colors';
-import { NewFigures } from '../../types/newFigureTypes';
+import { Colors } from '../../constants';
+import { NewFigures } from '../../types/';
 import { Board } from '../../models/Board';
 
 interface PromotionPawnProps {

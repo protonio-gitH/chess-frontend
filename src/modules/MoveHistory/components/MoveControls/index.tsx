@@ -5,7 +5,7 @@ import logo_previous from '../../assets/icon-history-previous.svg';
 import logo_next_double from '../../assets/icon-history-next-double.svg';
 import logo_previous_double from '../../assets/icon-history-previous-double.svg';
 import ControlsButton from '../ControlsButton';
-import { MoveActions } from '../../types/moveTypes';
+import { MoveActions } from '../../types/move.types';
 
 interface MoveControlsProps {
 	handleContolBtnClick: (action: MoveActions) => void;

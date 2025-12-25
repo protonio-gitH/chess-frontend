@@ -1,8 +1,8 @@
 import { Cell } from './Cell';
-import { Colors } from '../constants/Colors';
+import { Colors } from '../constants';
 import { Files } from '../constants/Files';
 import { Bishop } from './figures/Bishop';
-import { FigureNames } from '../constants/FigureNames';
+import { FigureNames } from '../constants/';
 import { King } from './figures/King';
 import { Knight } from './figures/Knight';
 import { Pawn } from './figures/Pawn';

@@ -1,7 +1,7 @@
 import { Cell } from '../Cell';
-import { Colors } from '../../constants/Colors';
+import { Colors } from '../../constants';
 import { Figure } from './Figure';
-import { FigureNames } from '../../constants/FigureNames';
+import { FigureNames } from '../../constants/';
 import blackLogo from '../../assets/figures/black-bishop.svg';
 import whiteLogo from '../../assets/figures/white-bishop.svg';
 
