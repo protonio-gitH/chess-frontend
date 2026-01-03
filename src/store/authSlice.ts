@@ -43,6 +43,39 @@ export const loginThunk = createAsyncThunk<
 	}
 });
 
+export const registrationThunk = createAsyncThunk<
+	LoginResponse,
+	{ email: string; password: string; confirmPassword: string; type: '/auth/login' | '/auth/registration' },
+	{ rejectValue: ErrorResponse; extra: Extra }
+>('auth/login', async (credentials, { extra, rejectWithValue }) => {
+	const { type, email, password } = credentials;
+
+	try {
+		const response = await extra.api.request<LoginResponse>(type, {
+			method: 'POST',
+			data: {
+				email,
+				password,
+			},
+		});
+		return response.data;
+	} catch (e) {
+		const error = e as AxiosError<ErrorResponse>;
+
+		if (error.response) {
+			return rejectWithValue({
+				message: error.response.data?.message ?? 'Request failed',
+				status: error.response.status,
+			});
+		}
+
+		return rejectWithValue({
+			message: error.message || 'Network error',
+			status: 0,
+		});
+	}
+});
+
 export const logoutThunk = createAsyncThunk<null, void, { rejectValue: ErrorResponse; extra: Extra }>(
 	'auth/logout',
 	async (_, { extra, rejectWithValue }) => {

@@ -10,6 +10,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { loginThunk } from '../../store/authSlice';
 import { useAppDispatch } from '../../store';
 import handleThunk from '../../utils/handleThunk';
+import { AuthFormData } from '../../types';
+
+interface LoginProps {
+	authHandler: (formData: AuthFormData) => Promise<void>;
+}
 
 const initialState = {
 	email: '',
@@ -20,7 +25,7 @@ const initialState = {
 const formDataSchema = z.object({
 	email: z.string().email('Invalid email address').nonempty('Login is required'),
 	password: z.string().nonempty('Password is required').min(6, 'Password must be at least 6 characters'),
-	type: z.enum(['/auth/login', '/auth/registration']),
+	type: z.enum(['/auth/login']),
 });
 
 function isValidLoginFormData(data: LoginFormData): data is LoginFormData {
@@ -29,7 +34,7 @@ function isValidLoginFormData(data: LoginFormData): data is LoginFormData {
 
 export type LoginFormData = z.infer<typeof formDataSchema>;
 
-const LoginForm: FC = () => {
+const LoginForm: FC<LoginProps> = ({ authHandler }) => {
 	const [userFormData, setUserFormData] = useState<LoginFormData>({
 		email: '',
 		password: '',
@@ -56,9 +61,10 @@ const LoginForm: FC = () => {
 			setIsErrors(true);
 			return;
 		}
-		if (isValidLoginFormData(userFormData)) {
-			await handleThunk(dispatch, loginThunk, userFormData);
-		}
+		// if (isValidLoginFormData(userFormData)) {
+		// await handleThunk(dispatch, loginThunk, userFormData);
+		await authHandler(userFormData);
+		// }
 	};
 
 	const errors = isErrors ? validate() : undefined;

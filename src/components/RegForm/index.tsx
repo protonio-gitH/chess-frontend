@@ -1,4 +1,4 @@
-import React, { useState, memo } from 'react';
+import React, { useState, memo, FC } from 'react';
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import styles from './index.module.scss';
@@ -9,6 +9,11 @@ import FormTextField from '../FormTextField';
 import { loginThunk } from '../../store/authSlice';
 import handleThunk from '../../utils/handleThunk';
 import { useAppDispatch } from '../../store';
+import { AuthFormData } from '../../types';
+
+interface RegistrationProps {
+	authHandler: (formData: AuthFormData) => Promise<void>;
+}
 
 const initialState = {
 	login: '',
@@ -22,7 +27,7 @@ const formDataSchema = z
 		email: z.string().nonempty('Email is required'),
 		password: z.string().nonempty('Password is required').min(6, 'Password must be at least 6 characters'),
 		confirmPassword: z.string().nonempty('Please confirm your password'),
-		type: z.enum(['/auth/login', '/auth/registration']),
+		type: z.enum(['/auth/registration']),
 	})
 	.refine(data => data.password === data.confirmPassword, {
 		message: 'Passwords do not match',
@@ -36,7 +41,7 @@ function isValidRegistrationFormData(data: FormData): data is FormData {
 		typeof data.email === 'string' && typeof data.password === 'string' && typeof data.confirmPassword === 'string'
 	);
 }
-const RegForm = () => {
+const RegForm: FC<RegistrationProps> = ({ authHandler }) => {
 	const [userFormData, setUserFormData] = useState<FormData>({
 		email: '',
 		password: '',
@@ -64,9 +69,11 @@ const RegForm = () => {
 			setIsErrors(true);
 			return;
 		}
-		if (isValidRegistrationFormData(userFormData)) {
-			await handleThunk(dispatch, loginThunk, userFormData);
-		}
+		// if (isValidRegistrationFormData(userFormData)) {
+		// const { email, password } = userFormData;
+		await authHandler(userFormData);
+		// await handleThunk(dispatch, loginThunk, userFormData);
+		// }
 	};
 
 	const errors = isErrors ? validate() : undefined;
