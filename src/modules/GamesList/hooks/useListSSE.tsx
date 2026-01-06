@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
+import { config } from '../../../config';
 
 export const useListSSE = () => {
 	useEffect(() => {
-		const eventSource = new EventSource('http://localhost:4000/events/games');
+		const eventSource = new EventSource(`${config.api.baseUrl}/events/games`);
 		eventSource.onmessage = event => {
 			const data = JSON.parse(event.data);
 			console.log('Received SSE data:', data);

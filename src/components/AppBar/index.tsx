@@ -64,7 +64,7 @@ const AppBarComponent: FC<AppBarProps> = ({ isAuth }) => {
 	};
 
 	const handleExit = async () => {
-		// dispatch(logout());
+		// dispatch(logoutThunk());
 		await handleThunk(dispatch, logoutThunk);
 		localStorage.removeItem('token');
 		if (anchorElNav) {

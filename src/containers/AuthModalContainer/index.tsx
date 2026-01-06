@@ -14,11 +14,9 @@ const AuthModalContainer: FC<AuthModalContainerProps> = ({ modalType }) => {
 	const dispatch = useAppDispatch();
 	const authHandler = async (formData: AuthFormData) => {
 		if (formData.type === '/auth/login') {
-			// await handleThunk(dispatch, loginThunk, formData);
-			await dispatch(loginThunk(formData)).unwrap();
+			await handleThunk(dispatch, loginThunk, formData);
 		} else if (formData.type === '/auth/registration') {
-			// await handleThunk(dispatch, registrationThunk, formData);
-			await dispatch(registrationThunk(formData)).unwrap();
+			await handleThunk(dispatch, registrationThunk, formData);
 		}
 	};
 	if (modalType === 'login') return <LoginForm authHandler={authHandler} />;

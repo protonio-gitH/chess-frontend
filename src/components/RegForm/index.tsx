@@ -7,9 +7,11 @@ import Button from '@mui/material/Button';
 import { z } from 'zod';
 import FormTextField from '../FormTextField';
 import { loginThunk } from '../../store/authSlice';
-import handleThunk from '../../utils/handleThunk';
+// import handleThunk from '../../utils/handleThunk';
 import { useAppDispatch } from '../../store';
 import { AuthFormData } from '../../types';
+import { registrationDataSchema } from '../../schemas';
+import { RegistrationFormData } from '../../types';
 
 interface RegistrationProps {
 	authHandler: (formData: AuthFormData) => Promise<void>;
@@ -22,27 +24,27 @@ const initialState = {
 	type: '/auth/registration',
 };
 
-const formDataSchema = z
-	.object({
-		email: z.string().nonempty('Email is required'),
-		password: z.string().nonempty('Password is required').min(6, 'Password must be at least 6 characters'),
-		confirmPassword: z.string().nonempty('Please confirm your password'),
-		type: z.enum(['/auth/registration']),
-	})
-	.refine(data => data.password === data.confirmPassword, {
-		message: 'Passwords do not match',
-		path: ['confirmPassword'],
-	});
+// const formDataSchema = z
+// 	.object({
+// 		email: z.string().nonempty('Email is required'),
+// 		password: z.string().nonempty('Password is required').min(6, 'Password must be at least 6 characters'),
+// 		confirmPassword: z.string().nonempty('Please confirm your password'),
+// 		type: z.enum(['/auth/registration']),
+// 	})
+// 	.refine(data => data.password === data.confirmPassword, {
+// 		message: 'Passwords do not match',
+// 		path: ['confirmPassword'],
+// 	});
 
-type FormData = z.infer<typeof formDataSchema>;
+// type FormData = z.infer<typeof formDataSchema>;
 
-function isValidRegistrationFormData(data: FormData): data is FormData {
+function isValidRegistrationFormData(data: RegistrationFormData): data is RegistrationFormData {
 	return (
 		typeof data.email === 'string' && typeof data.password === 'string' && typeof data.confirmPassword === 'string'
 	);
 }
 const RegForm: FC<RegistrationProps> = ({ authHandler }) => {
-	const [userFormData, setUserFormData] = useState<FormData>({
+	const [userFormData, setUserFormData] = useState<RegistrationFormData>({
 		email: '',
 		password: '',
 		confirmPassword: '',
@@ -57,7 +59,7 @@ const RegForm: FC<RegistrationProps> = ({ authHandler }) => {
 	};
 
 	const validate = () => {
-		const res = formDataSchema.safeParse(formData);
+		const res = registrationDataSchema.safeParse(formData);
 		if (res.success) return undefined;
 		return res.error.format();
 	};

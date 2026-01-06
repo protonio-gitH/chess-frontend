@@ -4,4 +4,4 @@ export type { RootState, AppDispatch, ConfigRedux } from './redux.types';
 export type { LoginResponse, AuthState, ErrorResponse, Extra, SnackBarState } from './slices.types';
 export type { JWTDecodePayload, DecodeTokenReturn } from './utils.types';
 export type { SnackbarState } from './snackbar.types';
-export type { AuthFormData } from './auth.types';
+export type { AuthFormData, RegistrationFormData, LoginFormData } from './auth.types';

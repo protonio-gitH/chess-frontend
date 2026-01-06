@@ -9,8 +9,10 @@ import FormTextField from '../FormTextField';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginThunk } from '../../store/authSlice';
 import { useAppDispatch } from '../../store';
-import handleThunk from '../../utils/handleThunk';
+// import handleThunk from '../../utils/handleThunk';
 import { AuthFormData } from '../../types';
+import { loginDataSchema } from '../../schemas';
+import { LoginFormData } from '../../types';
 
 interface LoginProps {
 	authHandler: (formData: AuthFormData) => Promise<void>;
@@ -22,17 +24,17 @@ const initialState = {
 	type: '/auth/login',
 };
 
-const formDataSchema = z.object({
-	email: z.string().email('Invalid email address').nonempty('Login is required'),
-	password: z.string().nonempty('Password is required').min(6, 'Password must be at least 6 characters'),
-	type: z.enum(['/auth/login']),
-});
+// const formDataSchema = z.object({
+// 	email: z.string().email('Invalid email address').nonempty('Login is required'),
+// 	password: z.string().nonempty('Password is required').min(6, 'Password must be at least 6 characters'),
+// 	type: z.enum(['/auth/login']),
+// });
 
 function isValidLoginFormData(data: LoginFormData): data is LoginFormData {
 	return typeof data.email === 'string' && typeof data.password === 'string';
 }
 
-export type LoginFormData = z.infer<typeof formDataSchema>;
+// export type LoginFormData = z.infer<typeof formDataSchema>;
 
 const LoginForm: FC<LoginProps> = ({ authHandler }) => {
 	const [userFormData, setUserFormData] = useState<LoginFormData>({
@@ -49,7 +51,7 @@ const LoginForm: FC<LoginProps> = ({ authHandler }) => {
 	};
 
 	const validate = () => {
-		const res = formDataSchema.safeParse(formData);
+		const res = loginDataSchema.safeParse(formData);
 		if (res.success) return undefined;
 		return res.error.format();
 	};

@@ -1,14 +1,7 @@
-type LoginFormData = {
-	type: '/auth/login';
-	email: string;
-	password: string;
-};
+import { loginDataSchema, registrationDataSchema } from '../schemas';
+import { z } from 'zod';
 
-type RegistrationFormData = {
-	type: '/auth/registration';
-	email: string;
-	password: string;
-	confirmPassword: string;
-};
+export type LoginFormData = z.infer<typeof loginDataSchema>;
+export type RegistrationFormData = z.infer<typeof registrationDataSchema>;
 
 export type AuthFormData = LoginFormData | RegistrationFormData;
