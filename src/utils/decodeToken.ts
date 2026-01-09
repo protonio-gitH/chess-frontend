@@ -1,8 +1,9 @@
 import { jwtDecode } from 'jwt-decode';
 import { DecodeTokenReturn, JWTDecodePayload } from '../types';
 
-export function decodeToken(token: string): DecodeTokenReturn | null {
+export function decodeToken(token: string | null): DecodeTokenReturn | null {
 	try {
+		if (!token) return null;
 		const decoded = jwtDecode<JWTDecodePayload>(token);
 		return {
 			email: decoded.email,

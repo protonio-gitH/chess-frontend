@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { loginSuccess } from '../store/authSlice';
+import { loginSuccess } from '../store/auth.slice';
 import { isTokenOverdue } from '../utils/isTokenOvedue';
 import { decodeToken } from '../utils/decodeToken';
 import { AppDispatch, LoginResponse, ModalOptions } from '../types';

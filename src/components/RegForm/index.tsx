@@ -1,13 +1,9 @@
 import React, { useState, memo, FC } from 'react';
-import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import styles from './index.module.scss';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { z } from 'zod';
 import FormTextField from '../FormTextField';
-import { loginThunk } from '../../store/authSlice';
-// import handleThunk from '../../utils/handleThunk';
 import { useAppDispatch } from '../../store';
 import { AuthFormData } from '../../types';
 import { registrationDataSchema } from '../../schemas';
@@ -24,25 +20,6 @@ const initialState = {
 	type: '/auth/registration',
 };
 
-// const formDataSchema = z
-// 	.object({
-// 		email: z.string().nonempty('Email is required'),
-// 		password: z.string().nonempty('Password is required').min(6, 'Password must be at least 6 characters'),
-// 		confirmPassword: z.string().nonempty('Please confirm your password'),
-// 		type: z.enum(['/auth/registration']),
-// 	})
-// 	.refine(data => data.password === data.confirmPassword, {
-// 		message: 'Passwords do not match',
-// 		path: ['confirmPassword'],
-// 	});
-
-// type FormData = z.infer<typeof formDataSchema>;
-
-function isValidRegistrationFormData(data: RegistrationFormData): data is RegistrationFormData {
-	return (
-		typeof data.email === 'string' && typeof data.password === 'string' && typeof data.confirmPassword === 'string'
-	);
-}
 const RegForm: FC<RegistrationProps> = ({ authHandler }) => {
 	const [userFormData, setUserFormData] = useState<RegistrationFormData>({
 		email: '',
@@ -51,7 +28,6 @@ const RegForm: FC<RegistrationProps> = ({ authHandler }) => {
 		type: '/auth/registration',
 	});
 	const [isErrors, setIsErrors] = useState<boolean>(false);
-	const dispatch = useAppDispatch();
 
 	const formData = {
 		...initialState,
@@ -71,11 +47,7 @@ const RegForm: FC<RegistrationProps> = ({ authHandler }) => {
 			setIsErrors(true);
 			return;
 		}
-		// if (isValidRegistrationFormData(userFormData)) {
-		// const { email, password } = userFormData;
 		await authHandler(userFormData);
-		// await handleThunk(dispatch, loginThunk, userFormData);
-		// }
 	};
 
 	const errors = isErrors ? validate() : undefined;

@@ -1,12 +1,15 @@
 import { Box, Button, Stack } from '@mui/material';
 import React, { FC, memo } from 'react';
 
-interface CreateGameProps {}
+interface CreateGameProps {
+	createGameHandler: () => void;
+}
 
-const CreateGame: FC = () => {
+const CreateGame: FC<CreateGameProps> = ({ createGameHandler }) => {
 	return (
 		<Stack>
 			<Button
+				onClick={createGameHandler}
 				variant="outlined"
 				sx={{
 					margin: '0 auto',

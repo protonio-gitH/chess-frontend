@@ -31,7 +31,7 @@ function App() {
 					</Route>
 				</Routes>
 				<Modal>
-					<ModalContainer modalOptions={modalOptions} />
+					<ModalContainer />
 				</Modal>
 			</BrowserRouter>
 			<SnackBarContainer />

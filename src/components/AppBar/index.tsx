@@ -17,7 +17,7 @@ import { ModalType } from '../../types/modalContext.types';
 import { decodeToken } from '../../utils/decodeToken';
 import { Link } from '@mui/material';
 import { useAppDispatch } from '../../store';
-import { logoutThunk } from '../../store/authSlice';
+import { logoutThunk } from '../../store/auth.slice';
 import handleThunk from '../../utils/handleThunk';
 
 const pages = ['Products', 'Pricing', 'Blog'];

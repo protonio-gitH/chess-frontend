@@ -1,15 +1,9 @@
 import React, { useState, memo, FC } from 'react';
-import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import styles from './index.module.scss';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { z } from 'zod';
 import FormTextField from '../FormTextField';
-import { useDispatch, useSelector } from 'react-redux';
-import { loginThunk } from '../../store/authSlice';
-import { useAppDispatch } from '../../store';
-// import handleThunk from '../../utils/handleThunk';
 import { AuthFormData } from '../../types';
 import { loginDataSchema } from '../../schemas';
 import { LoginFormData } from '../../types';
@@ -24,18 +18,6 @@ const initialState = {
 	type: '/auth/login',
 };
 
-// const formDataSchema = z.object({
-// 	email: z.string().email('Invalid email address').nonempty('Login is required'),
-// 	password: z.string().nonempty('Password is required').min(6, 'Password must be at least 6 characters'),
-// 	type: z.enum(['/auth/login']),
-// });
-
-function isValidLoginFormData(data: LoginFormData): data is LoginFormData {
-	return typeof data.email === 'string' && typeof data.password === 'string';
-}
-
-// export type LoginFormData = z.infer<typeof formDataSchema>;
-
 const LoginForm: FC<LoginProps> = ({ authHandler }) => {
 	const [userFormData, setUserFormData] = useState<LoginFormData>({
 		email: '',
@@ -43,7 +25,6 @@ const LoginForm: FC<LoginProps> = ({ authHandler }) => {
 		type: '/auth/login',
 	});
 	const [isErrors, setIsErrors] = useState<boolean>(false);
-	const dispatch = useAppDispatch();
 
 	const formData = {
 		...initialState,
@@ -63,10 +44,7 @@ const LoginForm: FC<LoginProps> = ({ authHandler }) => {
 			setIsErrors(true);
 			return;
 		}
-		// if (isValidLoginFormData(userFormData)) {
-		// await handleThunk(dispatch, loginThunk, userFormData);
 		await authHandler(userFormData);
-		// }
 	};
 
 	const errors = isErrors ? validate() : undefined;
