@@ -1,7 +1,7 @@
 import blackLogo from '../../assets/figures/black-queen.svg';
 import whiteLogo from '../../assets/figures/white-queen.svg';
 import { Figure } from './Figure';
-import { Colors } from '../../constants';
+import { Colors } from '../../../../constants';
 import { FigureNames } from '../../constants/';
 import { Cell } from '../Cell';
 

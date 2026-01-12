@@ -1,7 +1,7 @@
 import { FC } from 'react';
 import LoginForm from '../../components/LoginForm';
 import RegForm from '../../components/RegForm';
-import { AuthFormData, ModalType } from '../../types';
+import type { AuthFormData } from '../../types';
 import { useAppDispatch } from '../../store';
 import handleThunk from '../../utils/handleThunk';
 import { loginThunk, registrationThunk } from '../../store/auth.slice';

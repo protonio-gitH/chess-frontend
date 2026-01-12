@@ -1,5 +1,5 @@
 import { Cell } from './Cell';
-import { Colors } from '../constants';
+import { Colors } from '../../../constants';
 import { Files } from '../constants/Files';
 import { Bishop } from './figures/Bishop';
 import { FigureNames } from '../constants/';

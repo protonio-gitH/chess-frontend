@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.scss';
-import { Board, BoardComponent, Colors, useSelected } from '../../modules/Board';
+import { Board, BoardComponent, useSelected } from '../../modules/Board';
+import { Colors } from '../../constants';
 import { Move } from '../../modules/MoveHistory';
 import { MoveHistoryContainer } from '../../modules/MoveHistory';
 

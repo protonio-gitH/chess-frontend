@@ -3,9 +3,12 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, ConfigRedux, RootState } from '../types';
 import authReducer from './auth.slice';
 import { services } from '../servicesInstance';
+import listReducer from '../modules/GamesList/store/list.slice';
+
 export const store = configureStore({
 	reducer: {
 		auth: authReducer,
+		list: listReducer,
 	},
 	middleware: getDefaultMiddleware =>
 		getDefaultMiddleware({

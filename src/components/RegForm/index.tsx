@@ -7,7 +7,7 @@ import FormTextField from '../FormTextField';
 import { useAppDispatch } from '../../store';
 import { AuthFormData } from '../../types';
 import { registrationDataSchema } from '../../schemas';
-import { RegistrationFormData } from '../../types';
+import type { RegistrationFormData } from '../../types';
 
 interface RegistrationProps {
 	authHandler: (formData: AuthFormData) => Promise<void>;

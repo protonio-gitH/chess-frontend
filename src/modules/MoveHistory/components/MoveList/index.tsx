@@ -3,7 +3,7 @@ import styles from './index.module.scss';
 import { Move, HandleMoveClick } from '../../types/move.types';
 import MoveColumn from '../MoveColumn';
 import MoveControls from '../MoveControls';
-import { MoveActions } from '../../types';
+import type { MoveActions } from '../../types';
 
 interface MoveListProps {
 	whiteMoves: Move[];

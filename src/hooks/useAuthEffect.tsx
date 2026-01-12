@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { loginSuccess } from '../store/auth.slice';
 import { isTokenOverdue } from '../utils/isTokenOvedue';
 import { decodeToken } from '../utils/decodeToken';
-import { AppDispatch, LoginResponse, ModalOptions } from '../types';
+import type { AppDispatch, LoginResponse, ModalOptions } from '../types';
 import { AxiosResponse } from 'axios';
 import { useAppDispatch, useAppSelector } from '../store';
 import { useServices } from '../hooks/useServices';

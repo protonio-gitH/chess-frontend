@@ -1,7 +1,7 @@
 import blackLogo from '../../assets/figures/black-rook.svg';
 import whiteLogo from '../../assets/figures/white-rook.svg';
 import { Cell } from '../Cell';
-import { Colors } from '../../constants';
+import { Colors } from '../../../../constants';
 import { Figure } from './Figure';
 import { FigureNames } from '../../constants/';
 

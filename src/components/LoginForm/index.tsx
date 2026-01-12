@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import FormTextField from '../FormTextField';
 import { AuthFormData } from '../../types';
 import { loginDataSchema } from '../../schemas';
-import { LoginFormData } from '../../types';
+import type { LoginFormData } from '../../types';
 
 interface LoginProps {
 	authHandler: (formData: AuthFormData) => Promise<void>;

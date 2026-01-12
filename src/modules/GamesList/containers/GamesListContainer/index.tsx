@@ -13,4 +13,4 @@ const GamesListContainer: FC = () => {
 	return <List items={testItems} />;
 };
 
-export default memo(GamesListContainer);
+export default GamesListContainer;

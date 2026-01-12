@@ -1,7 +1,7 @@
 import logo from '../../figures/assets/black-bishop.svg';
 import { Cell } from '../Cell';
 import { King } from './King';
-import { Colors } from '../../constants';
+import { Colors } from '../../../../constants';
 import { FigureNames } from '../../constants/';
 
 export class Figure {

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { PayloadAction } from '@reduxjs/toolkit';
-import { LoginResponse, AuthState, ErrorResponse, Extra } from '../types';
+import type { LoginResponse, AuthState, ErrorResponse, Extra } from '../types';
 import { AxiosError } from 'axios';
 
 function isErrorResponse(data: LoginResponse | ErrorResponse | null): data is ErrorResponse {
@@ -114,7 +114,7 @@ const authSlice = createSlice({
 	name: 'auth',
 	initialState,
 	reducers: {
-		loginSuccess(state, action: PayloadAction<string>) {
+		loginSuccess(state, action) {
 			state.token = action.payload;
 			state.isAuth = true;
 			state.error = null;

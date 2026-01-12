@@ -1,5 +1,5 @@
 import { Figure } from './Figure';
-import { Colors } from '../../constants';
+import { Colors } from '../../../../constants';
 import { FigureNames } from '../../constants/';
 import { Cell } from '../Cell';
 import blackLogo from '../../assets/figures/black-king.svg';

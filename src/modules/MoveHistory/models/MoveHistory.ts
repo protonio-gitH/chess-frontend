@@ -1,4 +1,4 @@
-import { Cell, Colors } from '../../Board';
+import { Colors } from '../../../constants';
 import { Move, CellWithNullBoard } from '../types/move.types';
 
 class MoveHistory {

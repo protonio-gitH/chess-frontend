@@ -24,6 +24,5 @@ root.render(
 				</Provider>
 			</ServicesContext.Provider>
 		</ThemeProvider>
-		,
 	</React.StrictMode>,
 );

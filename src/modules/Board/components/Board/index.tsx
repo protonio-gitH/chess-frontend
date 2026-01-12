@@ -3,7 +3,7 @@ import styles from './index.module.scss';
 import { Board } from '../../models/Board';
 import CellComponent from '../Cell';
 import { useSelected } from '../../hooks/useSelected';
-import { Colors } from '../../constants';
+import { Colors } from '../../../../constants';
 import { King } from '../../models/figures/King';
 import Files from '../Files';
 

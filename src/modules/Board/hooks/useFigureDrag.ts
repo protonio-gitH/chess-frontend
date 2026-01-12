@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { Cell } from '../models/Cell';
 import { Board } from '../models/Board';
 import { CellSelectHandler } from '../types/useFigureDrag.types';
-import { Colors } from '../constants/';
+import { Colors } from '../../../constants';
 
 type useFigureDragHook = {
 	mouseDownHandler: (e: React.MouseEvent<HTMLDivElement>, cell: Cell) => void;

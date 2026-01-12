@@ -1,5 +1,5 @@
 import { Board } from './Board';
-import { Colors } from '../constants';
+import { Colors } from '../../../constants';
 import { Files } from '../constants/Files';
 import { Figure } from './figures/Figure';
 import { FigureNames } from '../constants/';
