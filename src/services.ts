@@ -34,7 +34,7 @@ export class Services {
 					const originalRequest = error.config;
 					const release = await mutex.acquire();
 					if (
-						!originalRequest.url.includes('/auth/refresh') &&
+						// !originalRequest.url.includes('/auth/refresh') &&
 						error.response.status === 401 &&
 						originalRequest &&
 						!originalRequest._isRetry
@@ -53,14 +53,20 @@ export class Services {
 								const refreshResponse = await axios.get<LoginResponse>(`${this.apiService.getBaseUrl()}/auth/refresh`, {
 									withCredentials: true,
 								});
-								this.apiService.setHeader('Authorization', refreshResponse.data.accessToken);
-								localStorage.setItem('token', refreshResponse.data.accessToken);
+								const token = refreshResponse.data.accessToken;
+								this.apiService.setHeader('Authorization', `Bearer ${token}`);
+								localStorage.setItem('token', token);
+								originalRequest.headers = {
+									...originalRequest.headers,
+									Authorization: `Bearer ${token}`,
+								};
 								return this.apiService.request(originalRequest.url, originalRequest);
 							});
 						} catch (e) {
 							console.error('Not authorized');
 						} finally {
 							this.apiService.isRefreshing = false;
+							originalRequest._isRetry = false;
 							release();
 							// this.apiService.getPendingRequests().forEach(req => req());
 							// this.apiService.clearPendingRequests();

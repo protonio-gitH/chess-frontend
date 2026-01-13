@@ -10,7 +10,7 @@ const listSlice = createSlice({
 	initialState,
 	reducers: {
 		setGamesList(state, action) {
-			state.gamesList = action.payload;
+			state.gamesList = action.payload.games;
 		},
 	},
 });

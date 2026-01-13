@@ -1,1 +1,1 @@
-export type { ListState } from './slices.types.ts';
+export type { ListState, Game } from './slices.types.ts';

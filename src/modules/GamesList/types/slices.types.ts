@@ -5,9 +5,10 @@ interface Player {
 	email: string;
 }
 
-interface Game {
+export interface Game {
 	id: string;
 	creatorId: string;
+	creator: Player;
 	whitePlayerId: string | null;
 	blackPlayerId: string | null;
 	whitePlayer: Player | null;

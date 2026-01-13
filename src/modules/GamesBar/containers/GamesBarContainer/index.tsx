@@ -7,12 +7,7 @@ import GamesBarComponent from '../../components/GamesBar';
 const GamesBarContainer: FC = () => {
 	const services = useServices();
 	const api = services.getApi();
-	const createGame = async () => {
-		const createGameResponse = await api.request<CreateGameResponse>('/game', {
-			method: 'POST',
-			data: { nick: 'test' },
-		});
-	};
+
 	return <GamesBarComponent />;
 };
 
