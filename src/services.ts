@@ -27,52 +27,52 @@ export class Services {
 			const mutex = this.getMutex();
 
 			axiosInstance.interceptors.response.use(
-				config => {
-					return config;
-				},
+				response => response,
 				async error => {
 					const originalRequest = error.config;
-					const release = await mutex.acquire();
-					if (
-						// !originalRequest.url.includes('/auth/refresh') &&
-						error.response.status === 401 &&
-						originalRequest &&
-						!originalRequest._isRetry
-					) {
-						originalRequest._isRetry = true;
-						// if (this.apiService.isRefreshing) {
-						// 	return new Promise((resolve, reject) => {
-						// 		this.apiService.addPendingRequest(() => {
-						// 			this.apiService.request(originalRequest.url, originalRequest).then(resolve).catch(reject);
-						// 		});
-						// 	});
-						// }
-						this.apiService.isRefreshing = true;
+
+					if (!error.response) {
+						return Promise.reject(error);
+					}
+
+					if (error.response.status !== 401) {
+						return Promise.reject(error);
+					}
+
+					if (originalRequest._isRetry) {
+						return Promise.reject(error);
+					}
+					originalRequest._isRetry = true;
+					await mutex.waitForUnlock();
+					if (!mutex.isLocked()) {
+						const release = await mutex.acquire();
+
 						try {
-							return mutex.runExclusive(async () => {
-								const refreshResponse = await axios.get<LoginResponse>(`${this.apiService.getBaseUrl()}/auth/refresh`, {
-									withCredentials: true,
-								});
-								const token = refreshResponse.data.accessToken;
-								this.apiService.setHeader('Authorization', `Bearer ${token}`);
-								localStorage.setItem('token', token);
-								originalRequest.headers = {
-									...originalRequest.headers,
-									Authorization: `Bearer ${token}`,
-								};
-								return this.apiService.request(originalRequest.url, originalRequest);
+							const refreshResponse = await axios.get<LoginResponse>(`${this.apiService.getBaseUrl()}/auth/refresh`, {
+								withCredentials: true,
 							});
-						} catch (e) {
-							console.error('Not authorized');
+
+							const newToken = refreshResponse.data.accessToken;
+
+							localStorage.setItem('token', newToken);
+
+							this.apiService.setHeader('Authorization', `Bearer ${newToken}`);
+						} catch (refreshError) {
+							console.error('Refresh failed');
+							throw refreshError;
 						} finally {
-							this.apiService.isRefreshing = false;
-							originalRequest._isRetry = false;
 							release();
-							// this.apiService.getPendingRequests().forEach(req => req());
-							// this.apiService.clearPendingRequests();
 						}
 					}
-					throw error;
+
+					const token = localStorage.getItem('token');
+
+					originalRequest.headers = {
+						...originalRequest.headers,
+						Authorization: `Bearer ${token}`,
+					};
+
+					return axiosInstance(originalRequest);
 				},
 			);
 		}

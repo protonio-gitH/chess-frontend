@@ -11,7 +11,7 @@ const CreateGameModalContainer: FC = () => {
 	const api = services.getApi();
 	const token = useAppSelector(state => state.auth.token);
 	const decodedToken = decodeToken(token);
-	const createGameHandler = async () => {
+	const createGameHandler = async (): Promise<void> => {
 		if (decodedToken?.userId) {
 			try {
 				const response = await api.request('/game', { method: 'POST', data: { creatorId: decodedToken.userId } });

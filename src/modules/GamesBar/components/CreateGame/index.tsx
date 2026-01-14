@@ -2,7 +2,7 @@ import { Box, Button, Stack } from '@mui/material';
 import React, { FC, memo } from 'react';
 
 interface CreateGameProps {
-	createGameHandler: () => void;
+	createGameHandler: () => Promise<void>;
 }
 
 const CreateGame: FC<CreateGameProps> = ({ createGameHandler }) => {
