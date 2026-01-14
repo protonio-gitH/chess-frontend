@@ -1,4 +1,4 @@
-import { memo, FC } from 'react';
+import { memo, FC, useCallback } from 'react';
 import styles from './index.module.scss';
 import List from '../../components/List';
 import { useListSSE } from '../../hooks/useListSSE';
@@ -14,18 +14,21 @@ const GamesListContainer: FC = () => {
 	const token = useAppSelector(state => state.auth.token);
 	const decodedToken = decodeToken(token);
 
-	const acceptGameHandler = async (gameId: string): Promise<void> => {
-		if (decodedToken?.userId) {
+	const acceptGameHandler = useCallback(
+		async (gameId: string): Promise<void> => {
+			if (!decodedToken?.userId) return;
+
 			try {
-				const response = await api.request('/game/accept', {
+				await api.request('/game/accept', {
 					method: 'POST',
-					data: { userId: decodedToken.userId, gameId: gameId },
+					data: { userId: decodedToken.userId, gameId },
 				});
 			} catch (e) {
-				console.error('Failed to create game:', e);
+				console.error('Failed to accept game:', e);
 			}
-		}
-	};
+		},
+		[api, decodedToken?.userId],
+	);
 
 	return <List items={gameList} acceptGameHandler={acceptGameHandler} />;
 };

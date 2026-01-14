@@ -1,4 +1,4 @@
-import { FC } from 'react';
+import { FC, useCallback } from 'react';
 import CreateGame from '../../components/CreateGame';
 import { useModal } from '../../../../hooks/useModal';
 import { useServices } from '../../../../hooks/useServices';
@@ -11,7 +11,7 @@ const CreateGameModalContainer: FC = () => {
 	const api = services.getApi();
 	const token = useAppSelector(state => state.auth.token);
 	const decodedToken = decodeToken(token);
-	const createGameHandler = async (): Promise<void> => {
+	const createGameHandler = useCallback(async (): Promise<void> => {
 		if (decodedToken?.userId) {
 			try {
 				const response = await api.request('/game', { method: 'POST', data: { creatorId: decodedToken.userId } });
@@ -19,7 +19,7 @@ const CreateGameModalContainer: FC = () => {
 				console.error('Failed to create game:', e);
 			}
 		}
-	};
+	}, [api, decodedToken?.userId]);
 
 	if (modalOptions.modalType === 'createGame') return <CreateGame createGameHandler={createGameHandler} />;
 	return null;

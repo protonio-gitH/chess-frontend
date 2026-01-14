@@ -13,6 +13,7 @@ import { useServices } from '../hooks/useServices';
 import { useAuthEffect } from '../hooks/useAuthEffect';
 import SnackBarContainer from '../containers/SnackBarContainer';
 import ModalContainer from '../containers/ModalContainer';
+import NotFound from './NotFound';
 
 function App() {
 	const { modalOptions, setModalOptions } = useModal();
@@ -27,8 +28,9 @@ function App() {
 				<Routes>
 					<Route path="/" element={<Layout isAuth={isAuth} />}>
 						<Route index element={<Main />} />
-						<Route path="game" element={<Game />} />
+						<Route path="game/:gameId" element={<Game />} />
 					</Route>
+					<Route path="*" element={<NotFound />} />
 				</Routes>
 				<Modal>
 					<ModalContainer />

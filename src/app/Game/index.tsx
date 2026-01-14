@@ -4,6 +4,7 @@ import { Board, BoardComponent, useSelected } from '../../modules/Board';
 import { Colors } from '../../constants';
 import { Move } from '../../modules/MoveHistory';
 import { MoveHistoryContainer } from '../../modules/MoveHistory';
+import { useParams } from 'react-router-dom';
 
 function Game() {
 	const [board, setBoard] = useState<Board>(new Board());
@@ -12,6 +13,8 @@ function Game() {
 		[Colors.BLACK]: [],
 	});
 
+	const { gameId } = useParams<{ gameId: string }>();
+	console.log(gameId);
 	useEffect(() => {
 		restart();
 	}, []);
