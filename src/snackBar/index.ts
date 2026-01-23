@@ -1,10 +1,10 @@
 import { Services } from '../services';
-import { SnackBarState } from '../types';
+import { SnackBarServiceState } from '../types';
 
 export default class SnackBarService {
 	private services: Services;
-	private listeners: Array<(state: Partial<SnackBarState>) => void>;
-	private state: SnackBarState;
+	private listeners: Array<(state: Partial<SnackBarServiceState>) => void>;
+	private state: SnackBarServiceState;
 
 	constructor(services: Services) {
 		this.services = services;
@@ -12,16 +12,16 @@ export default class SnackBarService {
 		this.listeners = [];
 	}
 
-	public getState(): SnackBarState {
+	public getState(): SnackBarServiceState {
 		return this.state;
 	}
 
-	public setState(newState: Partial<SnackBarState>): void {
+	public setState(newState: Partial<SnackBarServiceState>): void {
 		this.state = { ...this.state, ...newState };
 		this.listeners.forEach(listener => listener(newState));
 	}
 
-	public subscribe(listener: (state: Partial<SnackBarState>) => void): () => void {
+	public subscribe(listener: (state: Partial<SnackBarServiceState>) => void): () => void {
 		this.listeners.push(listener);
 		return () => {
 			this.listeners = this.listeners.filter(item => item !== listener);

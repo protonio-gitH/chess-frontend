@@ -6,17 +6,9 @@ import { useAppSelector } from '../../store';
 import { useSnackBar } from '../../hooks/useSnackBar';
 
 const SnackBarContainer: FC = () => {
-	// const [snackBarState, setSnackBarState] = useState<SnackbarState>({
-	// 	open: false,
-	// 	vertical: 'top',
-	// 	horizontal: 'right',
-	// 	type: 'error',
-	// 	message: null,
-	// });
 	const { snackBarState, setSnackBarState } = useSnackBar();
 	const { vertical, horizontal, open, type, message } = snackBarState;
 	const handleClose = () => {
-		// setSnackBarState(prev => ({ ...prev, open: false }));
 		setSnackBarState({ open: false });
 	};
 

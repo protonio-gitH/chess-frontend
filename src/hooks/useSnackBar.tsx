@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
 import { useServices } from './useServices';
-import { SnackBarState } from '../types';
+import { SnackBarServiceState } from '../types';
 
 export const useSnackBar = (): {
-	snackBarState: SnackBarState;
-	setSnackBarState: (state: Partial<SnackBarState>) => void;
+	snackBarState: SnackBarServiceState;
+	setSnackBarState: (state: Partial<SnackBarServiceState>) => void;
 } => {
 	const snackBarSerivice = useServices().getSnackBar();
-	const [snackBarState, setSnackBarState] = useState<SnackBarState>(snackBarSerivice.getState());
+	const [snackBarState, setSnackBarState] = useState<SnackBarServiceState>(snackBarSerivice.getState());
 
 	useEffect(() => {
-		const changeState = (state: Partial<SnackBarState>): void => {
+		const changeState = (state: Partial<SnackBarServiceState>): void => {
 			setSnackBarState(prev => ({ ...prev, ...state }));
 		};
 

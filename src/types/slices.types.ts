@@ -20,6 +20,6 @@ export interface AuthState {
 	error: string | null;
 }
 
-export interface SnackBarSliceState {
+export interface SnackBarState {
 	message: string | null;
 }
