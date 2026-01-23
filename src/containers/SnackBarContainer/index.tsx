@@ -1,27 +1,30 @@
 import { FC, useEffect, useState } from 'react';
 import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
-import type { SnackbarState } from '../../types';
+import type { SnackBarState } from '../../types';
 import { useAppSelector } from '../../store';
+import { useSnackBar } from '../../hooks/useSnackBar';
 
 const SnackBarContainer: FC = () => {
-	const [snackBarState, setSnackBarState] = useState<SnackbarState>({
-		open: false,
-		vertical: 'top',
-		horizontal: 'right',
-		type: 'error',
-		message: null,
-	});
+	// const [snackBarState, setSnackBarState] = useState<SnackbarState>({
+	// 	open: false,
+	// 	vertical: 'top',
+	// 	horizontal: 'right',
+	// 	type: 'error',
+	// 	message: null,
+	// });
+	const { snackBarState, setSnackBarState } = useSnackBar();
 	const { vertical, horizontal, open, type, message } = snackBarState;
 	const handleClose = () => {
-		setSnackBarState(prev => ({ ...prev, open: false }));
+		// setSnackBarState(prev => ({ ...prev, open: false }));
+		setSnackBarState({ open: false });
 	};
 
 	const error = useAppSelector(state => state.auth.error);
 
 	useEffect(() => {
 		if (error) {
-			setSnackBarState(prev => ({ ...prev, open: true, message: error, type: 'error' }));
+			setSnackBarState({ open: true, message: error, type: 'error' });
 		}
 	}, [error]);
 

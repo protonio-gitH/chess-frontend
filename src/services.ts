@@ -3,11 +3,13 @@ import { Config } from './config';
 import { LoginResponse } from './types';
 import axios from 'axios';
 import { Mutex } from 'async-mutex';
+import SnackBarService from './snackBar';
 
 export class Services {
 	private config: Config;
 	private apiService!: APIService;
 	private mutex!: Mutex;
+	private snackBarService!: SnackBarService;
 
 	constructor(config: Config) {
 		this.config = config;
@@ -18,6 +20,13 @@ export class Services {
 			this.mutex = new Mutex();
 		}
 		return this.mutex;
+	}
+
+	public getSnackBar(): SnackBarService {
+		if (!this.snackBarService) {
+			this.snackBarService = new SnackBarService(this);
+		}
+		return this.snackBarService;
 	}
 
 	public getApi(): APIService {

@@ -5,6 +5,9 @@ import { Colors } from '../../constants';
 import { Move } from '../../modules/MoveHistory';
 import { MoveHistoryContainer } from '../../modules/MoveHistory';
 import { useParams } from 'react-router-dom';
+import { getGameInfoThunk } from '../../store/game.slice';
+import handleThunk from '../../utils/handleThunk';
+import { useAppDispatch } from '../../store';
 
 function Game() {
 	const [board, setBoard] = useState<Board>(new Board());
@@ -12,9 +15,14 @@ function Game() {
 		[Colors.WHITE]: [],
 		[Colors.BLACK]: [],
 	});
-
+	const dispatch = useAppDispatch();
 	const { gameId } = useParams<{ gameId: string }>();
-	console.log(gameId);
+
+	useEffect(() => {
+		if (!gameId) return;
+		handleThunk(dispatch, getGameInfoThunk, { gameId });
+	}, [gameId]);
+
 	useEffect(() => {
 		restart();
 	}, []);

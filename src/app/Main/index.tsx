@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Box, Container, Stack, useMediaQuery } from '@mui/material';
 import { GamesListContainer } from '../../modules/GamesList';
 import { useAppSelector, useAppDispatch } from '../../store';
 import { GamesBarContainer } from '../../modules/GamesBar';
+import { useParams } from 'react-router-dom';
+import { getGameInfoThunk } from '../../store/game.slice';
+import handleThunk from '../../utils/handleThunk';
 
 function Main() {
 	const isMobile = useMediaQuery('(max-width:600px)');
