@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useServices } from './useServices';
-import { SnackBarServiceState } from '../types';
+import type { SnackBarServiceState } from '../types';
 
 export const useSnackBar = (): {
 	snackBarState: SnackBarServiceState;

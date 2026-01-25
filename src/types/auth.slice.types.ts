@@ -8,18 +8,9 @@ export interface LoginResponse {
 	accessToken: string;
 }
 
-export interface ErrorResponse {
-	message: string;
-	status: number;
-}
-
 export interface AuthState {
 	isAuth: boolean;
 	token: string | null;
 	loading: boolean;
 	error: string | null;
-}
-
-export interface SnackBarState {
-	message: string | null;
 }

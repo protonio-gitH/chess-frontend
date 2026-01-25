@@ -9,6 +9,11 @@ import { Config } from '../config';
 
 export type ConfigAPI = Config['api'];
 
+export interface ErrorResponse {
+	message: string;
+	status: number;
+}
+
 // export type RequestOptions = Omit<RequestInit, 'method' | 'headers'>;
 
 // export type RequestConfig = { path: string; customOptions: RequestInit };

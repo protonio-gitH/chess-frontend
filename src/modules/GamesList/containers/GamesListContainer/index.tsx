@@ -5,6 +5,9 @@ import { useListSSE } from '../../hooks/useListSSE';
 import { useServices } from '../../../../hooks/useServices';
 import { useAppSelector } from '../../../../store';
 import { decodeToken } from '../../../../utils/decodeToken';
+import { isAxiosError } from 'axios';
+import { useSnackBar } from '../../../../hooks/useSnackBar';
+import { ErrorResponse, Game } from '../../../../types';
 
 const GamesListContainer: FC = () => {
 	useListSSE();
@@ -14,16 +17,23 @@ const GamesListContainer: FC = () => {
 	const token = useAppSelector(state => state.auth.token);
 	const decodedToken = decodeToken(token);
 
+	const { snackBarState, setSnackBarState } = useSnackBar();
+
 	const acceptGameHandler = useCallback(
 		async (gameId: string): Promise<void> => {
 			if (!decodedToken?.userId) return;
 
 			try {
-				await api.request('/game/accept', {
+				const response = await api.request<Game>('/game/accept', {
 					method: 'POST',
 					data: { userId: decodedToken.userId, gameId },
 				});
 			} catch (e) {
+				if (isAxiosError<ErrorResponse>(e)) {
+					if (e.status === 409) {
+						setSnackBarState({ open: true, message: e.response?.data.message, type: 'error' });
+					}
+				}
 				console.error('Failed to accept game:', e);
 			}
 		},

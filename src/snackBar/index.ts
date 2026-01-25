@@ -1,5 +1,5 @@
 import { Services } from '../services';
-import { SnackBarServiceState } from '../types';
+import type { SnackBarServiceState } from '../types';
 
 export default class SnackBarService {
 	private services: Services;
