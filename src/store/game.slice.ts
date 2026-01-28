@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import type { LoginResponse, AuthState, ErrorResponse, Extra, GameState, Game } from '../types';
-import { AxiosError } from 'axios';
-
+import { AxiosError, isAxiosError } from 'axios';
+// cmkeixb4q000kgth4b18vpnbq
 export const getGameInfoThunk = createAsyncThunk<
 	Game,
 	{ gameId: string },
@@ -14,25 +14,27 @@ export const getGameInfoThunk = createAsyncThunk<
 		console.log(response.data);
 		return response.data;
 	} catch (e) {
-		const error = e as AxiosError<ErrorResponse>;
-
-		if (error.response) {
+		// const error = e as AxiosError<ErrorResponse>;
+		if (isAxiosError<ErrorResponse>(e)) {
+			if (e.response) {
+				return rejectWithValue({
+					message: e.response.data?.message ?? 'Get game info failed',
+					status: e.response.status,
+				});
+			}
 			return rejectWithValue({
-				message: error.response.data?.message ?? 'Get game info failed',
-				status: error.response.status,
+				message: e.message || 'Network error',
+				status: 0,
 			});
 		}
-
-		return rejectWithValue({
-			message: error.message || 'Network error',
-			status: 0,
-		});
+		throw e;
 	}
 });
 
 const initialState: GameState = {
-	gameInfo: null,
-	loading: false,
+	gameInfo: undefined,
+	status: 'idle',
+	errorStatus: undefined,
 };
 
 const gameSlice = createSlice({
@@ -42,14 +44,15 @@ const gameSlice = createSlice({
 	extraReducers: builder => {
 		builder
 			.addCase(getGameInfoThunk.pending, state => {
-				state.loading = true;
+				state.status = 'loading';
 			})
 			.addCase(getGameInfoThunk.fulfilled, (state, action) => {
-				state.loading = false;
+				state.status = 'success';
 				state.gameInfo = action.payload;
 			})
 			.addCase(getGameInfoThunk.rejected, (state, action) => {
-				state.loading = false;
+				state.status = 'error';
+				state.errorStatus = action.payload?.status;
 			});
 	},
 });

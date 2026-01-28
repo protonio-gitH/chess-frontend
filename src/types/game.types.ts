@@ -1,13 +1,22 @@
 import { Colors, GameStatus } from '../constants';
 
+interface Player {
+	id: string;
+	email: string;
+}
+
 export interface Game {
 	id: string;
-	status: GameStatus;
-	turn: Colors;
-	winnerId: string | null;
 	creatorId: string;
+	creator: Player;
 	whitePlayerId: string | null;
 	blackPlayerId: string | null;
-	createdAt: Date;
-	updatedAt: Date;
+	whitePlayer: Player | null;
+	blackPlayer: Player | null;
+	status: GameStatus;
+	winnerId: string | null;
+	turn: Colors;
+	players: Player[];
+	createdAt: string;
+	updatedAt: string;
 }
