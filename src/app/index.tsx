@@ -14,13 +14,28 @@ import { useAuthEffect } from '../hooks/useAuthEffect';
 import SnackBarContainer from '../containers/SnackBarContainer';
 import ModalContainer from '../containers/ModalContainer';
 import NotFound from './NotFound';
+import SocketService from '../socket';
 
 function App() {
 	const { modalOptions, setModalOptions } = useModal();
 
 	const isAuth = useAppSelector(state => state.auth.isAuth);
 
+	const services = useServices();
+	const socket = services.getSocket();
 	useAuthEffect();
+
+	useEffect(() => {
+		socket.connect();
+
+		socket.on('connect', () => {
+			console.log('Connected', socket.getId());
+		});
+
+		return () => {
+			socket.disconnect();
+		};
+	}, []);
 
 	return (
 		<ErrorBoundary>

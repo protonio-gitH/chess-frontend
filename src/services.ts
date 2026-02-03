@@ -4,12 +4,14 @@ import { LoginResponse } from './types';
 import axios from 'axios';
 import { Mutex } from 'async-mutex';
 import SnackBarService from './snackBar';
+import SocketService from './socket';
 
 export class Services {
 	private config: Config;
 	private apiService!: APIService;
 	private mutex!: Mutex;
 	private snackBarService!: SnackBarService;
+	private socket!: SocketService;
 
 	constructor(config: Config) {
 		this.config = config;
@@ -20,6 +22,13 @@ export class Services {
 			this.mutex = new Mutex();
 		}
 		return this.mutex;
+	}
+
+	public getSocket(): SocketService {
+		if (!this.socket) {
+			this.socket = new SocketService(this, this.config.api);
+		}
+		return this.socket;
 	}
 
 	public getSnackBar(): SnackBarService {
