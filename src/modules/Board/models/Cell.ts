@@ -11,7 +11,9 @@ import { Queen } from './figures/Queen';
 import { Knight } from './figures/Knight';
 import { Bishop } from './figures/Bishop';
 import { NewFigures } from '../types/newFigure.types';
-import { Move, MOVE_TYPES, CellWithNullBoard } from '../../MoveHistory';
+import { Move, MOVE_TYPES } from '../../MoveHistory';
+import { BoardDTO, CellDTO } from '../types';
+import { FigureFactory } from './figures/FigureFactory';
 
 export class Cell {
 	readonly x: number;
@@ -32,6 +34,27 @@ export class Cell {
 		this.available = false;
 		this.id = +Math.random().toString().slice(2);
 		this.board = board;
+	}
+
+	static fromDTO(cellDTO: CellDTO, board: Board, boardDTO: BoardDTO): Cell {
+		const newCell = new Cell(cellDTO.x, cellDTO.y, cellDTO.color, null, cellDTO.file, board);
+		if (cellDTO.figure) {
+			FigureFactory.fromDTO(cellDTO.figure, boardDTO.cells, newCell);
+		}
+		return newCell;
+	}
+
+	public toDto(): CellDTO {
+		return {
+			x: this.x,
+			y: this.y,
+			color: this.color,
+			file: this.file,
+			id: this.id,
+			figure: this.figure?.toDTO() ?? null,
+			available: this.available,
+			board: null,
+		};
 	}
 
 	private checkKingShah(board: Board): void {
@@ -251,15 +274,9 @@ export class Cell {
 				let move = {
 					id,
 					moveType: moveType,
-					from: { ...from, board: null } as CellWithNullBoard,
-					to: { ...to, board: null } as CellWithNullBoard,
-					// cellsDump: cloneDeep(board.cells),
-					cellsDump: board.cells.map(row =>
-						row.map(cell => ({
-							...cell,
-							board: null,
-						})),
-					) as CellWithNullBoard[][],
+					from: from.toDto(),
+					to: to.toDto(),
+					cellsDump: board.cells.map(row => row.map(cell => cell.toDto())),
 					title: title,
 					color,
 				};

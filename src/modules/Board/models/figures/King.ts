@@ -5,6 +5,8 @@ import { Cell } from '../Cell';
 import blackLogo from '../../assets/figures/black-king.svg';
 import whiteLogo from '../../assets/figures/white-king.svg';
 import { Rook } from './Rook';
+import { KingDTO } from '../../types';
+import { boolean } from 'zod';
 
 export class King extends Figure {
 	shah: boolean;
@@ -19,6 +21,19 @@ export class King extends Figure {
 		this.shahFigures = [];
 		this.stalemate = false;
 		this.castling = true;
+	}
+
+	public toDTO(): KingDTO {
+		return {
+			id: this.id,
+			color: this.color,
+			name: this.name,
+			logo: this.name,
+			shah: this.shah,
+			shahFigures: this.shahFigures.map(f => f.toDTO()),
+			stalemate: this.stalemate,
+			castling: this.castling,
+		};
 	}
 
 	private flangUnderAttack(flang: Cell[]): boolean {

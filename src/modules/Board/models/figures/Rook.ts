@@ -4,6 +4,7 @@ import { Cell } from '../Cell';
 import { Colors } from '../../../../constants';
 import { Figure } from './Figure';
 import { FigureNames } from '../../constants/';
+import { RookDTO } from '../../types';
 
 export class Rook extends Figure {
 	castling: boolean;
@@ -12,6 +13,16 @@ export class Rook extends Figure {
 		this.logo = color === Colors.BLACK ? blackLogo : whiteLogo;
 		this.name = FigureNames.ROOK;
 		this.castling = true;
+	}
+
+	public toDTO(): RookDTO {
+		return {
+			id: this.id,
+			color: this.color,
+			name: this.name,
+			logo: this.name,
+			castling: this.castling,
+		};
 	}
 
 	protected validMove(target: Cell): boolean {

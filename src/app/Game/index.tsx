@@ -16,6 +16,10 @@ function Game() {
 		const board = new Board();
 		board.initCells();
 		board.initFigures();
+		// console.log(board);
+		const dtoBoard = board.toDTO();
+		console.log(dtoBoard);
+		console.log(Board.fromDTO(dtoBoard));
 		return board;
 	});
 	const [moves, setMoves] = useState<Record<Colors.WHITE | Colors.BLACK, Move[]>>({

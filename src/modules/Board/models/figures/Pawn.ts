@@ -4,7 +4,9 @@ import { FigureNames } from '../../constants/';
 import { Cell } from '../Cell';
 import blackLogo from '../../assets/figures/black-pawn.svg';
 import whiteLogo from '../../assets/figures/white-pawn.svg';
-
+import { PawnDTO } from '../../types';
+// { x: number; y: number; color: Colors; file: Files; id: number; figure: FigureDTO | null; available: boolean; board: null; }
+// { x: number; y: number; color: Colors; file: Files; id: number; figure: FigureDTO | null; available: boolean; board: null; }'
 export class Pawn extends Figure {
 	enPassant: boolean;
 	enPassantCell: Cell | null;
@@ -14,6 +16,16 @@ export class Pawn extends Figure {
 		this.name = FigureNames.PAWN;
 		this.enPassant = false;
 		this.enPassantCell = null;
+	}
+	public toDTO(): PawnDTO {
+		return {
+			id: this.id,
+			color: this.color,
+			name: this.name,
+			logo: this.name,
+			enPassant: this.enPassant,
+			enPassantCell: this.enPassantCell?.id ?? null,
+		};
 	}
 
 	protected validMove(target: Cell, forKing?: boolean): boolean {

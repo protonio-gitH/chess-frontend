@@ -1,12 +1,23 @@
 import { Colors } from '../../../constants';
-import { Move, CellWithNullBoard } from '../types/move.types';
+import { CellDTO } from '../../Board';
+import { Move } from '../types/move.types';
 
 class MoveHistory {
 	private movesWhite: Move[] = [];
 	private movesBlack: Move[] = [];
 	private lastMove: Move | null = null;
 	private currentMove: Move | null = null;
-	private initCells: CellWithNullBoard[][] = [];
+	private initCells: CellDTO[][] = [];
+
+	// public toDto() {
+	// 	return {
+	// 		movesWhite: this.movesWhite,
+	// 		movesBlack: this.movesBlack,
+	// 		lastMove: this.lastMove,
+	// 		currentMove: this.currentMove,
+	// 		initCells: this.initCells.map(row => row.map(cell => cell.toDto())),
+	// 	};
+	// }
 
 	public addMove(move: Move, color: Colors): void {
 		color === Colors.WHITE ? this.movesWhite.push(move) : this.movesBlack.push(move);
@@ -38,11 +49,11 @@ class MoveHistory {
 		this.movesBlack = [];
 	}
 
-	public getInitCells(): CellWithNullBoard[][] {
+	public getInitCells(): CellDTO[][] {
 		return this.initCells;
 	}
 
-	public setInitCells(initCells: CellWithNullBoard[][]): void {
+	public setInitCells(initCells: CellDTO[][]): void {
 		this.initCells = initCells;
 	}
 }

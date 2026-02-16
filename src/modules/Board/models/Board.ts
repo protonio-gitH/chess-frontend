@@ -8,8 +8,11 @@ import { Knight } from './figures/Knight';
 import { Pawn } from './figures/Pawn';
 import { Queen } from './figures/Queen';
 import { Rook } from './figures/Rook';
+import { Figure } from './figures/Figure';
 import { CellWithNullBoard, Move, MoveHistory } from '../../MoveHistory/';
 import cloneDeep from 'lodash/cloneDeep';
+import { BoardDTO, CellDTO } from '../types';
+import { FigureFactory } from './figures/FigureFactory';
 
 export class Board {
 	cells: Cell[][] = [];
@@ -18,6 +21,46 @@ export class Board {
 	moveHistory: MoveHistory = new MoveHistory();
 	fromCell: Cell | null = null;
 	toCell: Cell | null = null;
+
+	static fromDTO(dto: BoardDTO): Board {
+		const board = new Board();
+		board.promotion = dto.promotion;
+		board.move = dto.move;
+		if (dto.toCell) {
+			// const toCell = new Cell(dto.toCell.x, dto.toCell.y, dto.toCell.color, null, dto.toCell.file, board);
+			// if (dto.toCell.figure) {
+			// 	const figure = FigureFactory.fromDTO(dto.toCell.figure, dto, toCell);
+			// }
+			board.toCell = Cell.fromDTO(dto.toCell, board, dto);
+		}
+		if (dto.fromCell) {
+			board.fromCell = Cell.fromDTO(dto.fromCell, board, dto);
+		}
+		board.cells = dto.cells.map(row => {
+			return row.map(cell => {
+				// const newCell = new Cell(cell.x, cell.y, cell.color, null, cell.file, board);
+				// if (cell.figure) {
+				// 	const figure = FigureFactory.fromDTO(cell.figure, dto, newCell);
+				// }
+				// return newCell;
+				return Cell.fromDTO(cell, board, dto);
+			});
+		});
+		return board;
+	}
+
+	public toDTO(): BoardDTO {
+		return {
+			move: this.move,
+			promotion: this.promotion,
+			moveHistory: this.moveHistory,
+			fromCell: this.fromCell?.toDto() ?? null,
+			toCell: this.toCell?.toDto() ?? null,
+			cells: this.cells.map(row => {
+				return row.map(cell => cell.toDto());
+			}),
+		};
+	}
 
 	public initCells() {
 		const files = Object.values(Files);
@@ -213,18 +256,20 @@ export class Board {
 	public getMoveBoard(move: Move): Board {
 		const newBoard = this.getCopyBoard();
 		const files = Object.values(Files);
-		newBoard.fromCell = { ...move.from, board: newBoard } as Cell;
-		newBoard.toCell = { ...move.to, board: newBoard } as Cell;
+		const fromCell = new Cell(move.from.x, move.from.y, move.from.color, null, move.from.file, newBoard);
+		const toCell = new Cell(move.to.x, move.to.y, move.to.color, null, move.to.file, newBoard);
+		if (move.from.figure) {
+			const figure = FigureFactory.fromDTO(move.from.figure, move.cellsDump, fromCell);
+		}
+		if (move.to.figure) {
+			const figure = FigureFactory.fromDTO(move.to.figure, move.cellsDump, toCell);
+		}
+		newBoard.fromCell = fromCell;
+		newBoard.toCell = toCell;
 		newBoard.cells = move.cellsDump.map(row =>
-			row.map(nullBoardCell => {
-				const cell = new Cell(
-					nullBoardCell.x,
-					nullBoardCell.y,
-					nullBoardCell.color,
-					nullBoardCell.figure,
-					nullBoardCell.file,
-					newBoard,
-				);
+			row.map(cellDTO => {
+				const cell = new Cell(cellDTO.x, cellDTO.y, cellDTO.color, null, cellDTO.file, newBoard);
+				if (cellDTO.figure) FigureFactory.fromDTO(cellDTO.figure, move.cellsDump, cell);
 				return cell;
 			}),
 		);
@@ -243,10 +288,11 @@ export class Board {
 					nullBoardCell.x,
 					nullBoardCell.y,
 					nullBoardCell.color,
-					nullBoardCell.figure,
+					null,
 					nullBoardCell.file,
 					newBoard,
 				);
+				if (nullBoardCell.figure) FigureFactory.fromDTO(nullBoardCell.figure, initCells, cell);
 				return cell;
 			}),
 		);
@@ -321,7 +367,10 @@ export class Board {
 
 	private addInitCellsToHistory() {
 		const initCellsWithNullBoard = this.cells.map(row =>
-			row.map(cell => ({ ...cell, board: null } as CellWithNullBoard)),
+			row.map(cell => {
+				// const newCell = new Cell();
+				return cell.toDto();
+			}),
 		);
 
 		this.moveHistory.setInitCells(initCellsWithNullBoard);

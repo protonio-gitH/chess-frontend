@@ -3,8 +3,14 @@ import { Cell } from '../Cell';
 import { King } from './King';
 import { Colors } from '../../../../constants';
 import { FigureNames } from '../../constants/';
+import { Rook } from './Rook';
+import { Pawn } from './Pawn';
+import { Knight } from './Knight';
+import { BishopDTO, FigureDTO, KingDTO, KnightDTO, PawnDTO, QueenDTO, RookDTO } from '../../types';
+import { Bishop } from './Bishop';
+import { Queen } from './Queen';
 
-export class Figure {
+export abstract class Figure {
 	color: Colors;
 	logo: typeof logo | null;
 	cell: Cell;
@@ -18,6 +24,39 @@ export class Figure {
 		this.logo = null;
 		this.name = FigureNames.FIGURE;
 		this.id = Math.random();
+	}
+
+	static isRook(figure: Figure): figure is Rook {
+		return figure.name === FigureNames.ROOK;
+	}
+
+	static isPawn(figure: Figure): figure is Pawn {
+		return figure.name === FigureNames.PAWN;
+	}
+
+	static isKing(figure: Figure): figure is King {
+		return figure.name === FigureNames.KING;
+	}
+
+	static isBishop(figure: Figure): figure is Bishop {
+		return figure.name === FigureNames.BISHOP;
+	}
+
+	static isKnight(figure: Figure): figure is Knight {
+		return figure.name === FigureNames.KNIGHT;
+	}
+
+	static isQueen(figure: Figure): figure is Queen {
+		return figure.name === FigureNames.QUEEN;
+	}
+
+	public toDTO(): FigureDTO {
+		return {
+			id: this.id,
+			color: this.color,
+			name: this.name,
+			logo: this.name,
+		};
 	}
 
 	public checkKingShah(): void {
@@ -238,7 +277,5 @@ export class Figure {
 		return false;
 	}
 
-	protected validMove(target: Cell, forKing?: boolean): boolean {
-		return true;
-	}
+	protected abstract validMove(target: Cell, forKing?: boolean): boolean;
 }
