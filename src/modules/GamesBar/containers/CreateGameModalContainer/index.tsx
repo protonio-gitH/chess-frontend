@@ -4,6 +4,7 @@ import { useModal } from '../../../../hooks/useModal';
 import { useServices } from '../../../../hooks/useServices';
 import { useAppSelector } from '../../../../store';
 import { decodeToken } from '../../../../utils/decodeToken';
+import { Board } from '../../../Board';
 
 const CreateGameModalContainer: FC = () => {
 	const { modalOptions, setModalOptions } = useModal();
@@ -14,7 +15,14 @@ const CreateGameModalContainer: FC = () => {
 	const createGameHandler = useCallback(async (): Promise<void> => {
 		if (decodedToken?.userId) {
 			try {
-				const response = await api.request('/game', { method: 'POST', data: { creatorId: decodedToken.userId } });
+				const board = new Board();
+				board.initCells();
+				board.initFigures();
+				const boardDTO = board.toDTO();
+				const response = await api.request('/game', {
+					method: 'POST',
+					data: { creatorId: decodedToken.userId, board: JSON.stringify(boardDTO) },
+				});
 			} catch (e) {
 				console.error('Failed to create game:', e);
 			}
