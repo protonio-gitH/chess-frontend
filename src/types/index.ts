@@ -7,3 +7,5 @@ export type { SnackBarServiceState } from './snackbar.types';
 export type { AuthFormData, RegistrationFormData, LoginFormData } from './auth.types';
 export type { Game } from './game.types';
 export type { GameState } from './game.slice.types';
+export type { BoardDTO } from '../modules/Board/types';
+export type { ClientToServerEvents, ServerToClientEvents } from './socket.types';

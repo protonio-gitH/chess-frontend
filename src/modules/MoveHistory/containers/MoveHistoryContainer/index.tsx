@@ -7,7 +7,7 @@ import { MoveActions } from '../../types/move.types';
 
 interface MoveHistoryContainerProps {
 	board: Board;
-	setBoard: React.Dispatch<React.SetStateAction<Board>>;
+	setBoard: React.Dispatch<React.SetStateAction<Board | undefined>>;
 	moves: Record<Colors.WHITE | Colors.BLACK, Move[]>;
 	setMoves: React.Dispatch<React.SetStateAction<Record<Colors, Move[]>>>;
 }

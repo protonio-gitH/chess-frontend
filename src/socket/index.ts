@@ -1,7 +1,7 @@
 // socket.ts
 import { io, Socket } from 'socket.io-client';
 import { Services } from '../services';
-import { ConfigAPI } from '../types';
+import { ClientToServerEvents, ConfigAPI, ServerToClientEvents } from '../types';
 
 export default class SocketService {
 	private socket: Socket;
@@ -20,12 +20,12 @@ export default class SocketService {
 		this.socket.disconnect();
 	}
 
-	public on(event: string, cb: any) {
-		this.socket.on(event, cb);
+	public on<K extends keyof ServerToClientEvents>(event: K, cb: ServerToClientEvents[K]) {
+		this.socket.on(event, cb as any);
 	}
 
-	public emit(event: string, data: any) {
-		this.socket.emit(event, data);
+	public emit<K extends keyof ClientToServerEvents>(event: K, ...args: Parameters<ClientToServerEvents[K]>) {
+		this.socket.emit(event, ...args);
 	}
 
 	public getId(): string | undefined {

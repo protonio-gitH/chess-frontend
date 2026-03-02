@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.scss';
-import { Board, BoardComponent, useSelected } from '../../modules/Board';
+import { Board, BoardComponent, isBoardDTO, useSelected } from '../../modules/Board';
 import { Colors } from '../../constants';
 import { Move } from '../../modules/MoveHistory';
 import { MoveHistoryContainer } from '../../modules/MoveHistory';
@@ -10,52 +10,53 @@ import handleThunk from '../../utils/handleThunk';
 import { useAppDispatch, useAppSelector } from '../../store';
 import Loading from '../../components/Loading';
 import NotFound from '../NotFound';
+import { useServices } from '../../hooks/useServices';
+import { useSnackBar } from '../../hooks/useSnackBar';
 
 function Game() {
-	const [board, setBoard] = useState<Board>(() => {
-		const board = new Board();
-		board.initCells();
-		board.initFigures();
-		const dtoBoard = board.toDTO();
-		console.log(JSON.stringify(dtoBoard));
-		console.log(Board.fromDTO(dtoBoard));
-		return board;
-	});
+	const [board, setBoard] = useState<Board>();
 	const [moves, setMoves] = useState<Record<Colors.WHITE | Colors.BLACK, Move[]>>({
 		[Colors.WHITE]: [],
 		[Colors.BLACK]: [],
 	});
+	const { snackBarState, setSnackBarState } = useSnackBar();
 	const dispatch = useAppDispatch();
 	const { gameId } = useParams<{ gameId: string }>();
 	const status = useAppSelector(state => state.game.status);
 	const errorStatus = useAppSelector(state => state.game.errorStatus);
-
+	const socket = useServices().getSocket();
 	useEffect(() => {
 		if (!gameId) return;
 		handleThunk(dispatch, getGameInfoThunk, { gameId });
+		socket.emit('join-game', { gameId }, response => {
+			const boardDTO = JSON.parse(response.data);
+			if (isBoardDTO(boardDTO)) {
+				setBoard(Board.fromDTO(boardDTO));
+			} else {
+				setSnackBarState({ ...snackBarState, open: true, message: 'Failed to load game data' });
+			}
+		});
 	}, [gameId]);
 
-	useEffect(() => {
-		restart();
-	}, []);
+	// useEffect(() => {
+	// 	restart();
+	// }, []);
 
 	useEffect(() => {
-		const moves = board.moveHistory.getMoves();
-		setMoves({
-			white: [...moves.movesWhite],
-			black: [...moves.movesBlack],
-		});
-	}, [board.move]);
+		if (board) {
+			const moves = board.moveHistory.getMoves();
+			setMoves({
+				white: [...moves.movesWhite],
+				black: [...moves.movesBlack],
+			});
+		}
+	}, [board?.move]);
 
-	function restart() {
-		const newBoard = new Board();
-		newBoard.initCells();
-		newBoard.initFigures();
-		setBoard(newBoard);
-	}
-
-	// if (loading) {
-	// 	return <Loading />;
+	// function restart() {
+	// 	const newBoard = new Board();
+	// 	newBoard.initCells();
+	// 	newBoard.initFigures();
+	// 	setBoard(newBoard);
 	// }
 
 	switch (status) {
@@ -65,6 +66,7 @@ function Game() {
 			if (errorStatus === 404) return <NotFound />;
 			throw new Error('Something went wrong');
 		case 'success':
+			if (!board) return <Loading />;
 			return (
 				<div className={styles.game}>
 					<div className={styles.gameContent}>

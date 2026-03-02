@@ -1,14 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { PayloadAction } from '@reduxjs/toolkit';
 import type { LoginResponse, AuthState, ErrorResponse, Extra } from '../types';
-import { AxiosError } from 'axios';
-
-function isErrorResponse(data: LoginResponse | ErrorResponse | null): data is ErrorResponse {
-	if (data === null) {
-		return false;
-	}
-	return 'message' in data;
-}
+import { AxiosError, isAxiosError } from 'axios';
 
 export const loginThunk = createAsyncThunk<
 	LoginResponse,
@@ -27,19 +20,20 @@ export const loginThunk = createAsyncThunk<
 		});
 		return response.data;
 	} catch (e) {
-		const error = e as AxiosError<ErrorResponse>;
+		if (isAxiosError<ErrorResponse>(e)) {
+			if (e.response) {
+				return rejectWithValue({
+					message: e.response.data?.message ?? 'Request failed',
+					status: e.response.status,
+				});
+			}
 
-		if (error.response) {
 			return rejectWithValue({
-				message: error.response.data?.message ?? 'Request failed',
-				status: error.response.status,
+				message: e.message || 'Network error',
+				status: 0,
 			});
 		}
-
-		return rejectWithValue({
-			message: error.message || 'Network error',
-			status: 0,
-		});
+		throw e;
 	}
 });
 
@@ -60,45 +54,47 @@ export const registrationThunk = createAsyncThunk<
 		});
 		return response.data;
 	} catch (e) {
-		const error = e as AxiosError<ErrorResponse>;
+		if (isAxiosError<ErrorResponse>(e)) {
+			if (e.response) {
+				return rejectWithValue({
+					message: e.response.data?.message ?? 'Request failed',
+					status: e.response.status,
+				});
+			}
 
-		if (error.response) {
 			return rejectWithValue({
-				message: error.response.data?.message ?? 'Request failed',
-				status: error.response.status,
+				message: e.message || 'Network error',
+				status: 0,
 			});
 		}
-
-		return rejectWithValue({
-			message: error.message || 'Network error',
-			status: 0,
-		});
+		throw e;
 	}
 });
 
-export const logoutThunk = createAsyncThunk<null, void, { rejectValue: ErrorResponse; extra: Extra }>(
+export const logoutThunk = createAsyncThunk<void, void, { rejectValue: ErrorResponse; extra: Extra }>(
 	'auth/logout',
 	async (_, { extra, rejectWithValue }) => {
 		try {
-			const response = await extra.api.request<null>('/auth/logout', {
+			const response = await extra.api.request<void>('/auth/logout', {
 				method: 'GET',
 			});
 
 			return response.data;
 		} catch (e) {
-			const error = e as AxiosError<ErrorResponse>;
+			if (isAxiosError<ErrorResponse>(e)) {
+				if (e.response) {
+					return rejectWithValue({
+						message: e.response.data?.message ?? 'Logout failed',
+						status: e.response.status,
+					});
+				}
 
-			if (error.response) {
 				return rejectWithValue({
-					message: error.response.data?.message ?? 'Logout failed',
-					status: error.response.status,
+					message: e.message || 'Network error',
+					status: 0,
 				});
 			}
-
-			return rejectWithValue({
-				message: error.message || 'Network error',
-				status: 0,
-			});
+			throw e;
 		}
 	},
 );

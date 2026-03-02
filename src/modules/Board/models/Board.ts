@@ -14,6 +14,19 @@ import cloneDeep from 'lodash/cloneDeep';
 import { BoardDTO, CellDTO } from '../types';
 import { FigureFactory } from './figures/FigureFactory';
 
+export function isBoardDTO(data: unknown): data is BoardDTO {
+	return (
+		!!data &&
+		typeof data === 'object' &&
+		'move' in data &&
+		'promotion' in data &&
+		'moveHistory' in data &&
+		'fromCell' in data &&
+		'toCell' in data &&
+		'cells' in data
+	);
+}
+
 export class Board {
 	cells: Cell[][] = [];
 	move: Colors = Colors.WHITE;
